@@ -17,57 +17,57 @@ public class Assessment {
     @PrimaryKey(autoGenerate = true)
     @NonNull
     @ColumnInfo(name = "id")
-    private int mId;
+    private int id;
 
     @NonNull
     @ColumnInfo(name = "name")
-    private String mName;
+    private String name;
 
     @NonNull
     @ColumnInfo(name = "goal_date")
-    private long mGoalDate;
+    private long goalDate;
 
     @ColumnInfo(name = "goal_alert_on")
-    private boolean mIsGoalAlertOn;
+    private boolean isGoalAlertOn;
 
     @ColumnInfo(name = "course_id")
-    private int mCourseId;
+    private int courseId;
 
     @ColumnInfo(name = "type_id")
-    private int mTypeId;
+    private int typeId;
 
     public Assessment(int id, @NonNull String name, long goalDate, boolean isGoalAlertOn,
                       int courseId, int typeId) {
-        this.mId = id;
-        this.mName = name;
-        this.mGoalDate = goalDate;
-        this.mIsGoalAlertOn = isGoalAlertOn;
-        this.mCourseId = courseId;
-        this.mTypeId = typeId;
+        this.id = id;
+        this.name = name;
+        this.goalDate = goalDate;
+        this.isGoalAlertOn = isGoalAlertOn;
+        this.courseId = courseId;
+        this.typeId = typeId;
     }
 
     public int getId() {
-        return mId;
+        return id;
     }
 
     @NonNull
     public String getName() {
-        return mName;
+        return name;
     }
 
     public long getGoalDate() {
-        return mGoalDate;
+        return goalDate;
     }
 
     public boolean isIsGoalAlertOn() {
-        return mIsGoalAlertOn;
+        return isGoalAlertOn;
     }
 
     public int getCourseId() {
-        return mCourseId;
+        return courseId;
     }
 
     public int getTypeId() {
-        return mTypeId;
+        return typeId;
     }
 }

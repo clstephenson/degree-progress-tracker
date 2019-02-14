@@ -11,41 +11,41 @@ public class Term {
     @PrimaryKey(autoGenerate = true)
     @NonNull
     @ColumnInfo(name = "id")
-    private int mId;
+    private int id;
 
     @NonNull
     @ColumnInfo(name = "name")
-    private String mName;
+    private String name;
 
     @NonNull
     @ColumnInfo(name = "start_date")
-    private long mStartDate;
+    private long startDate;
 
     @NonNull
     @ColumnInfo(name = "end_date")
-    private long mEndDate;
+    private long endDate;
 
     public Term(int id, @NonNull String name, long startDate, long endDate) {
-        this.mId = id;
-        this.mName = name;
-        this.mStartDate = startDate;
-        this.mEndDate = endDate;
+        this.id = id;
+        this.name = name;
+        this.startDate = startDate;
+        this.endDate = endDate;
     }
 
     public int getId() {
-        return mId;
+        return id;
     }
 
     @NonNull
     public String getName() {
-        return mName;
+        return name;
     }
 
     public long getStartDate() {
-        return mStartDate;
+        return startDate;
     }
 
     public long getEndDate() {
-        return mEndDate;
+        return endDate;
     }
 }

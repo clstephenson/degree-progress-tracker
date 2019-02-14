@@ -11,49 +11,49 @@ public class Mentor {
     @PrimaryKey(autoGenerate = true)
     @NonNull
     @ColumnInfo(name = "id")
-    private int mId;
+    private int id;
 
     @NonNull
     @ColumnInfo(name = "first_name")
-    private String mFirstName;
+    private String firstName;
 
     @NonNull
     @ColumnInfo(name = "last_name")
-    private String mLastName;
+    private String lastName;
 
     @ColumnInfo(name = "phone")
-    private String mPhone;
+    private String phone;
 
     @ColumnInfo(name = "email")
-    private String mEmail;
+    private String email;
 
-    public Mentor(int mId, @NonNull String firstName, @NonNull String lastName, String phone, String email) {
-        this.mId = mId;
-        this.mFirstName = firstName;
-        this.mLastName = lastName;
-        this.mPhone = phone;
-        this.mEmail = email;
+    public Mentor(int id, @NonNull String firstName, @NonNull String lastName, String phone, String email) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phone = phone;
+        this.email = email;
     }
 
     public int getId() {
-        return mId;
+        return id;
     }
 
     @NonNull
     public String getFirstName() {
-        return mFirstName;
+        return firstName;
     }
 
     @NonNull
     public String getLastName() {
-        return mLastName;
+        return lastName;
     }
 
     public String getPhone() {
-        return mPhone;
+        return phone;
     }
 
     public String getEmail() {
-        return mEmail;
+        return email;
     }
 }

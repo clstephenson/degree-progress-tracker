@@ -10,22 +10,22 @@ public class AssessmentType {
     @PrimaryKey(autoGenerate = true)
     @NonNull
     @ColumnInfo(name = "id")
-    private int mId;
+    private int id;
 
     @NonNull
     @ColumnInfo(name = "type")
-    private String mType;
+    private String type;
 
     public AssessmentType(int id, @NonNull String type) {
-        this.mId = id;
-        this.mType = type;
+        this.id = id;
+        this.type = type;
     }
 
     public int getId() {
-        return mId;
+        return id;
     }
 
     public String getType() {
-        return mType;
+        return type;
     }
 }

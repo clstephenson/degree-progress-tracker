@@ -11,22 +11,22 @@ public class CourseStatus {
     @PrimaryKey(autoGenerate = true)
     @NonNull
     @ColumnInfo(name = "id")
-    private int mId;
+    private int id;
 
     @NonNull
     @ColumnInfo(name = "status")
-    private String mStatus;
+    private String status;
 
     public CourseStatus(int id, @NonNull String status) {
-        this.mId = id;
-        this.mStatus = status;
+        this.id = id;
+        this.status = status;
     }
 
     public int getId() {
-        return mId;
+        return id;
     }
 
     public String getStatus() {
-        return mStatus;
+        return status;
     }
 }

@@ -16,31 +16,31 @@ public class Notes {
     @PrimaryKey(autoGenerate = true)
     @NonNull
     @ColumnInfo(name = "id")
-    private int mId;
+    private int id;
 
     @NonNull
     @ColumnInfo(name = "note")
-    private String mNote;
+    private String note;
 
     @ColumnInfo(name = "course_id")
-    private int mCourseId;
+    private int courseId;
 
     public Notes(int id, @NonNull String note, int courseId) {
-        this.mId = id;
-        this.mNote = note;
-        this.mCourseId = courseId;
+        this.id = id;
+        this.note = note;
+        this.courseId = courseId;
     }
 
     public int getId() {
-        return mId;
+        return id;
     }
 
     @NonNull
     public String getNote() {
-        return mNote;
+        return note;
     }
 
     public int getCourseId() {
-        return mCourseId;
+        return courseId;
     }
 }

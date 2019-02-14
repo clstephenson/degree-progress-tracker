@@ -19,83 +19,83 @@ public class Course {
     @PrimaryKey(autoGenerate = true)
     @NonNull
     @ColumnInfo(name = "id")
-    private int mId;
+    private int id;
 
     @NonNull
     @ColumnInfo(name = "name")
-    private String mName;
+    private String name;
 
     @NonNull
     @ColumnInfo(name = "start_date")
-    private long mStartDate;
+    private long startDate;
 
     @NonNull
     @ColumnInfo(name = "end_date")
-    private long mEndDate;
+    private long endDate;
 
     @ColumnInfo(name = "start_alert_on")
-    private boolean mIsStartAlertOn;
+    private boolean isStartAlertOn;
 
     @ColumnInfo(name = "end_alert_on")
-    private boolean mIsEndAlertOn;
+    private boolean isEndAlertOn;
 
     @ColumnInfo(name = "status_id")
-    private int mStatusId;
+    private int statusId;
 
     @ColumnInfo(name = "mentor_id")
-    private int mMentorId;
+    private int mentorId;
 
     @ColumnInfo(name = "term_id")
-    private int mTermId;
+    private int termId;
 
     public Course(int id, @NonNull String name, long startDate, long endDate,
                   boolean isStartAlertOn, boolean isEndAlertOn, int statusId, int mentorId,
-                  int mTermId) {
-        this.mId = id;
-        this.mName = name;
-        this.mStartDate = startDate;
-        this.mEndDate = endDate;
-        this.mIsStartAlertOn = isStartAlertOn;
-        this.mIsEndAlertOn = isEndAlertOn;
-        this.mStatusId = statusId;
-        this.mMentorId = mentorId;
-        this.mTermId = mTermId;
+                  int termId) {
+        this.id = id;
+        this.name = name;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.isStartAlertOn = isStartAlertOn;
+        this.isEndAlertOn = isEndAlertOn;
+        this.statusId = statusId;
+        this.mentorId = mentorId;
+        this.termId = termId;
     }
 
     public int getId() {
-        return mId;
+        return id;
     }
 
     @NonNull
     public String getName() {
-        return mName;
+        return name;
     }
 
     public long getStartDate() {
-        return mStartDate;
+        return startDate;
     }
 
     public long getEndDate() {
-        return mEndDate;
+        return endDate;
     }
 
     public boolean isIsStartAlertOn() {
-        return mIsStartAlertOn;
+        return isStartAlertOn;
     }
 
     public boolean isIsEndAlertOn() {
-        return mIsEndAlertOn;
+        return isEndAlertOn;
     }
 
     public int getStatusId() {
-        return mStatusId;
+        return statusId;
     }
 
     public int getMentorId() {
-        return mMentorId;
+        return mentorId;
     }
 
     public int getTermId() {
-        return mTermId;
+        return termId;
     }
 }
