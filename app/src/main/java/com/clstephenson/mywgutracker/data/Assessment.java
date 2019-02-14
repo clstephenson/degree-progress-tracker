@@ -59,7 +59,7 @@ public class Assessment {
         return goalDate;
     }
 
-    public boolean isIsGoalAlertOn() {
+    public boolean isGoalAlertOn() {
         return isGoalAlertOn;
     }
 

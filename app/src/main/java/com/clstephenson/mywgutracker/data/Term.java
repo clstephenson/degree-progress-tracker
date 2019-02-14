@@ -1,8 +1,12 @@
 package com.clstephenson.mywgutracker.data;
 
+import java.util.Collections;
+import java.util.List;
+
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "term")
@@ -24,6 +28,9 @@ public class Term {
     @NonNull
     @ColumnInfo(name = "end_date")
     private long endDate;
+
+    @Ignore
+    private List<Course> courses = Collections.emptyList();
 
     public Term(int id, @NonNull String name, long startDate, long endDate) {
         this.id = id;
@@ -47,5 +54,13 @@ public class Term {
 
     public long getEndDate() {
         return endDate;
+    }
+
+    public List<Course> getCourses() {
+        return courses;
+    }
+
+    public void setCourses(List<Course> courses) {
+        this.courses = courses;
     }
 }

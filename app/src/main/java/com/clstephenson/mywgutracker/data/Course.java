@@ -1,9 +1,13 @@
 package com.clstephenson.mywgutracker.data;
 
+import java.util.Collections;
+import java.util.List;
+
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity(
@@ -48,6 +52,9 @@ public class Course {
     @ColumnInfo(name = "term_id")
     private int termId;
 
+    @Ignore
+    private List<Notes> notes = Collections.emptyList();
+
     public Course(int id, @NonNull String name, long startDate, long endDate,
                   boolean isStartAlertOn, boolean isEndAlertOn, int statusId, int mentorId,
                   int termId) {
@@ -79,11 +86,11 @@ public class Course {
         return endDate;
     }
 
-    public boolean isIsStartAlertOn() {
+    public boolean isStartAlertOn() {
         return isStartAlertOn;
     }
 
-    public boolean isIsEndAlertOn() {
+    public boolean isEndAlertOn() {
         return isEndAlertOn;
     }
 
@@ -97,5 +104,13 @@ public class Course {
 
     public int getTermId() {
         return termId;
+    }
+
+    public List<Notes> getNotes() {
+        return notes;
+    }
+
+    public void setNotes(List<Notes> notes) {
+        this.notes = notes;
     }
 }
