@@ -1,32 +1,17 @@
 package com.clstephenson.mywgutracker.data;
 
-import androidx.annotation.NonNull;
-import androidx.room.ColumnInfo;
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
+public enum CourseStatus {
+    NOT_STARTED("Not Started"),
+    STARTED("Started"),
+    COMPLETED("Completed");
 
-@Entity(tableName = "course_status")
-public class CourseStatus {
+    private final String friendlyName;
 
-    @PrimaryKey(autoGenerate = true)
-    @NonNull
-    @ColumnInfo(name = "id")
-    private int id;
-
-    @NonNull
-    @ColumnInfo(name = "status")
-    private String status;
-
-    public CourseStatus(int id, @NonNull String status) {
-        this.id = id;
-        this.status = status;
+    private CourseStatus(String friendlyName) {
+        this.friendlyName = friendlyName;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public String getStatus() {
-        return status;
+    public String getFriendlyName() {
+        return friendlyName;
     }
 }

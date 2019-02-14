@@ -9,11 +9,11 @@ import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
 
 @Entity(
         tableName = "course",
         foreignKeys = {
-                @ForeignKey(entity = CourseStatus.class, parentColumns = "id", childColumns = "status_id"),
                 @ForeignKey(entity = Mentor.class, parentColumns = "id", childColumns = "mentor_id"),
                 @ForeignKey(entity = Term.class, parentColumns = "id", childColumns = "term_id")
         }
@@ -44,7 +44,8 @@ public class Course {
     private boolean isEndAlertOn;
 
     @ColumnInfo(name = "status_id")
-    private int statusId;
+    @TypeConverters(CourseStatusTypeConverter.class)
+    private CourseStatus status;
 
     @ColumnInfo(name = "mentor_id")
     private int mentorId;
@@ -56,7 +57,7 @@ public class Course {
     private List<Notes> notes = Collections.emptyList();
 
     public Course(int id, @NonNull String name, long startDate, long endDate,
-                  boolean isStartAlertOn, boolean isEndAlertOn, int statusId, int mentorId,
+                  boolean isStartAlertOn, boolean isEndAlertOn, CourseStatus status, int mentorId,
                   int termId) {
         this.id = id;
         this.name = name;
@@ -64,7 +65,7 @@ public class Course {
         this.endDate = endDate;
         this.isStartAlertOn = isStartAlertOn;
         this.isEndAlertOn = isEndAlertOn;
-        this.statusId = statusId;
+        this.status = status;
         this.mentorId = mentorId;
         this.termId = termId;
     }
@@ -94,8 +95,8 @@ public class Course {
         return isEndAlertOn;
     }
 
-    public int getStatusId() {
-        return statusId;
+    public CourseStatus getStatus() {
+        return status;
     }
 
     public int getMentorId() {

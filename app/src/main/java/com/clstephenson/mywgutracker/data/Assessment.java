@@ -5,15 +5,16 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
 
 @Entity(
         tableName = "assessment",
         foreignKeys = {
-                @ForeignKey(entity = Course.class, parentColumns = "id", childColumns = "course_id"),
-                @ForeignKey(entity = AssessmentType.class, parentColumns = "id", childColumns = "type_id")
+                @ForeignKey(entity = Course.class, parentColumns = "id", childColumns = "course_id")
         }
 )
 public class Assessment {
+
     @PrimaryKey(autoGenerate = true)
     @NonNull
     @ColumnInfo(name = "id")
@@ -33,17 +34,18 @@ public class Assessment {
     @ColumnInfo(name = "course_id")
     private int courseId;
 
-    @ColumnInfo(name = "type_id")
-    private int typeId;
+    @ColumnInfo(name = "type")
+    @TypeConverters(AssessmentTypeConverter.class)
+    private AssessmentType type;
 
     public Assessment(int id, @NonNull String name, long goalDate, boolean isGoalAlertOn,
-                      int courseId, int typeId) {
+                      int courseId, AssessmentType type) {
         this.id = id;
         this.name = name;
         this.goalDate = goalDate;
         this.isGoalAlertOn = isGoalAlertOn;
         this.courseId = courseId;
-        this.typeId = typeId;
+        this.type = type;
     }
 
     public int getId() {
@@ -67,7 +69,7 @@ public class Assessment {
         return courseId;
     }
 
-    public int getTypeId() {
-        return typeId;
+    public AssessmentType getType() {
+        return type;
     }
 }
