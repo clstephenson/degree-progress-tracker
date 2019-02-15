@@ -57,6 +57,9 @@ public class Course {
     private long termId;
 
     @Ignore
+    private List<Assessment> assessments = Collections.emptyList();
+
+    @Ignore
     private List<Note> notes = Collections.emptyList();
 
     public Course(long id, @NonNull String name, Date startDate, Date endDate,
@@ -144,6 +147,14 @@ public class Course {
         this.termId = termId;
     }
 
+    public List<Assessment> getAssessments() {
+        return assessments;
+    }
+
+    public void setAssessments(List<Assessment> assessments) {
+        this.assessments = assessments;
+    }
+
     public List<Note> getNotes() {
         return notes;
     }
@@ -181,12 +192,13 @@ public class Course {
                 Objects.equals(startDate, course.startDate) &&
                 Objects.equals(endDate, course.endDate) &&
                 status == course.status &&
-                Objects.equals(notes, course.notes);
+                Objects.equals(notes, course.notes) &&
+                Objects.equals(assessments, course.assessments);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, startDate, endDate, isStartAlertOn, isEndAlertOn, status, mentorId, termId, notes);
+        return Objects.hash(name, startDate, endDate, isStartAlertOn, isEndAlertOn, status, mentorId, termId, notes, assessments);
     }
 
     @Override
@@ -201,6 +213,7 @@ public class Course {
                 ", mentorId=" + mentorId +
                 ", termId=" + termId +
                 ", notes=" + notes +
+                ", assessments=" + assessments +
                 '}';
     }
 }
