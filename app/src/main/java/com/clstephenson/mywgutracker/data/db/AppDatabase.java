@@ -1,12 +1,8 @@
-package com.clstephenson.mywgutracker.data;
+package com.clstephenson.mywgutracker.data.db;
 
 import android.content.Context;
 
-import com.clstephenson.mywgutracker.data.dao.AssessmentDao;
-import com.clstephenson.mywgutracker.data.dao.CourseDao;
-import com.clstephenson.mywgutracker.data.dao.MentorDao;
-import com.clstephenson.mywgutracker.data.dao.NoteDao;
-import com.clstephenson.mywgutracker.data.dao.TermDao;
+import com.clstephenson.mywgutracker.data.DataTypeConverter;
 import com.clstephenson.mywgutracker.data.models.Assessment;
 import com.clstephenson.mywgutracker.data.models.Course;
 import com.clstephenson.mywgutracker.data.models.Mentor;

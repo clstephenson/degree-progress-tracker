@@ -1,4 +1,4 @@
-package com.clstephenson.mywgutracker.data.dao;
+package com.clstephenson.mywgutracker.data.db;
 
 import com.clstephenson.mywgutracker.data.models.Mentor;
 
