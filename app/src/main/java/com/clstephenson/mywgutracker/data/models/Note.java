@@ -82,8 +82,9 @@ public class Note {
 
     @Override
     public String toString() {
+        int length = note.length() > 25 ? 25 : note.length();
         return "Note{" +
-                "note='" + note.substring(0, 25) + "..." + '\'' +
+                "note='" + note.substring(0, length) + "..." + '\'' +
                 ", courseId=" + courseId +
                 '}';
     }

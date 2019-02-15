@@ -1,13 +1,12 @@
 package com.clstephenson.mywgutracker.data;
 
+import com.clstephenson.mywgutracker.data.models.Assessment;
 import com.clstephenson.mywgutracker.data.models.Course;
 import com.clstephenson.mywgutracker.data.models.Mentor;
 import com.clstephenson.mywgutracker.data.models.Note;
 import com.clstephenson.mywgutracker.data.models.Term;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 public class TestDataGenerator {
 
@@ -16,24 +15,21 @@ public class TestDataGenerator {
                 "john.smith@example.com");
     }
 
-    public static Term createTermWithCourse() {
-        Term term = new Term("Term 1", new Date(), new Date());
-        List<Course> courses = new ArrayList<>();
-        courses.add(createCourseWithNote());
-        term.setCourses(courses);
-        return term;
+    public static Term createTerm() {
+        return new Term("Term 1", new Date(), new Date());
     }
 
-    public static Course createCourseWithNote() {
-        Course course = new Course("Mobile Application Development", new Date(), new Date(), false, false,
-                CourseStatus.STARTED, 0, 0);
-        List<Note> notes = new ArrayList<>();
-        notes.add(createNote());
-        course.setNotes(notes);
-        return course;
+    public static Course createCourse(long mentorId, long termId) {
+        return new Course("Mobile Application Development", new Date(), new Date(), false, false,
+                CourseStatus.STARTED, mentorId, termId);
     }
 
-    public static Note createNote() {
-        return new Note("This is a test note", 0);
+    public static Assessment createAssessment(long courseId) {
+        return new Assessment("TEST_CODE", "Mobile App Project",
+                new Date(), false, courseId, AssessmentType.PERFORMANCE);
+    }
+
+    public static Note createNote(long courseId) {
+        return new Note("This is a test note", courseId);
     }
 }
