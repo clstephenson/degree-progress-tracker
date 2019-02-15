@@ -1,6 +1,7 @@
-package com.clstephenson.mywgutracker.data;
+package com.clstephenson.mywgutracker.data.models;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -13,9 +14,8 @@ import androidx.room.PrimaryKey;
 public class Term {
 
     @PrimaryKey(autoGenerate = true)
-    @NonNull
     @ColumnInfo(name = "id")
-    private int id;
+    private long id;
 
     @NonNull
     @ColumnInfo(name = "name")
@@ -23,23 +23,30 @@ public class Term {
 
     @NonNull
     @ColumnInfo(name = "start_date")
-    private long startDate;
+    private Date startDate;
 
     @NonNull
     @ColumnInfo(name = "end_date")
-    private long endDate;
+    private Date endDate;
 
     @Ignore
     private List<Course> courses = Collections.emptyList();
 
-    public Term(int id, @NonNull String name, long startDate, long endDate) {
+    public Term(long id, @NonNull String name, Date startDate, Date endDate) {
         this.id = id;
         this.name = name;
         this.startDate = startDate;
         this.endDate = endDate;
     }
 
-    public int getId() {
+    @Ignore
+    public Term(@NonNull String name, Date startDate, Date endDate) {
+        this.name = name;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
+
+    public long getId() {
         return id;
     }
 
@@ -48,12 +55,12 @@ public class Term {
         return name;
     }
 
-    public long getStartDate() {
-        return startDate;
+    public void setId(long id) {
+        this.id = id;
     }
 
-    public long getEndDate() {
-        return endDate;
+    public Date getStartDate() {
+        return startDate;
     }
 
     public List<Course> getCourses() {
@@ -62,5 +69,21 @@ public class Term {
 
     public void setCourses(List<Course> courses) {
         this.courses = courses;
+    }
+
+    public void setStartDate(@NonNull Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(@NonNull Date endDate) {
+        this.endDate = endDate;
+    }
+
+    public void setName(@NonNull String name) {
+        this.name = name;
     }
 }
