@@ -5,6 +5,7 @@ import com.clstephenson.mywgutracker.data.CourseStatus;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
@@ -165,5 +166,41 @@ public class Course {
 
     public void setStatus(CourseStatus status) {
         this.status = status;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Course course = (Course) o;
+        return isStartAlertOn == course.isStartAlertOn &&
+                isEndAlertOn == course.isEndAlertOn &&
+                mentorId == course.mentorId &&
+                termId == course.termId &&
+                Objects.equals(name, course.name) &&
+                Objects.equals(startDate, course.startDate) &&
+                Objects.equals(endDate, course.endDate) &&
+                status == course.status &&
+                Objects.equals(notes, course.notes);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, startDate, endDate, isStartAlertOn, isEndAlertOn, status, mentorId, termId, notes);
+    }
+
+    @Override
+    public String toString() {
+        return "Course{" +
+                "name='" + name + '\'' +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", isStartAlertOn=" + isStartAlertOn +
+                ", isEndAlertOn=" + isEndAlertOn +
+                ", status=" + status +
+                ", mentorId=" + mentorId +
+                ", termId=" + termId +
+                ", notes=" + notes +
+                '}';
     }
 }

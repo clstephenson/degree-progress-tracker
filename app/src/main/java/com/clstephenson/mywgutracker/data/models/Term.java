@@ -3,6 +3,7 @@ package com.clstephenson.mywgutracker.data.models;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
@@ -85,5 +86,31 @@ public class Term {
 
     public void setName(@NonNull String name) {
         this.name = name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Term term = (Term) o;
+        return Objects.equals(name, term.name) &&
+                Objects.equals(startDate, term.startDate) &&
+                Objects.equals(endDate, term.endDate) &&
+                Objects.equals(courses, term.courses);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, startDate, endDate, courses);
+    }
+
+    @Override
+    public String toString() {
+        return "Term{" +
+                "name='" + name + '\'' +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", courses=" + courses +
+                '}';
     }
 }

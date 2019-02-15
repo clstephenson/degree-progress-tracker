@@ -3,6 +3,7 @@ package com.clstephenson.mywgutracker.data.models;
 import com.clstephenson.mywgutracker.data.AssessmentType;
 
 import java.util.Date;
+import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
@@ -124,5 +125,35 @@ public class Assessment {
 
     public void setType(AssessmentType type) {
         this.type = type;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Assessment that = (Assessment) o;
+        return isGoalAlertOn == that.isGoalAlertOn &&
+                courseId == that.courseId &&
+                Objects.equals(code, that.code) &&
+                Objects.equals(name, that.name) &&
+                Objects.equals(goalDate, that.goalDate) &&
+                type == that.type;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(code, name, goalDate, isGoalAlertOn, courseId, type);
+    }
+
+    @Override
+    public String toString() {
+        return "Assessment{" +
+                "code='" + code + '\'' +
+                ", name='" + name + '\'' +
+                ", goalDate=" + goalDate +
+                ", isGoalAlertOn=" + isGoalAlertOn +
+                ", courseId=" + courseId +
+                ", type=" + type +
+                '}';
     }
 }

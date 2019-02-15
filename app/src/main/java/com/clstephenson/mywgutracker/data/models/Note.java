@@ -1,5 +1,7 @@
 package com.clstephenson.mywgutracker.data.models;
 
+import java.util.Objects;
+
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
@@ -62,5 +64,27 @@ public class Note {
 
     public void setNote(@NonNull String note) {
         this.note = note;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Note note1 = (Note) o;
+        return courseId == note1.courseId &&
+                Objects.equals(note, note1.note);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(note, courseId);
+    }
+
+    @Override
+    public String toString() {
+        return "Note{" +
+                "note='" + note.substring(0, 25) + "..." + '\'' +
+                ", courseId=" + courseId +
+                '}';
     }
 }

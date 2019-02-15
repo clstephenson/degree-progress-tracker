@@ -1,5 +1,7 @@
 package com.clstephenson.mywgutracker.data.models;
 
+import java.util.Objects;
+
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
@@ -83,5 +85,31 @@ public class Mentor {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Mentor mentor = (Mentor) o;
+        return Objects.equals(firstName, mentor.firstName) &&
+                Objects.equals(lastName, mentor.lastName) &&
+                Objects.equals(phone, mentor.phone) &&
+                Objects.equals(email, mentor.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(firstName, lastName, phone, email);
+    }
+
+    @Override
+    public String toString() {
+        return "Mentor{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", phone='" + phone + '\'' +
+                ", email='" + email + '\'' +
+                '}';
     }
 }
