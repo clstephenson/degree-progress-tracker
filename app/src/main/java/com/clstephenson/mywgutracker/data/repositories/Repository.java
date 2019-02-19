@@ -6,7 +6,7 @@ import java.util.List;
 
 import androidx.lifecycle.LiveData;
 
-interface Repository<T extends BaseModel> {
+public interface Repository<T extends BaseModel> {
     LiveData<List<T>> getAll();
 
     T getById(long id);
