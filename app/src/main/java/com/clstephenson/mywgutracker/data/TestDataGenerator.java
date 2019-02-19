@@ -1,7 +1,5 @@
-package com.clstephenson.mywgutracker;
+package com.clstephenson.mywgutracker.data;
 
-import com.clstephenson.mywgutracker.data.AssessmentType;
-import com.clstephenson.mywgutracker.data.CourseStatus;
 import com.clstephenson.mywgutracker.data.models.Assessment;
 import com.clstephenson.mywgutracker.data.models.Course;
 import com.clstephenson.mywgutracker.data.models.Mentor;

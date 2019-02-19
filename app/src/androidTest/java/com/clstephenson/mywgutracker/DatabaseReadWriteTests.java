@@ -2,6 +2,7 @@ package com.clstephenson.mywgutracker;
 
 import android.content.Context;
 
+import com.clstephenson.mywgutracker.data.TestDataGenerator;
 import com.clstephenson.mywgutracker.data.db.AppDatabase;
 import com.clstephenson.mywgutracker.data.db.AssessmentDao;
 import com.clstephenson.mywgutracker.data.db.CourseDao;

@@ -17,4 +17,7 @@ public abstract class TermDao implements BaseDao<Term> {
     @Query("SELECT * FROM term WHERE id = :termId")
     public abstract Term getTermById(long termId);
 
+    @Query("DELETE FROM term")
+    public abstract void deleteAll();
+
 }

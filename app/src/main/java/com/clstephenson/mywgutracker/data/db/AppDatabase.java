@@ -1,8 +1,10 @@
 package com.clstephenson.mywgutracker.data.db;
 
 import android.content.Context;
+import android.os.AsyncTask;
 
 import com.clstephenson.mywgutracker.data.DataTypeConverter;
+import com.clstephenson.mywgutracker.data.TestDataGenerator;
 import com.clstephenson.mywgutracker.data.models.Assessment;
 import com.clstephenson.mywgutracker.data.models.Course;
 import com.clstephenson.mywgutracker.data.models.Mentor;
@@ -20,7 +22,16 @@ public abstract class AppDatabase extends RoomDatabase {
 
     private static volatile AppDatabase INSTANCE;
 
-    static AppDatabase getDatabase(final Context context) {
+//    private static AppDatabase.Callback appDatabaseCallback =
+//            new AppDatabase.Callback() {
+//                @Override
+//                public void onOpen(@NonNull SupportSQLiteDatabase db) {
+//                    super.onOpen(db);
+//                    new SeedDBAsync(INSTANCE).execute();
+//                }
+//            };
+
+    public static AppDatabase getDatabase(final Context context) {
         if (INSTANCE == null) {
             synchronized (AppDatabase.class) {
                 if (INSTANCE == null) {
@@ -34,6 +45,55 @@ public abstract class AppDatabase extends RoomDatabase {
         return INSTANCE;
     }
 
+    public static void clearData() {
+        new ClearDataAsync(INSTANCE).execute();
+    }
+
+    public static void seedDatabase() {
+        new SeedDBAsync(INSTANCE).execute();
+    }
+
+    private static class ClearDataAsync extends AsyncTask<Void, Void, Void> {
+        private final TermDao termDao;
+        private final CourseDao courseDao;
+        private final AssessmentDao assessmentDao;
+        private final MentorDao mentorDao;
+        private final NoteDao noteDao;
+
+        ClearDataAsync(AppDatabase db) {
+            termDao = db.termDao();
+            courseDao = db.courseDao();
+            assessmentDao = db.assessmentDao();
+            mentorDao = db.mentorDao();
+            noteDao = db.noteDao();
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            termDao.deleteAll();
+            courseDao.deleteAll();
+            assessmentDao.deleteAll();
+            mentorDao.deleteAll();
+            noteDao.deleteAll();
+            return null;
+        }
+    }
+
+    private static class SeedDBAsync extends AsyncTask<Void, Void, Void> {
+        private final TermDao termDao;
+
+        SeedDBAsync(AppDatabase db) {
+            termDao = db.termDao();
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            Term term = TestDataGenerator.createTerm();
+            termDao.insert(term);
+            return null;
+        }
+    }
+
     public abstract AssessmentDao assessmentDao();
 
     public abstract CourseDao courseDao();
@@ -43,4 +103,6 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract NoteDao noteDao();
 
     public abstract TermDao termDao();
+
+
 }

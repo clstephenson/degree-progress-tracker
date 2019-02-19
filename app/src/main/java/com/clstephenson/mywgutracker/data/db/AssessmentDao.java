@@ -20,4 +20,7 @@ public abstract class AssessmentDao implements BaseDao<Assessment> {
     @Query("SELECT * FROM assessment WHERE id = :assessmentId")
     public abstract Assessment getAssessmentById(long assessmentId);
 
+    @Query("DELETE FROM assessment")
+    public abstract void deleteAll();
+
 }

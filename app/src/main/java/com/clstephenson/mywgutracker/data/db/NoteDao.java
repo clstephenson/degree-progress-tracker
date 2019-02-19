@@ -20,4 +20,7 @@ public abstract class NoteDao implements BaseDao<Note> {
     @Query("SELECT * FROM note WHERE id = :noteId")
     public abstract Note getNoteById(long noteId);
 
+    @Query("DELETE FROM note")
+    public abstract void deleteAll();
+
 }

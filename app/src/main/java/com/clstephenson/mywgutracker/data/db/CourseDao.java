@@ -20,4 +20,7 @@ public abstract class CourseDao implements BaseDao<Course> {
     @Query("SELECT * FROM course WHERE id = :courseId")
     public abstract Course getCourseById(long courseId);
 
+    @Query("DELETE FROM course")
+    public abstract void deleteAll();
+
 }

@@ -17,4 +17,7 @@ public abstract class MentorDao implements BaseDao<Mentor> {
     @Query("SELECT * FROM mentor WHERE id = :mentorId")
     public abstract Mentor getMentorById(long mentorId);
 
+    @Query("DELETE FROM mentor")
+    public abstract void deleteAll();
+
 }
