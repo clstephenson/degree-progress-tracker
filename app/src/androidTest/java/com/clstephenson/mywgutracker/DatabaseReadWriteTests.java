@@ -71,10 +71,10 @@ public class DatabaseReadWriteTests {
     }
 
     private void readTestRecordFromDbTables() {
-        termReadFromDb = termDao.getTermById(termId);
-        Course course = courseDao.getCourseById(courseId);
-        Assessment assessment = assessmentDao.getAssessmentById(assessmentId);
-        Note note = noteDao.getNoteById(noteId);
+        termReadFromDb = termDao.getById(termId);
+        Course course = courseDao.getById(courseId);
+        Assessment assessment = assessmentDao.getById(assessmentId);
+        Note note = noteDao.getById(noteId);
         course.setAssessments(new ArrayList<>(Collections.singletonList(assessment)));
         course.setNotes(new ArrayList<>(Collections.singletonList(note)));
         termReadFromDb.setCourses(new ArrayList<>(Collections.singletonList(course)));
@@ -118,19 +118,19 @@ public class DatabaseReadWriteTests {
 
     @Test
     public void readMentorFromDbAndCompareWithInserted() {
-        assertEquals(mentorDao.getMentorById(mentorId), mentorWrittenToDb);
+        assertEquals(mentorDao.getById(mentorId), mentorWrittenToDb);
     }
 
     @Test
     public void readNoteFromDbAndCompareWithInserted() {
         Note note = termWrittenToDb.getCourses().get(0).getNotes().get(0);
-        assertEquals(noteDao.getNoteById(note.getId()), note);
+        assertEquals(noteDao.getById(note.getId()), note);
     }
 
     @Test
     public void readAssessmentFromDbAndCompareWithInserted() {
         Assessment assessment = termWrittenToDb.getCourses().get(0).getAssessments().get(0);
-        assertEquals(assessmentDao.getAssessmentById(assessmentId), assessment);
+        assertEquals(assessmentDao.getById(assessmentId), assessment);
     }
 
     @Test

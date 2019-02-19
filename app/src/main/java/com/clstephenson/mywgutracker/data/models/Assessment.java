@@ -11,7 +11,6 @@ import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Ignore;
 import androidx.room.Index;
-import androidx.room.PrimaryKey;
 
 @Entity(
         tableName = "assessment",
@@ -20,11 +19,7 @@ import androidx.room.PrimaryKey;
         },
         indices = {@Index("course_id")}
 )
-public class Assessment {
-
-    @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "id")
-    private long id;
+public class Assessment extends BaseModel {
 
     @NonNull
     @ColumnInfo(name = "code")
@@ -67,14 +62,6 @@ public class Assessment {
         this.isGoalAlertOn = isGoalAlertOn;
         this.courseId = courseId;
         this.type = type;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     @NonNull

@@ -8,7 +8,6 @@ import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Ignore;
 import androidx.room.Index;
-import androidx.room.PrimaryKey;
 
 @Entity(
         tableName = "note",
@@ -17,10 +16,7 @@ import androidx.room.PrimaryKey;
         },
         indices = {@Index("course_id")}
 )
-public class Note {
-    @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "id")
-    private long id;
+public class Note extends BaseModel {
 
     @NonNull
     @ColumnInfo(name = "note")
@@ -41,17 +37,9 @@ public class Note {
         this.courseId = courseId;
     }
 
-    public long getId() {
-        return id;
-    }
-
     @NonNull
     public String getNote() {
         return note;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public long getCourseId() {

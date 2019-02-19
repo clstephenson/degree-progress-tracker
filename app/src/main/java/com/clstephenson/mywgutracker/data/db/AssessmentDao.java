@@ -12,15 +12,18 @@ import androidx.room.Query;
 public abstract class AssessmentDao implements BaseDao<Assessment> {
 
     @Query("SELECT * FROM assessment")
-    public abstract LiveData<List<Assessment>> getAllAssessments();
+    public abstract LiveData<List<Assessment>> getAll();
 
     @Query("SELECT * FROM assessment WHERE course_id = :courseId")
-    public abstract LiveData<List<Assessment>> getAssessmentsByCourseId(long courseId);
+    public abstract LiveData<List<Assessment>> getByCourseId(long courseId);
 
     @Query("SELECT * FROM assessment WHERE id = :assessmentId")
-    public abstract Assessment getAssessmentById(long assessmentId);
+    public abstract Assessment getById(long assessmentId);
 
     @Query("DELETE FROM assessment")
     public abstract void deleteAll();
+
+    @Query("DELETE FROM assessment WHERE id = :id")
+    public abstract void deleteById(long id);
 
 }

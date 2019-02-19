@@ -7,15 +7,21 @@ import androidx.room.Update;
 public interface BaseDao<T> {
 
     @Insert
-    public abstract long insert(T t);
+    long insert(T object);
 
     @Insert
-    public abstract long[] insert(T... t);
+    long[] insert(T... objects);
 
     @Update
-    public abstract void update(T... t);
+    void update(T... objects);
+
+    @Update
+    void update(T object);
 
     @Delete
-    public abstract void delete(T... t);
+    void delete(T... objects);
+
+    @Delete
+    void delete(T object);
 
 }

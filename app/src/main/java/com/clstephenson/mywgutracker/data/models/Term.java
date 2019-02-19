@@ -9,14 +9,9 @@ import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
-import androidx.room.PrimaryKey;
 
 @Entity(tableName = "term")
-public class Term {
-
-    @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "id")
-    private long id;
+public class Term extends BaseModel {
 
     @NonNull
     @ColumnInfo(name = "name")
@@ -47,17 +42,9 @@ public class Term {
         this.endDate = endDate;
     }
 
-    public long getId() {
-        return id;
-    }
-
     @NonNull
     public String getName() {
         return name;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public Date getStartDate() {

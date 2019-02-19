@@ -12,12 +12,15 @@ import androidx.room.Query;
 public abstract class TermDao implements BaseDao<Term> {
 
     @Query("SELECT * FROM term")
-    public abstract LiveData<List<Term>> getAllTerms();
+    public abstract LiveData<List<Term>> getAll();
 
-    @Query("SELECT * FROM term WHERE id = :termId")
-    public abstract Term getTermById(long termId);
+    @Query("SELECT * FROM term WHERE id = :id")
+    public abstract Term getById(long id);
 
     @Query("DELETE FROM term")
     public abstract void deleteAll();
+
+    @Query("DELETE FROM term WHERE id = :id")
+    public abstract void deleteById(long id);
 
 }

@@ -6,14 +6,9 @@ import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
-import androidx.room.PrimaryKey;
 
 @Entity(tableName = "mentor")
-public class Mentor {
-
-    @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "id")
-    private long id;
+public class Mentor extends BaseModel {
 
     @NonNull
     @ColumnInfo(name = "first_name")
@@ -45,10 +40,6 @@ public class Mentor {
         this.email = email;
     }
 
-    public long getId() {
-        return id;
-    }
-
     @NonNull
     public String getFirstName() {
         return firstName;
@@ -65,10 +56,6 @@ public class Mentor {
 
     public String getEmail() {
         return email;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public void setFirstName(@NonNull String firstName) {
