@@ -15,10 +15,6 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-
-/**
- * A simple {@link Fragment} subclass.
- */
 public class TermListFragment extends Fragment {
 
     private TermListViewModel termListViewModel;

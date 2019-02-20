@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.clstephenson.mywgutracker.data.db.AppDatabase;
 import com.google.android.material.navigation.NavigationView;
@@ -22,6 +23,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     DrawerLayout drawerLayout;
+    NavigationView navigationView;
     ActionBarDrawerToggle actionBarDrawerToggle;
     Toolbar toolbar;
     FragmentManager fragmentManager;
@@ -37,7 +39,7 @@ public class MainActivity extends AppCompatActivity
         actionBarDrawerToggle = new ActionBarDrawerToggle(
                 this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         actionBarDrawerToggle.syncState();
 
@@ -87,8 +89,12 @@ public class MainActivity extends AppCompatActivity
             openCourseListFragment();
         } else if (id == R.id.nav_clear_db) {
             AppDatabase.clearData();
+            openHomeFragment();
+            Toast.makeText(this, "Database cleared.", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_seed_db) {
             AppDatabase.seedDatabase();
+            openHomeFragment();
+            Toast.makeText(this, "Added some data to the database.", Toast.LENGTH_SHORT).show();
         }
 
         drawerLayout.closeDrawer(GravityCompat.START);
@@ -104,10 +110,16 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void openCourseListFragment() {
-        //todo: need to implement navigation from home to courses
+        navigationView.setCheckedItem(R.id.nav_courses);
+        CourseListFragment fragment = new CourseListFragment();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.main_content_fragment, fragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
     }
 
     private void openTermListFragment() {
+        navigationView.setCheckedItem(R.id.nav_terms);
         TermListFragment fragment = new TermListFragment();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.main_content_fragment, fragment);

@@ -6,9 +6,9 @@
     android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/terms_cardView"
+        android:id="@+id/courses_cardView"
         android:layout_width="@dimen/card_view_width"
-        android:layout_height="@dimen/term_card_height"
+        android:layout_height="@dimen/course_card_height"
         android:layout_marginStart="@dimen/margin_small"
         android:layout_marginTop="@dimen/margin_small"
         android:layout_marginEnd="@dimen/margin_small"
@@ -22,20 +22,20 @@
             android:paddingStart="@dimen/margin_large">
 
             <TextView
-                android:id="@+id/term_list_text_name"
+                android:id="@+id/course_list_text_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/card_title_text_size"
-                tools:text="Term Name" />
+                tools:text="Course Name" />
 
             <TextView
-                android:id="@+id/term_list_text_status"
+                android:id="@+id/course_list_text_status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/indent_spacing"
                 android:layout_marginTop="@dimen/card_text_spacing"
                 android:textSize="@dimen/card_standard_text_size"
-                tools:text="Term Status" />
+                tools:text="Course Status" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -44,7 +44,7 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:id="@+id/term_list_date_icon"
+                    android:id="@+id/course_list_date_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -53,7 +53,7 @@
                     android:src="@drawable/ic_menu_calendar" />
 
                 <TextView
-                    android:id="@+id/term_list_text_dates"
+                    android:id="@+id/course_list_text_dates"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
