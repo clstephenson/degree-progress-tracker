@@ -45,42 +45,36 @@ public abstract class AppDatabase extends RoomDatabase {
     }
 
     private static class ClearDataAsync extends AsyncTask<Void, Void, Void> {
-        private final TermDao termDao;
-        private final CourseDao courseDao;
-        private final AssessmentDao assessmentDao;
-        private final MentorDao mentorDao;
-        private final NoteDao noteDao;
 
         ClearDataAsync(AppDatabase db) {
-            termDao = db.termDao();
-            courseDao = db.courseDao();
-            assessmentDao = db.assessmentDao();
-            mentorDao = db.mentorDao();
-            noteDao = db.noteDao();
+
         }
 
         @Override
         protected Void doInBackground(Void... voids) {
-            termDao.deleteAll();
-            courseDao.deleteAll();
-            assessmentDao.deleteAll();
-            mentorDao.deleteAll();
-            noteDao.deleteAll();
+            INSTANCE.clearAllTables();
             return null;
         }
     }
 
     private static class SeedDBAsync extends AsyncTask<Void, Void, Void> {
         private final TermDao termDao;
+        private final MentorDao mentorDao;
+        private final CourseDao courseDao;
 
         SeedDBAsync(AppDatabase db) {
             termDao = db.termDao();
+            mentorDao = db.mentorDao();
+            courseDao = db.courseDao();
         }
 
         @Override
         protected Void doInBackground(Void... voids) {
+            long mentorId = mentorDao.insert(TestDataGenerator.createMentor());
             Term term = TestDataGenerator.createTerm();
-            termDao.insert(term);
+            long termId = termDao.insert(term);
+            Course course = TestDataGenerator.createCourse(mentorId, termId);
+            long courseId = courseDao.insert(course);
             return null;
         }
     }
