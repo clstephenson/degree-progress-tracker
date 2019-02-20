@@ -22,15 +22,6 @@ public abstract class AppDatabase extends RoomDatabase {
 
     private static volatile AppDatabase INSTANCE;
 
-//    private static AppDatabase.Callback appDatabaseCallback =
-//            new AppDatabase.Callback() {
-//                @Override
-//                public void onOpen(@NonNull SupportSQLiteDatabase db) {
-//                    super.onOpen(db);
-//                    new SeedDBAsync(INSTANCE).execute();
-//                }
-//            };
-
     public static AppDatabase getDatabase(final Context context) {
         if (INSTANCE == null) {
             synchronized (AppDatabase.class) {

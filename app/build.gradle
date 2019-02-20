@@ -11,7 +11,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         javaCompileOptions {
             annotationProcessorOptions {
-                arguments = ["room.schemaLocation":"$projectDir/schemas".toString()]
+                arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
             }
         }
     }
@@ -25,6 +25,9 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    testOptions {
+        unitTests.includeAndroidResources = true
+    }
 }
 
 dependencies {
@@ -32,9 +35,16 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.0.0-beta01'
     implementation 'com.google.android.material:material:1.0.0-beta01'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.2'
-    testImplementation 'junit:junit:4.12'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0-beta01'
+
+    // Dependencies for testing
+    androidTestImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.0-alpha4'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-alpha4'
+    // Robolectric environment
+    androidTestImplementation 'androidx.test:core:1.0.0'
+    // Mockito framework
+    testImplementation 'org.mockito:mockito-core:1.10.19'
 
     // Google Architecture - Room
     def room_version = "2.1.0-alpha04"
@@ -44,8 +54,8 @@ dependencies {
 
     // Google Architecture - Lifecycle
     def lifecycle_version = "2.0.0"
-    // ViewModel and LiveData
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
     androidTestImplementation "androidx.arch.core:core-testing:$lifecycle_version"
+    implementation 'androidx.cardview:cardview:1.0.0'
 }

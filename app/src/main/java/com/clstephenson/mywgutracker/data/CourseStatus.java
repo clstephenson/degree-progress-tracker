@@ -7,7 +7,7 @@ public enum CourseStatus {
 
     private final String friendlyName;
 
-    private CourseStatus(String friendlyName) {
+    CourseStatus(String friendlyName) {
         this.friendlyName = friendlyName;
     }
 

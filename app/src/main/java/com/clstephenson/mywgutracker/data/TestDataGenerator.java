@@ -1,5 +1,6 @@
 package com.clstephenson.mywgutracker.data;
 
+import com.clstephenson.mywgutracker.DateUtils;
 import com.clstephenson.mywgutracker.data.models.Assessment;
 import com.clstephenson.mywgutracker.data.models.Course;
 import com.clstephenson.mywgutracker.data.models.Mentor;
@@ -16,17 +17,20 @@ public class TestDataGenerator {
     }
 
     public static Term createTerm() {
-        return new Term("Term 1", new Date(), new Date());
+        long todayPlus180Days = new Date().getTime() + DateUtils.MILLISECONDS_IN_DAY * 180;
+        return new Term("Test Term", new Date(), new Date(todayPlus180Days));
     }
 
     public static Course createCourse(long mentorId, long termId) {
-        return new Course("Mobile Application Development", new Date(), new Date(), false, false,
+        long todayPlus30Days = new Date().getTime() + DateUtils.MILLISECONDS_IN_DAY * 30;
+        return new Course("Mobile Application Development", new Date(), new Date(todayPlus30Days), false, false,
                 CourseStatus.STARTED, mentorId, termId);
     }
 
     public static Assessment createAssessment(long courseId) {
+        long todayPlus30Days = new Date().getTime() + DateUtils.MILLISECONDS_IN_DAY * 30;
         return new Assessment("TEST_CODE", "Mobile App Project",
-                new Date(), false, courseId, AssessmentType.PERFORMANCE);
+                new Date(todayPlus30Days), false, courseId, AssessmentType.PERFORMANCE);
     }
 
     public static Note createNote(long courseId) {
