@@ -2,6 +2,8 @@ package com.clstephenson.mywgutracker;
 
 import android.content.Context;
 
+import com.clstephenson.mywgutracker.utils.DateUtils;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

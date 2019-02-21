@@ -1,4 +1,4 @@
-package com.clstephenson.mywgutracker;
+package com.clstephenson.mywgutracker.ui;
 
 import android.os.Bundle;
 import android.view.Menu;
@@ -6,6 +6,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.clstephenson.mywgutracker.R;
 import com.clstephenson.mywgutracker.data.db.AppDatabase;
 import com.google.android.material.navigation.NavigationView;
 

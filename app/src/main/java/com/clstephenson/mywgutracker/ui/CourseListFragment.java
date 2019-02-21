@@ -1,12 +1,13 @@
-package com.clstephenson.mywgutracker;
+package com.clstephenson.mywgutracker.ui;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.clstephenson.mywgutracker.adapters.CourseListAdapter;
-import com.clstephenson.mywgutracker.viewmodels.CourseListViewModel;
+import com.clstephenson.mywgutracker.R;
+import com.clstephenson.mywgutracker.ui.adapters.CourseListAdapter;
+import com.clstephenson.mywgutracker.ui.viewmodels.CourseListViewModel;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

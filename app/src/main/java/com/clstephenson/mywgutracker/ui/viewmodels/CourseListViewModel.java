@@ -1,4 +1,4 @@
-package com.clstephenson.mywgutracker.viewmodels;
+package com.clstephenson.mywgutracker.ui.viewmodels;
 
 import android.app.Application;
 

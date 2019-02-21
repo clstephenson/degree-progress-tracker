@@ -1,4 +1,4 @@
-package com.clstephenson.mywgutracker;
+package com.clstephenson.mywgutracker.utils;
 
 import android.content.Context;
 

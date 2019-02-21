@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:paddingTop="?attr/actionBarSize"
-    tools:context=".TermListFragment">
+    tools:context=".ui.TermListFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/term_recyclerview"

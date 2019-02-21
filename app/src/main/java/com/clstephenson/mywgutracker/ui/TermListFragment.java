@@ -1,4 +1,4 @@
-package com.clstephenson.mywgutracker;
+package com.clstephenson.mywgutracker.ui;
 
 
 import android.os.Bundle;
@@ -6,8 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.clstephenson.mywgutracker.adapters.TermListAdapter;
-import com.clstephenson.mywgutracker.viewmodels.TermListViewModel;
+import com.clstephenson.mywgutracker.R;
+import com.clstephenson.mywgutracker.ui.adapters.TermListAdapter;
+import com.clstephenson.mywgutracker.ui.viewmodels.TermListViewModel;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;

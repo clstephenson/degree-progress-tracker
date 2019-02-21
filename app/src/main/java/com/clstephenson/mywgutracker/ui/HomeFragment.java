@@ -1,10 +1,12 @@
-package com.clstephenson.mywgutracker;
+package com.clstephenson.mywgutracker.ui;
 
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.clstephenson.mywgutracker.R;
 
 import androidx.fragment.app.Fragment;
 

@@ -1,4 +1,4 @@
-package com.clstephenson.mywgutracker.adapters;
+package com.clstephenson.mywgutracker.ui.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -6,10 +6,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.clstephenson.mywgutracker.DateUtils;
 import com.clstephenson.mywgutracker.R;
 import com.clstephenson.mywgutracker.data.TermStatus;
 import com.clstephenson.mywgutracker.data.models.Term;
+import com.clstephenson.mywgutracker.utils.DateUtils;
 
 import java.util.List;
 

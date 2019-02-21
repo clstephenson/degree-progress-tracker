@@ -1,11 +1,11 @@
 package com.clstephenson.mywgutracker.data;
 
-import com.clstephenson.mywgutracker.DateUtils;
 import com.clstephenson.mywgutracker.data.models.Assessment;
 import com.clstephenson.mywgutracker.data.models.Course;
 import com.clstephenson.mywgutracker.data.models.Mentor;
 import com.clstephenson.mywgutracker.data.models.Note;
 import com.clstephenson.mywgutracker.data.models.Term;
+import com.clstephenson.mywgutracker.utils.DateUtils;
 
 import java.util.Date;
 
