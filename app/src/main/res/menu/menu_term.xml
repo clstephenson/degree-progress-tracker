@@ -1,0 +1,15 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.clstephenson.mywgutracker.ui.TermActivity">
+    <item
+        android:id="@+id/action_edit_term"
+        android:orderInCategory="100"
+        android:title="Edit"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_delete_term"
+        android:orderInCategory="101"
+        android:title="Delete"
+        app:showAsAction="always" />
+</menu>

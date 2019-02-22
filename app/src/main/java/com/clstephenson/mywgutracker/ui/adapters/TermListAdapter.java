@@ -20,6 +20,7 @@ public class TermListAdapter extends RecyclerView.Adapter<TermListAdapter.TermVi
 
     private final LayoutInflater inflater;
     private List<Term> terms;
+    private OnItemInteractionListener listener;
 
     public TermListAdapter(Context context) {
         inflater = LayoutInflater.from(context);
@@ -71,16 +72,29 @@ public class TermListAdapter extends RecyclerView.Adapter<TermListAdapter.TermVi
         }
     }
 
-    public class TermViewHolder extends RecyclerView.ViewHolder {
+    public void setOnItemInteractionListener(OnItemInteractionListener listener) {
+        this.listener = listener;
+    }
+
+    public class TermViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private final TextView termNameView;
         private final TextView termStatusView;
         private final TextView termDatesView;
 
         private TermViewHolder(View itemView) {
             super(itemView);
+            itemView.setOnClickListener(this);
             termNameView = itemView.findViewById(R.id.term_list_text_name);
             termStatusView = itemView.findViewById(R.id.term_list_text_status);
             termDatesView = itemView.findViewById(R.id.term_list_text_dates);
+        }
+
+        @Override
+        public void onClick(View v) {
+            int position = getAdapterPosition();
+            if (listener != null && position != RecyclerView.NO_POSITION) {
+                listener.onClick(v, position);
+            }
         }
     }
 }

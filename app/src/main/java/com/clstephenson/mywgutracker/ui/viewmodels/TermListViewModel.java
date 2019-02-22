@@ -27,6 +27,10 @@ public class TermListViewModel extends AndroidViewModel {
         return allTerms;
     }
 
+    public Term getTerm(int position) {
+        return allTerms.getValue().get(position);
+    }
+
     public void insert(Term term) {
         repository.insert(term);
     }

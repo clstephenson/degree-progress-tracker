@@ -1,12 +1,14 @@
 package com.clstephenson.mywgutracker.ui;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.clstephenson.mywgutracker.R;
+import com.clstephenson.mywgutracker.data.models.Term;
 import com.clstephenson.mywgutracker.ui.adapters.TermListAdapter;
 import com.clstephenson.mywgutracker.ui.viewmodels.TermListViewModel;
 
@@ -18,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class TermListFragment extends Fragment {
 
+    public static final String TERM_ID = "com.clstephenson.mywgutracker.ui.TermListFragment.TERM_ID";
     private TermListViewModel termListViewModel;
 
     public TermListFragment() {
@@ -28,11 +31,7 @@ public class TermListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        View rootView = inflater.inflate(R.layout.fragment_term_list, container, false);
-
-        // Inflate the layout for this fragment
-        return rootView;
+        return inflater.inflate(R.layout.fragment_term_list, container, false);
     }
 
     @Override
@@ -40,11 +39,20 @@ public class TermListFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         RecyclerView recyclerView = getView().findViewById(R.id.term_recyclerview);
+
         final TermListAdapter adapter = new TermListAdapter(getActivity());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         termListViewModel = ViewModelProviders.of(getActivity()).get(TermListViewModel.class);
         termListViewModel.getAllTerms().observe(getActivity(), adapter::setTerms);
+
+        adapter.setOnItemInteractionListener(((view, position) -> {
+            Intent intent = new Intent(getActivity(), TermActivity.class);
+            Term selectedTerm = termListViewModel.getTerm(position);
+            intent.putExtra(TERM_ID, selectedTerm.getId());
+            startActivity(intent);
+        }));
     }
+
 }
