@@ -42,17 +42,16 @@ public class TermListAdapter extends RecyclerView.Adapter<TermListAdapter.TermVi
             StringBuilder statusText = new StringBuilder()
                     .append(context.getString(R.string.status))
                     .append(":  ");
-            if (DateUtils.isDateBeforeToday(context, current.getEndDate())) {
+            if (DateUtils.isDateBeforeToday(current.getEndDate())) {
                 statusText.append(TermStatus.COMPLETED.getFriendlyName());
-            } else if (DateUtils.isDateAfterToday(context, current.getStartDate())) {
+            } else if (DateUtils.isDateAfterToday(current.getStartDate())) {
                 statusText.append(TermStatus.NOT_STARTED.getFriendlyName());
             } else {
                 statusText.append(TermStatus.IN_PROGRESS.getFriendlyName());
             }
             holder.termStatusView.setText(statusText);
             holder.termDatesView.setText(
-                    DateUtils.getFormattedDateRange(
-                            context, current.getStartDate(), current.getEndDate()));
+                    DateUtils.getFormattedDateRange(current.getStartDate(), current.getEndDate()));
         } else {
             //todo add message stating that there are no terms to display
         }

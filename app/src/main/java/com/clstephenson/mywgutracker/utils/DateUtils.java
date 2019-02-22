@@ -1,6 +1,6 @@
 package com.clstephenson.mywgutracker.utils;
 
-import android.content.Context;
+import com.clstephenson.mywgutracker.MyApplication;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -11,15 +11,15 @@ public class DateUtils {
     public static final int DATE_FORMAT_FLAGS =
             android.text.format.DateUtils.FORMAT_NUMERIC_DATE | android.text.format.DateUtils.FORMAT_SHOW_YEAR;
 
-    public static String getFormattedDate(Context context, Date date) {
-        return android.text.format.DateUtils.formatDateTime(context, date.getTime(), DATE_FORMAT_FLAGS);
+    public static String getFormattedDate(Date date) {
+        return android.text.format.DateUtils.formatDateTime(MyApplication.getContext(), date.getTime(), DATE_FORMAT_FLAGS);
     }
 
-    public static String getFormattedDateRange(Context context, Date startDate, Date endDate) {
+    public static String getFormattedDateRange(Date startDate, Date endDate) {
         return new StringBuilder()
-                .append(getFormattedDate(context, startDate))
+                .append(getFormattedDate(startDate))
                 .append(" - ")
-                .append(getFormattedDate(context, endDate))
+                .append(getFormattedDate(endDate))
                 .toString();
     }
 
@@ -32,11 +32,11 @@ public class DateUtils {
         return calendar.getTime();
     }
 
-    public static boolean isDateBeforeToday(Context context, Date date) {
+    public static boolean isDateBeforeToday(Date date) {
         return date.before(getToday());
     }
 
-    public static boolean isDateAfterToday(Context context, Date date) {
+    public static boolean isDateAfterToday(Date date) {
         return date.after(getToday());
     }
 

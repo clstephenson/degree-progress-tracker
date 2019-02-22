@@ -41,17 +41,16 @@ public class CourseListAdapter extends RecyclerView.Adapter<CourseListAdapter.Co
             StringBuilder statusText = new StringBuilder()
                     .append(context.getString(R.string.status))
                     .append(":  ");
-            if (DateUtils.isDateBeforeToday(context, current.getEndDate())) {
+            if (DateUtils.isDateBeforeToday(current.getEndDate())) {
                 statusText.append(CourseStatus.COMPLETED.getFriendlyName());
-            } else if (DateUtils.isDateAfterToday(context, current.getStartDate())) {
+            } else if (DateUtils.isDateAfterToday(current.getStartDate())) {
                 statusText.append(CourseStatus.NOT_STARTED.getFriendlyName());
             } else {
                 statusText.append(CourseStatus.STARTED.getFriendlyName());
             }
             holder.courseStatusView.setText(statusText);
             holder.courseDatesView.setText(
-                    DateUtils.getFormattedDateRange(
-                            context, current.getStartDate(), current.getEndDate()));
+                    DateUtils.getFormattedDateRange(current.getStartDate(), current.getEndDate()));
         } else {
             //todo add message stating that there are no courses to display
         }

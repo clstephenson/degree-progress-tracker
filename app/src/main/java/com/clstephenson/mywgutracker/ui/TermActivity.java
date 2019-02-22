@@ -76,9 +76,9 @@ public class TermActivity extends AppCompatActivity {
         StringBuilder statusText = new StringBuilder()
                 .append(this.getString(R.string.status))
                 .append(":  ");
-        if (DateUtils.isDateBeforeToday(this, term.getEndDate())) {
+        if (DateUtils.isDateBeforeToday(term.getEndDate())) {
             statusText.append(TermStatus.COMPLETED.getFriendlyName());
-        } else if (DateUtils.isDateAfterToday(this, term.getStartDate())) {
+        } else if (DateUtils.isDateAfterToday(term.getStartDate())) {
             statusText.append(TermStatus.NOT_STARTED.getFriendlyName());
         } else {
             statusText.append(TermStatus.IN_PROGRESS.getFriendlyName());
@@ -89,11 +89,11 @@ public class TermActivity extends AppCompatActivity {
         startView.setText(
                 String.format("%s: %s",
                         getString(R.string.start),
-                        DateUtils.getFormattedDate(this, term.getStartDate())));
+                        DateUtils.getFormattedDate(term.getStartDate())));
         TextView endView = findViewById(R.id.term_text_end);
         endView.setText(
                 String.format("%s: %s",
                         getString(R.string.end),
-                        DateUtils.getFormattedDate(this, term.getEndDate())));
+                        DateUtils.getFormattedDate(term.getEndDate())));
     }
 }
