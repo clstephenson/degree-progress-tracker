@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.clstephenson.mywgutracker.R;
-import com.clstephenson.mywgutracker.data.CourseStatus;
 import com.clstephenson.mywgutracker.data.models.Course;
 import com.clstephenson.mywgutracker.utils.DateUtils;
 
@@ -40,14 +39,8 @@ public class CourseListAdapter extends RecyclerView.Adapter<CourseListAdapter.Co
             holder.courseNameView.setText(current.getName());
             StringBuilder statusText = new StringBuilder()
                     .append(context.getString(R.string.status))
-                    .append(":  ");
-            if (DateUtils.isDateBeforeToday(current.getEndDate())) {
-                statusText.append(CourseStatus.COMPLETED.getFriendlyName());
-            } else if (DateUtils.isDateAfterToday(current.getStartDate())) {
-                statusText.append(CourseStatus.NOT_STARTED.getFriendlyName());
-            } else {
-                statusText.append(CourseStatus.STARTED.getFriendlyName());
-            }
+                    .append(":  ")
+                    .append(current.getStatus().getFriendlyName());
             holder.courseStatusView.setText(statusText);
             holder.courseDatesView.setText(
                     DateUtils.getFormattedDateRange(current.getStartDate(), current.getEndDate()));
