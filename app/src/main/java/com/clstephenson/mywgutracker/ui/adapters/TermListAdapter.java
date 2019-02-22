@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.clstephenson.mywgutracker.R;
-import com.clstephenson.mywgutracker.data.TermStatus;
 import com.clstephenson.mywgutracker.data.models.Term;
 import com.clstephenson.mywgutracker.utils.DateUtils;
 
@@ -41,14 +40,8 @@ public class TermListAdapter extends RecyclerView.Adapter<TermListAdapter.TermVi
             holder.termNameView.setText(current.getName());
             StringBuilder statusText = new StringBuilder()
                     .append(context.getString(R.string.status))
-                    .append(":  ");
-            if (DateUtils.isDateBeforeToday(current.getEndDate())) {
-                statusText.append(TermStatus.COMPLETED.getFriendlyName());
-            } else if (DateUtils.isDateAfterToday(current.getStartDate())) {
-                statusText.append(TermStatus.NOT_STARTED.getFriendlyName());
-            } else {
-                statusText.append(TermStatus.IN_PROGRESS.getFriendlyName());
-            }
+                    .append(":  ")
+                    .append(current.getStatus().getFriendlyName());
             holder.termStatusView.setText(statusText);
             holder.termDatesView.setText(
                     DateUtils.getFormattedDateRange(current.getStartDate(), current.getEndDate()));

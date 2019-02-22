@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.clstephenson.mywgutracker.R;
-import com.clstephenson.mywgutracker.data.TermStatus;
 import com.clstephenson.mywgutracker.data.models.Term;
 import com.clstephenson.mywgutracker.ui.viewmodels.TermViewModel;
 import com.clstephenson.mywgutracker.utils.DateUtils;
@@ -70,30 +69,20 @@ public class TermActivity extends AppCompatActivity {
         currentTerm = term;
         TextView nameView = findViewById(R.id.term_text_name);
         nameView.setText(term.getName());
-        TextView statusView = findViewById(R.id.term_text_status);
 
-        //todo extract this code. To repository?
+        TextView statusView = findViewById(R.id.term_text_status);
         StringBuilder statusText = new StringBuilder()
                 .append(this.getString(R.string.status))
-                .append(":  ");
-        if (DateUtils.isDateBeforeToday(term.getEndDate())) {
-            statusText.append(TermStatus.COMPLETED.getFriendlyName());
-        } else if (DateUtils.isDateAfterToday(term.getStartDate())) {
-            statusText.append(TermStatus.NOT_STARTED.getFriendlyName());
-        } else {
-            statusText.append(TermStatus.IN_PROGRESS.getFriendlyName());
-        }
-
+                .append(":  ")
+                .append(term.getStatus().getFriendlyName());
         statusView.setText(statusText);
+
         TextView startView = findViewById(R.id.term_text_start);
         startView.setText(
-                String.format("%s: %s",
-                        getString(R.string.start),
-                        DateUtils.getFormattedDate(term.getStartDate())));
+                String.format("%s: %s", getString(R.string.start), DateUtils.getFormattedDate(term.getStartDate())));
+
         TextView endView = findViewById(R.id.term_text_end);
         endView.setText(
-                String.format("%s: %s",
-                        getString(R.string.end),
-                        DateUtils.getFormattedDate(term.getEndDate())));
+                String.format("%s: %s", getString(R.string.end), DateUtils.getFormattedDate(term.getEndDate())));
     }
 }

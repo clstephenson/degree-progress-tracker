@@ -1,5 +1,8 @@
 package com.clstephenson.mywgutracker.data.models;
 
+import com.clstephenson.mywgutracker.data.TermStatus;
+import com.clstephenson.mywgutracker.utils.DateUtils;
+
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -73,6 +76,16 @@ public class Term extends BaseModel {
 
     public void setName(@NonNull String name) {
         this.name = name;
+    }
+
+    public TermStatus getStatus() {
+        if (DateUtils.isDateBeforeToday(this.endDate)) {
+            return TermStatus.COMPLETED;
+        } else if (DateUtils.isDateAfterToday(this.startDate)) {
+            return TermStatus.NOT_STARTED;
+        } else {
+            return TermStatus.IN_PROGRESS;
+        }
     }
 
     @Override
