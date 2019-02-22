@@ -1,4 +1,4 @@
-package com.clstephenson.mywgutracker.data.repositories;
+package com.clstephenson.mywgutracker.repositories;
 
 import android.app.Application;
 import android.os.AsyncTask;

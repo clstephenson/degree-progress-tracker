@@ -3,8 +3,8 @@ package com.clstephenson.mywgutracker.ui.viewmodels;
 import android.app.Application;
 
 import com.clstephenson.mywgutracker.data.models.Course;
-import com.clstephenson.mywgutracker.data.repositories.CourseRepository;
-import com.clstephenson.mywgutracker.data.repositories.Repository;
+import com.clstephenson.mywgutracker.repositories.CourseRepository;
+import com.clstephenson.mywgutracker.repositories.Repository;
 
 import java.util.List;
 

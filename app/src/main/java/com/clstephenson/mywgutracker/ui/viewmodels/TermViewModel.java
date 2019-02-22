@@ -3,8 +3,8 @@ package com.clstephenson.mywgutracker.ui.viewmodels;
 import android.app.Application;
 
 import com.clstephenson.mywgutracker.data.models.Term;
-import com.clstephenson.mywgutracker.data.repositories.Repository;
-import com.clstephenson.mywgutracker.data.repositories.TermRepository;
+import com.clstephenson.mywgutracker.repositories.Repository;
+import com.clstephenson.mywgutracker.repositories.TermRepository;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
