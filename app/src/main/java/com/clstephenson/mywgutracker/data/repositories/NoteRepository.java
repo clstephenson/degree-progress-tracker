@@ -29,7 +29,7 @@ public class NoteRepository implements Repository<Note> {
     }
 
     @Override
-    public Note getById(long id) {
+    public LiveData<Note> getById(long id) {
         return noteDao.getById(id);
     }
 

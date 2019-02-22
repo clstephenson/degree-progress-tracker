@@ -18,7 +18,7 @@ public abstract class NoteDao implements BaseDao<Note> {
     public abstract LiveData<List<Note>> getByCourseId(long courseId);
 
     @Query("SELECT * FROM note WHERE id = :noteId")
-    public abstract Note getById(long noteId);
+    public abstract LiveData<Note> getById(long noteId);
 
     @Query("DELETE FROM note")
     public abstract void deleteAll();

@@ -9,7 +9,7 @@ import androidx.lifecycle.LiveData;
 public interface Repository<T extends BaseModel> {
     LiveData<List<T>> getAll();
 
-    T getById(long id);
+    LiveData<T> getById(long id);
 
     void insert(T object);
 

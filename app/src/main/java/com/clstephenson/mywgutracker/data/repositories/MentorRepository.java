@@ -28,7 +28,7 @@ public class MentorRepository implements Repository<Mentor> {
     }
 
     @Override
-    public Mentor getById(long id) {
+    public LiveData<Mentor> getById(long id) {
         return mentorDao.getById(id);
     }
 

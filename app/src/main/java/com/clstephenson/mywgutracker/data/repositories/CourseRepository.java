@@ -29,7 +29,7 @@ public class CourseRepository implements Repository<Course> {
     }
 
     @Override
-    public Course getById(long id) {
+    public LiveData<Course> getById(long id) {
         return courseDao.getById(id);
     }
 

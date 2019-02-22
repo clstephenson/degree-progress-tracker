@@ -29,7 +29,7 @@ public class TermRepository implements Repository<Term> {
     }
 
     @Override
-    public Term getById(long id) {
+    public LiveData<Term> getById(long id) {
         return termDao.getById(id);
     }
 

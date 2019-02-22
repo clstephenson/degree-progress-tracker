@@ -18,7 +18,7 @@ public abstract class CourseDao implements BaseDao<Course> {
     public abstract LiveData<List<Course>> getByTermId(long termId);
 
     @Query("SELECT * FROM course WHERE id = :courseId")
-    public abstract Course getById(long courseId);
+    public abstract LiveData<Course> getById(long courseId);
 
     @Query("DELETE FROM course")
     public abstract void deleteAll();

@@ -18,7 +18,7 @@ public abstract class AssessmentDao implements BaseDao<Assessment> {
     public abstract LiveData<List<Assessment>> getByCourseId(long courseId);
 
     @Query("SELECT * FROM assessment WHERE id = :assessmentId")
-    public abstract Assessment getById(long assessmentId);
+    public abstract LiveData<Assessment> getById(long assessmentId);
 
     @Query("DELETE FROM assessment")
     public abstract void deleteAll();
