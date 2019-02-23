@@ -22,6 +22,7 @@ import androidx.fragment.app.FragmentTransaction;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    public static final String TITLE_RESOURCE_ID = "TITLE_RESOURCE_ID";
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     ActionBarDrawerToggle actionBarDrawerToggle;
@@ -93,23 +94,34 @@ public class MainActivity extends AppCompatActivity
     private void openCourseListFragment() {
         navigationView.setCheckedItem(R.id.nav_courses);
         CourseListFragment fragment = new CourseListFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt(TITLE_RESOURCE_ID, R.string.title_activity_course_list);
+        fragment.setArguments(bundle);
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.main_content_fragment, fragment);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
+//        setTitle(getString(R.string.title_activity_course_list));
     }
 
     private void openTermListFragment() {
         navigationView.setCheckedItem(R.id.nav_terms);
         TermListFragment fragment = new TermListFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt(TITLE_RESOURCE_ID, R.string.title_activity_term_list);
+        fragment.setArguments(bundle);
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.main_content_fragment, fragment);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
+//        setTitle(getString(R.string.title_activity_term_list));
     }
 
     private void openHomeFragment() {
         HomeFragment homeFragment = new HomeFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt(TITLE_RESOURCE_ID, R.string.app_name);
+        homeFragment.setArguments(bundle);
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.main_content_fragment, homeFragment);
         fragmentTransaction.addToBackStack(null);

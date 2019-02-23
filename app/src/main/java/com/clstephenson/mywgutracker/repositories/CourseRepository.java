@@ -33,6 +33,10 @@ public class CourseRepository implements Repository<Course> {
         return courseDao.getById(id);
     }
 
+    public LiveData<List<Course>> getByTermId(long termId) {
+        return courseDao.getByTermId(termId);
+    }
+
     @Override
     public void delete(Course course) {
         courseDao.delete(course);

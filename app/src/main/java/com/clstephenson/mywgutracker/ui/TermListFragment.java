@@ -20,8 +20,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class TermListFragment extends Fragment {
 
-    public static final String TERM_ID = "com.clstephenson.mywgutracker.ui.TermListFragment.TERM_ID";
+    public static final String TERM_LIST_EXTRA_NAME = "TERM_LIST_EXTRA_NAME";
     private TermListViewModel termListViewModel;
+    private String title;
 
     public TermListFragment() {
         // Required empty public constructor
@@ -50,9 +51,22 @@ public class TermListFragment extends Fragment {
         adapter.setOnItemInteractionListener(((view, position) -> {
             Intent intent = new Intent(getActivity(), TermActivity.class);
             Term selectedTerm = termListViewModel.getTerm(position);
-            intent.putExtra(TERM_ID, selectedTerm.getId());
+            intent.putExtra(TERM_LIST_EXTRA_NAME, selectedTerm.getId());
             startActivity(intent);
         }));
+
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            if (bundle.containsKey(MainActivity.TITLE_RESOURCE_ID)) {
+                title = getString(getArguments().getInt(MainActivity.TITLE_RESOURCE_ID));
+            }
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().setTitle(title);
     }
 
 }

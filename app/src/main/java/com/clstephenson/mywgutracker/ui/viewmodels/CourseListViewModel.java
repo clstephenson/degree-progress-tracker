@@ -4,7 +4,6 @@ import android.app.Application;
 
 import com.clstephenson.mywgutracker.data.models.Course;
 import com.clstephenson.mywgutracker.repositories.CourseRepository;
-import com.clstephenson.mywgutracker.repositories.Repository;
 
 import java.util.List;
 
@@ -14,7 +13,7 @@ import androidx.lifecycle.LiveData;
 
 public class CourseListViewModel extends AndroidViewModel {
 
-    private Repository<Course> repository;
+    private CourseRepository repository;
     private LiveData<List<Course>> allCourses;
 
     public CourseListViewModel(@NonNull Application application) {
@@ -25,6 +24,10 @@ public class CourseListViewModel extends AndroidViewModel {
 
     public LiveData<List<Course>> getAllCourses() {
         return allCourses;
+    }
+
+    public LiveData<List<Course>> getCoursesByTermId(long termId) {
+        return repository.getByTermId(termId);
     }
 
     public void insert(Course course) {

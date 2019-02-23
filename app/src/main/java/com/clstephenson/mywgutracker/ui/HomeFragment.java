@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 
 import com.clstephenson.mywgutracker.R;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 /**
@@ -15,6 +16,8 @@ import androidx.fragment.app.Fragment;
  */
 public class HomeFragment extends Fragment {
 
+
+    private String title;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -28,4 +31,20 @@ public class HomeFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            if (bundle.containsKey(MainActivity.TITLE_RESOURCE_ID)) {
+                title = getString(getArguments().getInt(MainActivity.TITLE_RESOURCE_ID));
+            }
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().setTitle(title);
+    }
 }

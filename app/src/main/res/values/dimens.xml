@@ -13,4 +13,5 @@
     <dimen name="card_view_width">395dp</dimen>
     <dimen name="term_card_height">150dp</dimen>
     <dimen name="course_card_height">150dp</dimen>
+    <dimen name="term_details_section_height">125dp</dimen>
 </resources>

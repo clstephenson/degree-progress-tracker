@@ -3,7 +3,6 @@ package com.clstephenson.mywgutracker.ui;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
 
 import com.clstephenson.mywgutracker.R;
@@ -14,34 +13,49 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
-
-import static com.clstephenson.mywgutracker.ui.TermListFragment.TERM_ID;
 
 public class TermActivity extends AppCompatActivity {
 
     private TermViewModel termViewModel;
     private Term currentTerm;
+    public static final String TERM_EXTRA_NAME = "TERM_EXTRA_NAME";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_term);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        setupFloatingActionButton();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         termViewModel = ViewModelProviders.of(this).get(TermViewModel.class);
-        long termId = getIntent().getLongExtra(TERM_ID, 0);
+        long termId = getIntent().getLongExtra(TermListFragment.TERM_LIST_EXTRA_NAME, 0);
         termViewModel.getTermById(termId).observe(this, this::setupTermViews);
+        setupCourseListFragment(termId);
+        setTitle(R.string.title_activity_term);
+    }
 
+    private void setupFloatingActionButton() {
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(view ->
+                //todo need to implement add course to term using fab
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show());
+    }
+
+    private void setupCourseListFragment(long termId) {
+        Bundle bundle = new Bundle();
+        bundle.putLong(TERM_EXTRA_NAME, termId);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        Fragment courseListFragment = new CourseListFragment();
+        courseListFragment.setArguments(bundle);
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.add(R.id.term_content_fragment, courseListFragment);
+        fragmentTransaction.commit();
     }
 
     @Override
@@ -57,8 +71,10 @@ public class TermActivity extends AppCompatActivity {
 
         switch (itemId) {
             case R.id.action_delete_term:
+                //todo need to implement delete term
                 break;
             case R.id.action_edit_term:
+                //todo need to implement edit term
                 break;
         }
 

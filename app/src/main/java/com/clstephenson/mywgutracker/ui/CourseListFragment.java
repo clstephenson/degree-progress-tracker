@@ -1,6 +1,7 @@
 package com.clstephenson.mywgutracker.ui;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 public class CourseListFragment extends Fragment {
 
     private CourseListViewModel courseListViewModel;
+    private String title;
 
     public CourseListFragment() {
         // Required empty public constructor
@@ -40,7 +42,26 @@ public class CourseListFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         courseListViewModel = ViewModelProviders.of(this).get(CourseListViewModel.class);
-        courseListViewModel.getAllCourses().observe(getActivity(), adapter::setCourses);
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            if (bundle.containsKey(MainActivity.TITLE_RESOURCE_ID)) {
+                title = getString(getArguments().getInt(MainActivity.TITLE_RESOURCE_ID));
+            }
+            if (bundle.containsKey(TermActivity.TERM_EXTRA_NAME)) {
+                long termId = getArguments().getLong(TermActivity.TERM_EXTRA_NAME);
+                courseListViewModel.getCoursesByTermId(termId).observe(getActivity(), adapter::setCourses);
+            } else {
+                courseListViewModel.getAllCourses().observe(getActivity(), adapter::setCourses);
+            }
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (!TextUtils.isEmpty(title)) {
+            getActivity().setTitle(title);
+        }
     }
 
 }
