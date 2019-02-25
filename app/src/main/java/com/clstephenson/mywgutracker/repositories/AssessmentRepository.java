@@ -44,16 +44,6 @@ public class AssessmentRepository implements Repository<Assessment> {
     }
 
     @Override
-    public void deleteAll() {
-        assessmentDao.deleteAll();
-    }
-
-    @Override
-    public void delete(Assessment assessment) {
-        assessmentDao.delete(assessment);
-    }
-
-    @Override
     public void deleteById(long id) {
         assessmentDao.deleteById(id);
     }

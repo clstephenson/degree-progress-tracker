@@ -15,4 +15,13 @@
     <string name="status">Status</string>
     <string name="start">Start</string>
     <string name="end">End</string>
+    <string name="confirm_delete_term">Are you sure you want to delete the currently selected term?</string>
+    <string name="term_deleted">The term was deleted successfully.</string>
+    <string name="term_delete_failed">Delete failed: Not allowed to delete a term that contains courses.</string>
+    <string name="unexpected_error">An unexpected error occurred.</string>
+    <string name="dismiss">Dismiss</string>
+    <string name="no">No</string>
+    <string name="yes">Yes</string>
+    <string name="delete">Delete</string>
+    <string name="edit">Edit</string>
 </resources>

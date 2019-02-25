@@ -5,11 +5,13 @@
     <item
         android:id="@+id/action_edit_term"
         android:orderInCategory="100"
-        android:title="Edit"
+        android:icon="@drawable/ic_edit"
+        android:title="@string/edit"
         app:showAsAction="always" />
     <item
         android:id="@+id/action_delete_term"
         android:orderInCategory="101"
-        android:title="Delete"
+        android:icon="@drawable/ic_delete"
+        android:title="@string/delete"
         app:showAsAction="always" />
 </menu>

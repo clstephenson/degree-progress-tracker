@@ -38,16 +38,6 @@ public class CourseRepository implements Repository<Course> {
     }
 
     @Override
-    public void delete(Course course) {
-        courseDao.delete(course);
-    }
-
-    @Override
-    public void deleteAll() {
-        courseDao.deleteAll();
-    }
-
-    @Override
     public void deleteById(long id) {
         courseDao.deleteById(id);
     }

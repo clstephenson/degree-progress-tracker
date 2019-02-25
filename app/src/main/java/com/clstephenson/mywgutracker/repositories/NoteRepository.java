@@ -34,16 +34,6 @@ public class NoteRepository implements Repository<Note> {
     }
 
     @Override
-    public void delete(Note note) {
-        noteDao.delete(note);
-    }
-
-    @Override
-    public void deleteAll() {
-        noteDao.deleteAll();
-    }
-
-    @Override
     public void deleteById(long id) {
         noteDao.deleteById(id);
     }

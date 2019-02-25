@@ -38,16 +38,6 @@ public class MentorRepository implements Repository<Mentor> {
     }
 
     @Override
-    public void deleteAll() {
-        mentorDao.deleteAll();
-    }
-
-    @Override
-    public void delete(Mentor mentor) {
-        mentorDao.delete(mentor);
-    }
-
-    @Override
     public void deleteById(long id) {
         mentorDao.deleteById(id);
     }

@@ -15,9 +15,5 @@ public interface Repository<T extends BaseModel> {
 
     void update(T object);
 
-    void deleteAll();
-
-    void delete(T object);
-
     void deleteById(long id);
 }

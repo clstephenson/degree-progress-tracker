@@ -1,5 +1,6 @@
 package com.clstephenson.mywgutracker.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.widget.Toast;
 import com.clstephenson.mywgutracker.R;
 import com.clstephenson.mywgutracker.data.db.AppDatabase;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,6 +25,13 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     public static final String TITLE_RESOURCE_ID = "TITLE_RESOURCE_ID";
+    public static final String EXTRA_FRAGMENT_NAME = "REQUESTED_FRAGMENT";
+    public static final String EXTRA_MESSAGE_STRING_ID = "REQUESTED_MESSAGE";
+    public static final String EXTRA_SNACKBAR_LENGTH = "REQUESTED_SNACKBAR_LENGTH";
+    final String HOME_FRAGMENT = HomeFragment.class.getSimpleName();
+    final String TERM_LIST_FRAGMENT = TermListFragment.class.getSimpleName();
+    final String COURSE_LIST_FRAGMENT = CourseListFragment.class.getSimpleName();
+
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     ActionBarDrawerToggle actionBarDrawerToggle;
@@ -35,6 +44,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main_with_nav);
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        fragmentManager = getSupportFragmentManager();
 
         drawerLayout = findViewById(R.id.drawer_layout);
         actionBarDrawerToggle = new ActionBarDrawerToggle(
@@ -44,9 +54,33 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         actionBarDrawerToggle.syncState();
 
-        fragmentManager = getSupportFragmentManager();
+        processIntentExtraData(getIntent());
+    }
 
-        openHomeFragment();
+    private void processIntentExtraData(Intent intent) {
+        if (intent.hasExtra(EXTRA_FRAGMENT_NAME)) {
+            openFragment(intent.getStringExtra(EXTRA_FRAGMENT_NAME));
+            if (intent.hasExtra(EXTRA_MESSAGE_STRING_ID) && intent.hasExtra(EXTRA_SNACKBAR_LENGTH)) {
+                Snackbar snackbar = Snackbar.make(
+                        findViewById(R.id.main_coordinator_layout),
+                        intent.getIntExtra(EXTRA_MESSAGE_STRING_ID, 0),
+                        intent.getIntExtra(EXTRA_SNACKBAR_LENGTH, Snackbar.LENGTH_LONG));
+                snackbar.setAction(getString(R.string.dismiss).toUpperCase(), v -> snackbar.dismiss());
+                snackbar.show();
+            }
+        } else {
+            openHomeFragment();
+        }
+    }
+
+    private void openFragment(String fragmentClassSimpleName) {
+        if (fragmentClassSimpleName.equals(COURSE_LIST_FRAGMENT)) {
+            openCourseListFragment();
+        } else if (fragmentClassSimpleName.equals(TERM_LIST_FRAGMENT)) {
+            openTermListFragment();
+        } else {
+            openHomeFragment();
+        }
     }
 
     @Override
@@ -83,6 +117,12 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
+
     public void handleTermsCardClick(View view) {
         openTermListFragment();
     }
@@ -101,7 +141,6 @@ public class MainActivity extends AppCompatActivity
         fragmentTransaction.replace(R.id.main_content_fragment, fragment);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
-//        setTitle(getString(R.string.title_activity_course_list));
     }
 
     private void openTermListFragment() {
@@ -114,7 +153,6 @@ public class MainActivity extends AppCompatActivity
         fragmentTransaction.replace(R.id.main_content_fragment, fragment);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
-//        setTitle(getString(R.string.title_activity_term_list));
     }
 
     private void openHomeFragment() {
