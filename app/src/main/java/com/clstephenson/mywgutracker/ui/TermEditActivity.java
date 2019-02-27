@@ -41,6 +41,7 @@ public class TermEditActivity extends AppCompatActivity implements OnAsyncTaskRe
         viewModel = ViewModelProviders.of(this).get(TermEditViewModel.class);
         viewModel.setBackgroundTaskResultListener(this);
         long termId = getIntent().getLongExtra(TermActivity.EXTRA_TERM_ID, 0);
+        this.setTitle(termId == 0 ? R.string.new_term : R.string.edit_term);
         viewModel.getTermById(termId).observe(this, this::setupTermViews);
     }
 

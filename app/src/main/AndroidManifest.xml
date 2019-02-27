@@ -14,7 +14,7 @@
         tools:ignore="GoogleAppIndexingWarning">
         <activity
             android:name=".ui.TermEditActivity"
-            android:label="@string/title_activity_term_edit" />
+            android:label="@string/edit_term" />
         <activity
             android:name=".ui.TermActivity"
             android:label="@string/title_activity_term"
