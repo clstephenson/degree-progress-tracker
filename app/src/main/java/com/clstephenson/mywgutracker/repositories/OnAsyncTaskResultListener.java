@@ -1,5 +1,9 @@
 package com.clstephenson.mywgutracker.repositories;
 
 public interface OnAsyncTaskResultListener {
-    void onAsyncTaskResult(AsyncTaskResult result);
+    void onAsyncDeleteDataCompleted(AsyncTaskResult result);
+
+    void onAsyncUpdateDataCompleted(AsyncTaskResult result);
+
+    void onAsyncInsertDataCompleted(AsyncTaskResult result);
 }

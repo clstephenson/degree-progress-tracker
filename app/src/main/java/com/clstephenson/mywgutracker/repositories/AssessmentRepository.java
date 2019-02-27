@@ -48,6 +48,11 @@ public class AssessmentRepository implements Repository<Assessment> {
         assessmentDao.deleteById(id);
     }
 
+    @Override
+    public void delete(Assessment object) {
+        assessmentDao.delete(object);
+    }
+
     private static class insertAsyncTask extends AsyncTask<Assessment, Void, Void> {
         private AssessmentDao asyncTaskDao;
 

@@ -40,6 +40,8 @@ public class Mentor extends BaseModel {
         this.email = email;
     }
 
+    //todo create copy constructor
+
     @NonNull
     public String getFirstName() {
         return firstName;

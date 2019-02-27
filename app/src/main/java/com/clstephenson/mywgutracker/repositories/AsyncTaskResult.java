@@ -36,7 +36,7 @@ public class AsyncTaskResult {
         return false;
     }
 
-    public static enum Result {
+    public enum Result {
         SUCCESS, FAIL
     }
 }

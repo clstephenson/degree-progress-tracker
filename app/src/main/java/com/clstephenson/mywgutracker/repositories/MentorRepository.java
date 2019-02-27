@@ -42,6 +42,11 @@ public class MentorRepository implements Repository<Mentor> {
         mentorDao.deleteById(id);
     }
 
+    @Override
+    public void delete(Mentor object) {
+        mentorDao.delete(object);
+    }
+
     public void insert(Mentor mentor) {
         new insertAsyncTask(mentorDao).execute(mentor);
     }

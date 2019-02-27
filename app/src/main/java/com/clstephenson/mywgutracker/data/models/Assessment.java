@@ -64,6 +64,8 @@ public class Assessment extends BaseModel {
         this.type = type;
     }
 
+    //todo create copy constructor
+
     @NonNull
     public String getName() {
         return name;

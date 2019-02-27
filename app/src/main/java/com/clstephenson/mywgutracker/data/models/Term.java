@@ -45,6 +45,16 @@ public class Term extends BaseModel {
         this.endDate = endDate;
     }
 
+    /**
+     * Copy constructor
+     *
+     * @param term
+     */
+    @Ignore
+    public Term(Term term) {
+        this(term.getId(), term.getName(), term.getStartDate(), term.getEndDate());
+    }
+
     @NonNull
     public String getName() {
         return name;
@@ -93,24 +103,24 @@ public class Term extends BaseModel {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Term term = (Term) o;
-        return Objects.equals(name, term.name) &&
+        return Objects.equals(id, term.id) &&
+                Objects.equals(name, term.name) &&
                 Objects.equals(startDate, term.startDate) &&
-                Objects.equals(endDate, term.endDate) &&
-                Objects.equals(courses, term.courses);
+                Objects.equals(endDate, term.endDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, startDate, endDate, courses);
+        return Objects.hash(id, name, startDate, endDate, courses);
     }
 
     @Override
     public String toString() {
         return "Term{" +
+                "id='" + id + '\'' +
                 "name='" + name + '\'' +
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +
-                ", courses=" + courses +
                 '}';
     }
 }

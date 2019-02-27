@@ -43,6 +43,11 @@ public class CourseRepository implements Repository<Course> {
     }
 
     @Override
+    public void delete(Course object) {
+        courseDao.delete(object);
+    }
+
+    @Override
     public void update(Course course) {
         courseDao.update(course);
     }

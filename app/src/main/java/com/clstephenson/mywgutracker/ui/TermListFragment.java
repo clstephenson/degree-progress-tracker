@@ -20,7 +20,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class TermListFragment extends Fragment {
 
-    public static final String TERM_LIST_EXTRA_NAME = "TERM_LIST_EXTRA_NAME";
     private TermListViewModel termListViewModel;
     private String title;
 
@@ -51,7 +50,7 @@ public class TermListFragment extends Fragment {
         adapter.setOnItemInteractionListener(((view, position) -> {
             Intent intent = new Intent(getActivity(), TermActivity.class);
             Term selectedTerm = termListViewModel.getTerm(position);
-            intent.putExtra(TERM_LIST_EXTRA_NAME, selectedTerm.getId());
+            intent.putExtra(TermActivity.TERM_EXTRA_NAME, selectedTerm.getId());
             startActivity(intent);
         }));
 

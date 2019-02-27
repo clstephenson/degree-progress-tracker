@@ -10,11 +10,11 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
-public class TermViewModel extends AndroidViewModel {
+public class TermEditViewModel extends AndroidViewModel {
 
     TermRepository termRepository;
 
-    public TermViewModel(@NonNull Application application) {
+    public TermEditViewModel(@NonNull Application application) {
         super(application);
         termRepository = new TermRepository(application);
     }
@@ -23,17 +23,16 @@ public class TermViewModel extends AndroidViewModel {
         return termRepository.getById(id);
     }
 
-    public void deleteTermById(long id) {
-        termRepository.deleteById(id);
-    }
-
     public void deleteTerm(Term term) {
         termRepository.delete(term);
     }
 
-    public void setBackgroundTaskResultListener(OnAsyncTaskResultListener listener) {
-        termRepository.setOnAsyncTaskResultListener(listener);
+    public void updateTerm(Term term) {
+        termRepository.update(term);
     }
 
+    public void setBackgroundTaskResultListener(OnAsyncTaskResultListener delegate) {
+        termRepository.setOnAsyncTaskResultListener(delegate);
+    }
 
 }

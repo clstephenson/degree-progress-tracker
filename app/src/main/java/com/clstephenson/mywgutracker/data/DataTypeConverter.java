@@ -1,6 +1,7 @@
 package com.clstephenson.mywgutracker.data;
 
-import java.util.Calendar;
+import com.clstephenson.mywgutracker.utils.DateUtils;
+
 import java.util.Date;
 
 import androidx.room.TypeConverter;
@@ -44,13 +45,7 @@ public class DataTypeConverter {
     @TypeConverter
     public static Date fromTimestamp(Long value) {
         if (value != null) {
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTimeInMillis(value);
-            calendar.set(Calendar.HOUR_OF_DAY, 0);
-            calendar.set(Calendar.MINUTE, 0);
-            calendar.set(Calendar.SECOND, 0);
-            calendar.set(Calendar.MILLISECOND, 0);
-            return calendar.getTime();
+            return DateUtils.getDatefromMillis(value);
         } else {
             return null;
         }
@@ -59,13 +54,7 @@ public class DataTypeConverter {
     @TypeConverter
     public static Long dateToTimestamp(Date date) {
         if (date != null) {
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(date);
-            calendar.set(Calendar.HOUR_OF_DAY, 0);
-            calendar.set(Calendar.MINUTE, 0);
-            calendar.set(Calendar.SECOND, 0);
-            calendar.set(Calendar.MILLISECOND, 0);
-            return calendar.getTimeInMillis();
+            return DateUtils.getMillisFromDate(date);
         } else {
             return null;
         }

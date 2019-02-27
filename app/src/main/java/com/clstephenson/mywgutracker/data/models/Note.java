@@ -37,6 +37,8 @@ public class Note extends BaseModel {
         this.courseId = courseId;
     }
 
+    //todo create copy constructor
+
     @NonNull
     public String getNote() {
         return note;

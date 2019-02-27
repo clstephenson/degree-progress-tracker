@@ -16,6 +16,7 @@ import com.clstephenson.mywgutracker.utils.DateUtils;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -38,7 +39,7 @@ public class TermActivity extends AppCompatActivity implements OnAsyncTaskResult
 
         termViewModel = ViewModelProviders.of(this).get(TermViewModel.class);
         termViewModel.setBackgroundTaskResultListener(this);
-        long termId = getIntent().getLongExtra(TermListFragment.TERM_LIST_EXTRA_NAME, 0);
+        long termId = getIntent().getLongExtra(TERM_EXTRA_NAME, 0);
         termViewModel.getTermById(termId).observe(this, this::setupTermViews);
         setupCourseListFragment(termId);
         setTitle(R.string.title_activity_term);
@@ -76,15 +77,31 @@ public class TermActivity extends AppCompatActivity implements OnAsyncTaskResult
 
         switch (itemId) {
             case R.id.action_delete_term:
-                //todo need to implement delete term
                 handleDeleteTerm();
                 break;
             case R.id.action_edit_term:
                 //todo need to implement edit term
+                handleEditTerm();
                 break;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void handleEditTerm() {
+        Intent intent = new Intent(this, TermEditActivity.class);
+        intent.putExtra(TERM_EXTRA_NAME, currentTerm.getId());
+        startActivityForResult(intent, 1);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            if (resultCode == RESULT_OK) {
+                long termId = data.getLongExtra(TERM_EXTRA_NAME, 0);
+            }
+        }
     }
 
     private void handleDeleteTerm() {
@@ -94,7 +111,7 @@ public class TermActivity extends AppCompatActivity implements OnAsyncTaskResult
                 .setMessage(getString(R.string.confirm_delete_term))
                 .setNegativeButton(getString(R.string.no), (dialog, which) -> dialog.cancel())
                 .setPositiveButton(getString(R.string.yes), (dialog, which) -> {
-                    termViewModel.deleteTermById(currentTerm.getId());
+                    termViewModel.deleteTerm(currentTerm);
                     dialog.dismiss();
                 })
                 .create()
@@ -124,7 +141,7 @@ public class TermActivity extends AppCompatActivity implements OnAsyncTaskResult
 
 
     @Override
-    public void onAsyncTaskResult(AsyncTaskResult result) {
+    public void onAsyncDeleteDataCompleted(AsyncTaskResult result) {
         if (result.isSuccessful()) {
             openTermList(R.string.term_deleted, Snackbar.LENGTH_LONG);
         } else {
@@ -139,7 +156,16 @@ public class TermActivity extends AppCompatActivity implements OnAsyncTaskResult
             snackbar.setAction(getString(R.string.dismiss), v -> snackbar.dismiss());
             snackbar.show();
         }
+    }
 
+    @Override
+    public void onAsyncUpdateDataCompleted(AsyncTaskResult result) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void onAsyncInsertDataCompleted(AsyncTaskResult result) {
+        throw new UnsupportedOperationException();
     }
 
     private void openTermList(int messageId, int snackbarLength) {
@@ -148,5 +174,6 @@ public class TermActivity extends AppCompatActivity implements OnAsyncTaskResult
         intent.putExtra(MainActivity.EXTRA_MESSAGE_STRING_ID, messageId);
         intent.putExtra(MainActivity.EXTRA_SNACKBAR_LENGTH, snackbarLength);
         startActivity(intent);
+        finish();
     }
 }

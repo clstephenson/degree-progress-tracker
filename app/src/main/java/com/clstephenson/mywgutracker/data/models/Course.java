@@ -85,6 +85,8 @@ public class Course extends BaseModel {
         this.termId = termId;
     }
 
+    //todo create copy constructor
+
     @NonNull
     public String getName() {
         return name;

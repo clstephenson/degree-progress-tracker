@@ -39,6 +39,11 @@ public class NoteRepository implements Repository<Note> {
     }
 
     @Override
+    public void delete(Note object) {
+        noteDao.delete(object);
+    }
+
+    @Override
     public void update(Note note) {
         noteDao.update(note);
     }
