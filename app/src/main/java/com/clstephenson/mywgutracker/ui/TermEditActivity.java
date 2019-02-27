@@ -40,7 +40,7 @@ public class TermEditActivity extends AppCompatActivity implements OnAsyncTaskRe
 
         viewModel = ViewModelProviders.of(this).get(TermEditViewModel.class);
         viewModel.setBackgroundTaskResultListener(this);
-        long termId = getIntent().getLongExtra(TermActivity.TERM_EXTRA_NAME, 0);
+        long termId = getIntent().getLongExtra(TermActivity.EXTRA_TERM_ID, 0);
         viewModel.getTermById(termId).observe(this, this::setupTermViews);
     }
 
@@ -93,7 +93,7 @@ public class TermEditActivity extends AppCompatActivity implements OnAsyncTaskRe
             viewModel.updateTerm(currentTerm);
 
             Intent intent = new Intent(this, TermActivity.class);
-            intent.putExtra(TermActivity.TERM_EXTRA_NAME, currentTerm.getId());
+            intent.putExtra(TermActivity.EXTRA_TERM_ID, currentTerm.getId());
             setResult(RESULT_OK, intent);
             finish();
         }
@@ -152,7 +152,7 @@ public class TermEditActivity extends AppCompatActivity implements OnAsyncTaskRe
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra(MainActivity.EXTRA_FRAGMENT_NAME, TermListFragment.class.getSimpleName());
         intent.putExtra(MainActivity.EXTRA_MESSAGE_STRING_ID, messageId);
-        intent.putExtra(MainActivity.EXTRA_SNACKBAR_LENGTH, snackbarLength);
+        intent.putExtra(MainActivity.EXTRA_MESSAGE_LENGTH, snackbarLength);
         startActivity(intent);
         finish();
     }

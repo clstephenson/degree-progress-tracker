@@ -50,7 +50,7 @@ public class TermListFragment extends Fragment {
         adapter.setOnItemInteractionListener(((view, position) -> {
             Intent intent = new Intent(getActivity(), TermActivity.class);
             Term selectedTerm = termListViewModel.getTerm(position);
-            intent.putExtra(TermActivity.TERM_EXTRA_NAME, selectedTerm.getId());
+            intent.putExtra(TermActivity.EXTRA_TERM_ID, selectedTerm.getId());
             startActivity(intent);
         }));
 

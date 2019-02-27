@@ -47,9 +47,9 @@ public class CourseListFragment extends Fragment {
             if (bundle.containsKey(MainActivity.TITLE_RESOURCE_ID)) {
                 title = getString(getArguments().getInt(MainActivity.TITLE_RESOURCE_ID));
             }
-            if (bundle.containsKey(TermActivity.TERM_EXTRA_NAME)) {
+            if (bundle.containsKey(TermActivity.EXTRA_TERM_ID)) {
                 // list of courses for a specified term
-                long termId = getArguments().getLong(TermActivity.TERM_EXTRA_NAME);
+                long termId = getArguments().getLong(TermActivity.EXTRA_TERM_ID);
                 courseListViewModel.getCoursesByTermId(termId).observe(getActivity(), adapter::setCourses);
             } else {
                 // list of all courses

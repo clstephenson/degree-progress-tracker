@@ -27,7 +27,8 @@ public class TermActivity extends AppCompatActivity implements OnAsyncTaskResult
 
     private TermViewModel termViewModel;
     private Term currentTerm;
-    public static final String TERM_EXTRA_NAME = "TERM_EXTRA_NAME";
+
+    public static final String EXTRA_TERM_ID = TermActivity.class.getSimpleName() + "extra_term_id";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +40,7 @@ public class TermActivity extends AppCompatActivity implements OnAsyncTaskResult
 
         termViewModel = ViewModelProviders.of(this).get(TermViewModel.class);
         termViewModel.setBackgroundTaskResultListener(this);
-        long termId = getIntent().getLongExtra(TERM_EXTRA_NAME, 0);
+        long termId = getIntent().getLongExtra(EXTRA_TERM_ID, 0);
         termViewModel.getTermById(termId).observe(this, this::setupTermViews);
         setupCourseListFragment(termId);
         setTitle(R.string.title_activity_term);
@@ -55,7 +56,7 @@ public class TermActivity extends AppCompatActivity implements OnAsyncTaskResult
 
     private void setupCourseListFragment(long termId) {
         Bundle bundle = new Bundle();
-        bundle.putLong(TERM_EXTRA_NAME, termId);
+        bundle.putLong(EXTRA_TERM_ID, termId);
         FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment courseListFragment = new CourseListFragment();
         courseListFragment.setArguments(bundle);
@@ -90,7 +91,7 @@ public class TermActivity extends AppCompatActivity implements OnAsyncTaskResult
 
     private void handleEditTerm() {
         Intent intent = new Intent(this, TermEditActivity.class);
-        intent.putExtra(TERM_EXTRA_NAME, currentTerm.getId());
+        intent.putExtra(EXTRA_TERM_ID, currentTerm.getId());
         startActivityForResult(intent, 1);
     }
 
@@ -99,7 +100,7 @@ public class TermActivity extends AppCompatActivity implements OnAsyncTaskResult
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1) {
             if (resultCode == RESULT_OK) {
-                long termId = data.getLongExtra(TERM_EXTRA_NAME, 0);
+                long termId = data.getLongExtra(EXTRA_TERM_ID, 0);
             }
         }
     }
@@ -172,7 +173,7 @@ public class TermActivity extends AppCompatActivity implements OnAsyncTaskResult
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra(MainActivity.EXTRA_FRAGMENT_NAME, TermListFragment.class.getSimpleName());
         intent.putExtra(MainActivity.EXTRA_MESSAGE_STRING_ID, messageId);
-        intent.putExtra(MainActivity.EXTRA_SNACKBAR_LENGTH, snackbarLength);
+        intent.putExtra(MainActivity.EXTRA_MESSAGE_LENGTH, snackbarLength);
         startActivity(intent);
         finish();
     }

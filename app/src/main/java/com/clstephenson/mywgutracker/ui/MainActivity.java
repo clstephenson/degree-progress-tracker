@@ -24,10 +24,11 @@ import androidx.fragment.app.FragmentTransaction;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    public static final String TITLE_RESOURCE_ID = "TITLE_RESOURCE_ID";
-    public static final String EXTRA_FRAGMENT_NAME = "REQUESTED_FRAGMENT";
-    public static final String EXTRA_MESSAGE_STRING_ID = "REQUESTED_MESSAGE";
-    public static final String EXTRA_SNACKBAR_LENGTH = "REQUESTED_SNACKBAR_LENGTH";
+    public static final String TITLE_RESOURCE_ID = MainActivity.class.getSimpleName() + "TITLE_RESOURCE_ID";
+    public static final String EXTRA_FRAGMENT_NAME = MainActivity.class.getSimpleName() + "REQUESTED_FRAGMENT";
+    public static final String EXTRA_MESSAGE_STRING_ID = MainActivity.class.getSimpleName() + "REQUESTED_MESSAGE";
+    public static final String EXTRA_MESSAGE_LENGTH = MainActivity.class.getSimpleName() + "REQUESTED_SNACKBAR_LENGTH";
+
     final String HOME_FRAGMENT = HomeFragment.class.getSimpleName();
     final String TERM_LIST_FRAGMENT = TermListFragment.class.getSimpleName();
     final String COURSE_LIST_FRAGMENT = CourseListFragment.class.getSimpleName();
@@ -60,11 +61,11 @@ public class MainActivity extends AppCompatActivity
     private void processIntentExtraData(Intent intent) {
         if (intent.hasExtra(EXTRA_FRAGMENT_NAME)) {
             openFragment(intent.getStringExtra(EXTRA_FRAGMENT_NAME));
-            if (intent.hasExtra(EXTRA_MESSAGE_STRING_ID) && intent.hasExtra(EXTRA_SNACKBAR_LENGTH)) {
+            if (intent.hasExtra(EXTRA_MESSAGE_STRING_ID) && intent.hasExtra(EXTRA_MESSAGE_LENGTH)) {
                 Snackbar snackbar = Snackbar.make(
                         findViewById(R.id.main_coordinator_layout),
                         intent.getIntExtra(EXTRA_MESSAGE_STRING_ID, 0),
-                        intent.getIntExtra(EXTRA_SNACKBAR_LENGTH, Snackbar.LENGTH_LONG));
+                        intent.getIntExtra(EXTRA_MESSAGE_LENGTH, Snackbar.LENGTH_LONG));
                 snackbar.setAction(getString(R.string.dismiss).toUpperCase(), v -> snackbar.dismiss());
                 snackbar.show();
             }
