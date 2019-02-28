@@ -15,8 +15,10 @@ import com.clstephenson.mywgutracker.repositories.AsyncTaskResult;
 import com.clstephenson.mywgutracker.repositories.OnAsyncTaskResultListener;
 import com.clstephenson.mywgutracker.ui.viewmodels.TermEditViewModel;
 import com.clstephenson.mywgutracker.utils.DateUtils;
+import com.clstephenson.mywgutracker.utils.ValidationUtils;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.Date;
 
@@ -87,25 +89,64 @@ public class TermEditActivity extends AppCompatActivity implements OnAsyncTaskRe
     }
 
     public void handleSaveTerm(View view) {
-        updateDirtyTerm();
+        if (isFormValid()) {
+            updateDirtyTerm();
 
-        if (!dirtyTerm.equals(currentTerm)) {
-            currentTerm.setName(titleInput.getText().toString());
-            currentTerm.setStartDate(dirtyTerm.getStartDate());
-            currentTerm.setEndDate(dirtyTerm.getEndDate());
+            if (!dirtyTerm.equals(currentTerm)) {
+                currentTerm.setName(titleInput.getText().toString());
+                currentTerm.setStartDate(dirtyTerm.getStartDate());
+                currentTerm.setEndDate(dirtyTerm.getEndDate());
 
-            // todo implement input validation
-            if (entryMode == MODE.UPDATE) {
-                viewModel.updateTerm(currentTerm);
-                Intent intent = new Intent(this, TermActivity.class);
-                intent.putExtra(TermActivity.EXTRA_TERM_ID, currentTerm.getId());
-                setResult(RESULT_OK, intent);
-                finish();
-            } else {
-                viewModel.insertTerm(currentTerm);
+                // todo implement input validation
+                if (entryMode == MODE.UPDATE) {
+                    viewModel.updateTerm(currentTerm);
+                    Intent intent = new Intent(this, TermActivity.class);
+                    intent.putExtra(TermActivity.EXTRA_TERM_ID, currentTerm.getId());
+                    setResult(RESULT_OK, intent);
+                    finish();
+                } else {
+                    viewModel.insertTerm(currentTerm);
+                }
             }
         }
+    }
 
+    private boolean isFormValid() {
+        boolean isValid = true;
+
+        clearInputErrors(R.id.term_input_title_layout, R.id.term_input_start_layout, R.id.term_input_end_layout);
+
+        if (ValidationUtils.isEmpty(titleInput.getText().toString())) {
+            showValidationError(R.id.term_input_title_layout, R.string.validation_required);
+            isValid = false;
+        } else if (ValidationUtils.isEmpty(startDateInput.getText().toString())) {
+            showValidationError(R.id.term_input_start_layout, R.string.validation_required);
+            isValid = false;
+        } else if (ValidationUtils.isEmpty(endDateInput.getText().toString())) {
+            showValidationError(R.id.term_input_end_layout, R.string.validation_required);
+            isValid = false;
+        } else if (ValidationUtils.isEndBeforeStart(startDateInput.getText().toString(),
+                endDateInput.getText().toString())) {
+            showValidationError(R.id.term_input_end_layout, R.string.validation_end_before_start);
+            isValid = false;
+        }
+
+        return isValid;
+    }
+
+    private void clearInputErrors(int... layoutResourceIds) {
+        for (int layoutId : layoutResourceIds) {
+            TextInputLayout layout = findViewById(layoutId);
+            if (layout != null) {
+                layout.setErrorEnabled(false);
+            }
+        }
+    }
+
+    private void showValidationError(int layoutResourceId, int stringResourceId) {
+        TextInputLayout layout = findViewById(layoutResourceId);
+        layout.setErrorEnabled(true);
+        layout.setError(getString(stringResourceId));
     }
 
     @Override

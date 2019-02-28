@@ -64,6 +64,11 @@ public class DateUtils {
         return date.after(getToday());
     }
 
+    public static boolean isFirstDateBeforeSecond(String firstDate, String secondDate) {
+        Date first = getDateFromFormattedString(firstDate);
+        Date second = getDateFromFormattedString(secondDate);
+        return first.before(second);
+    }
 
     public static Date getDatefromMillis(Long value) {
         if (value != null) {

@@ -25,11 +25,14 @@
     <string name="edit_term">Edit Term</string>
     <string name="new_term">Create New Term</string>
     <string name="term_updated">Term updated</string>
-    <string name="save">Save</string>
     <string name="term_title">Term Title</string>
     <string name="start_date">Start Date</string>
     <string name="end_date">End Date</string>
     <string name="term_courses">Term Courses</string>
     <string name="term_added">The term was added successfully.</string>
     <string name="term_add_failed">There term was not able to be added.</string>
+    <string name="validation_fix_errors">Please complete the required fields and retry.</string>
+    <string name="validation_end_before_start">The end date must be after the start date.</string>
+    <string name="validation_required">Required Field</string>
+    <string name="save">Save</string>
 </resources>

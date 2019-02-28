@@ -46,13 +46,15 @@ public abstract class AppDatabase extends RoomDatabase {
 
     private static class ClearDataAsync extends AsyncTask<Void, Void, Void> {
 
-        ClearDataAsync(AppDatabase db) {
+        AppDatabase db;
 
+        ClearDataAsync(AppDatabase db) {
+            this.db = db;
         }
 
         @Override
         protected Void doInBackground(Void... voids) {
-            INSTANCE.clearAllTables();
+            db.clearAllTables();
             return null;
         }
     }
