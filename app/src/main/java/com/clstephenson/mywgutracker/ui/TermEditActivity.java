@@ -58,20 +58,19 @@ public class TermEditActivity extends AppCompatActivity implements OnAsyncTaskRe
     private TextInputEditText startDateInput;
 
     private void setupTermViews(@Nullable Term term) {
-        if (entryMode == MODE.UPDATE) {
-            currentTerm = term;
-        } else {
-            currentTerm = viewModel.getNewTerm();
-        }
-        dirtyTerm = new Term(currentTerm);
-
         titleInput = findViewById(R.id.term_input_title);
         endDateInput = findViewById(R.id.term_input_end);
         startDateInput = findViewById(R.id.term_input_start);
 
-        titleInput.setText(currentTerm.getName());
-        startDateInput.setText(DateUtils.getFormattedDate(currentTerm.getStartDate()));
-        endDateInput.setText(DateUtils.getFormattedDate(currentTerm.getEndDate()));
+        if (entryMode == MODE.UPDATE) {
+            currentTerm = term;
+            titleInput.setText(currentTerm.getName());
+            startDateInput.setText(DateUtils.getFormattedDate(currentTerm.getStartDate()));
+            endDateInput.setText(DateUtils.getFormattedDate(currentTerm.getEndDate()));
+        } else {
+            currentTerm = viewModel.getNewTerm();
+        }
+        dirtyTerm = new Term(currentTerm);
     }
 
     @Override
@@ -201,7 +200,11 @@ public class TermEditActivity extends AppCompatActivity implements OnAsyncTaskRe
     public void handleStartDateInputClick(View view) {
         Dialog calendarDialog = getCalendarDialog(view);
         CalendarView calendarView = calendarDialog.findViewById(R.id.calendar_date_picker);
-        calendarView.setDate(DateUtils.getMillisFromDate(currentTerm.getStartDate()));
+        if (entryMode == MODE.UPDATE) {
+            calendarView.setDate(DateUtils.getMillisFromDate(currentTerm.getStartDate()));
+        } else {
+            calendarView.setDate(DateUtils.getMillisFromDate(new Date()));
+        }
         calendarView.setOnDateChangeListener((view1, year, month, dayOfMonth) -> {
             Date newDate = DateUtils.getDate(year, month, dayOfMonth);
             startDateInput.setText(DateUtils.getFormattedDate(newDate));
@@ -213,7 +216,11 @@ public class TermEditActivity extends AppCompatActivity implements OnAsyncTaskRe
     public void handleEndDateInputClick(View view) {
         Dialog calendarDialog = getCalendarDialog(view);
         CalendarView calendarView = calendarDialog.findViewById(R.id.calendar_date_picker);
-        calendarView.setDate(DateUtils.getMillisFromDate(currentTerm.getEndDate()));
+        if (entryMode == MODE.UPDATE) {
+            calendarView.setDate(DateUtils.getMillisFromDate(currentTerm.getEndDate()));
+        } else {
+            calendarView.setDate(DateUtils.getMillisFromDate(new Date()));
+        }
         calendarView.setOnDateChangeListener((view1, year, month, dayOfMonth) -> {
             Date newDate = DateUtils.getDate(year, month, dayOfMonth);
             endDateInput.setText(DateUtils.getFormattedDate(newDate));
