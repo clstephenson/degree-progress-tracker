@@ -20,17 +20,15 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.Date;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 
 public class TermEditActivity extends AppCompatActivity implements OnAsyncTaskResultListener {
 
+    private MODE entryMode;
+
     TermEditViewModel viewModel;
-    private Term currentTerm;
-    private Term dirtyTerm;
-    private TextInputEditText titleInput;
-    private TextInputEditText endDateInput;
-    private TextInputEditText startDateInput;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,21 +39,47 @@ public class TermEditActivity extends AppCompatActivity implements OnAsyncTaskRe
         viewModel = ViewModelProviders.of(this).get(TermEditViewModel.class);
         viewModel.setBackgroundTaskResultListener(this);
         long termId = getIntent().getLongExtra(TermActivity.EXTRA_TERM_ID, 0);
-        this.setTitle(termId == 0 ? R.string.new_term : R.string.edit_term);
-        viewModel.getTermById(termId).observe(this, this::setupTermViews);
+        if (termId == 0) {
+            entryMode = MODE.CREATE;
+            this.setTitle(R.string.new_term);
+            setupTermViews(null);
+        } else {
+            entryMode = MODE.UPDATE;
+            this.setTitle(R.string.edit_term);
+            viewModel.getTermById(termId).observe(this, this::setupTermViews);
+        }
+
     }
 
-    private void setupTermViews(Term term) {
-        currentTerm = term;
-        dirtyTerm = new Term(term);
+    private Term currentTerm;
+    private Term dirtyTerm;
+    private TextInputEditText titleInput;
+    private TextInputEditText endDateInput;
+    private TextInputEditText startDateInput;
+
+    private void setupTermViews(@Nullable Term term) {
+        if (entryMode == MODE.UPDATE) {
+            currentTerm = term;
+        } else {
+            currentTerm = viewModel.getNewTerm();
+        }
+        dirtyTerm = new Term(currentTerm);
 
         titleInput = findViewById(R.id.term_input_title);
         endDateInput = findViewById(R.id.term_input_end);
         startDateInput = findViewById(R.id.term_input_start);
 
-        titleInput.setText(term.getName());
-        startDateInput.setText(DateUtils.getFormattedDate(term.getStartDate()));
-        endDateInput.setText(DateUtils.getFormattedDate(term.getEndDate()));
+        titleInput.setText(currentTerm.getName());
+        startDateInput.setText(DateUtils.getFormattedDate(currentTerm.getStartDate()));
+        endDateInput.setText(DateUtils.getFormattedDate(currentTerm.getEndDate()));
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if (entryMode == MODE.UPDATE) {
+            getMenuInflater().inflate(R.menu.menu_term_edit, menu);
+        }
+        return true;
     }
 
     @Override
@@ -63,10 +87,26 @@ public class TermEditActivity extends AppCompatActivity implements OnAsyncTaskRe
         super.onBackPressed();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_term_edit, menu);
-        return true;
+    public void handleSaveTerm(View view) {
+        updateDirtyTerm();
+
+        if (!dirtyTerm.equals(currentTerm)) {
+            currentTerm.setName(titleInput.getText().toString());
+            currentTerm.setStartDate(dirtyTerm.getStartDate());
+            currentTerm.setEndDate(dirtyTerm.getEndDate());
+
+            // todo implement input validation
+            if (entryMode == MODE.UPDATE) {
+                viewModel.updateTerm(currentTerm);
+                Intent intent = new Intent(this, TermActivity.class);
+                intent.putExtra(TermActivity.EXTRA_TERM_ID, currentTerm.getId());
+                setResult(RESULT_OK, intent);
+                finish();
+            } else {
+                viewModel.insertTerm(currentTerm);
+            }
+        }
+
     }
 
     @Override
@@ -83,20 +123,21 @@ public class TermEditActivity extends AppCompatActivity implements OnAsyncTaskRe
         return super.onOptionsItemSelected(item);
     }
 
-    public void handleUpdateTerm(View view) {
-        updateDirtyTerm();
-
-        if (!dirtyTerm.equals(currentTerm)) {
-            currentTerm.setName(titleInput.getText().toString());
-            currentTerm.setStartDate(dirtyTerm.getStartDate());
-            currentTerm.setEndDate(dirtyTerm.getEndDate());
-
-            viewModel.updateTerm(currentTerm);
-
-            Intent intent = new Intent(this, TermActivity.class);
-            intent.putExtra(TermActivity.EXTRA_TERM_ID, currentTerm.getId());
-            setResult(RESULT_OK, intent);
-            finish();
+    @Override
+    public void onAsyncInsertDataCompleted(AsyncTaskResult result) {
+        if (result.isSuccessful()) {
+            openTermList(R.string.term_added, Snackbar.LENGTH_LONG);
+        } else {
+            int messageResourceId;
+            if (result.getConstraintException() != null) {
+                messageResourceId = R.string.term_add_failed;
+            } else {
+                messageResourceId = R.string.unexpected_error;
+            }
+            Snackbar snackbar = Snackbar.make(
+                    findViewById(R.id.term_edit_coordinator_layout), messageResourceId, Snackbar.LENGTH_INDEFINITE);
+            snackbar.setAction(getString(R.string.dismiss), v -> snackbar.dismiss());
+            snackbar.show();
         }
     }
 
@@ -144,9 +185,8 @@ public class TermEditActivity extends AppCompatActivity implements OnAsyncTaskRe
         }
     }
 
-    @Override
-    public void onAsyncInsertDataCompleted(AsyncTaskResult result) {
-        throw new UnsupportedOperationException();
+    private enum MODE {
+        CREATE, UPDATE
     }
 
     private void openTermList(int messageId, int snackbarLength) {
@@ -192,7 +232,5 @@ public class TermEditActivity extends AppCompatActivity implements OnAsyncTaskRe
         dirtyTerm.setName(titleInput.getText().toString());
         dirtyTerm.setStartDate(DateUtils.getDateFromFormattedString(startDateInput.getText().toString()));
         dirtyTerm.setEndDate(DateUtils.getDateFromFormattedString(endDateInput.getText().toString()));
-        // todo: finish this - need to get Date from date string
-
     }
 }

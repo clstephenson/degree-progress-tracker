@@ -13,7 +13,6 @@ import com.clstephenson.mywgutracker.repositories.AsyncTaskResult;
 import com.clstephenson.mywgutracker.repositories.OnAsyncTaskResultListener;
 import com.clstephenson.mywgutracker.ui.viewmodels.TermViewModel;
 import com.clstephenson.mywgutracker.utils.DateUtils;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.annotation.Nullable;
@@ -47,11 +46,10 @@ public class TermActivity extends AppCompatActivity implements OnAsyncTaskResult
     }
 
     private void setupFloatingActionButton() {
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(view ->
-                //todo need to implement add course to term using fab
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show());
+//        FloatingActionButton fab = findViewById(R.id.fab);
+//        fab.setOnClickListener(view ->
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show());
     }
 
     private void setupCourseListFragment(long termId) {
@@ -81,7 +79,6 @@ public class TermActivity extends AppCompatActivity implements OnAsyncTaskResult
                 handleDeleteTerm();
                 break;
             case R.id.action_edit_term:
-                //todo need to implement edit term
                 handleEditTerm();
                 break;
         }
@@ -120,24 +117,27 @@ public class TermActivity extends AppCompatActivity implements OnAsyncTaskResult
     }
 
     private void setupTermViews(Term term) {
-        currentTerm = term;
-        TextView nameView = findViewById(R.id.term_text_name);
-        nameView.setText(term.getName());
+        //todo: this is getting called when deleting a term, but not sure why. Checking for null is a work-around.  Need to fix.
+        if (term != null) {
+            currentTerm = term;
+            TextView nameView = findViewById(R.id.term_text_name);
+            nameView.setText(term.getName());
 
-        TextView statusView = findViewById(R.id.term_text_status);
-        StringBuilder statusText = new StringBuilder()
-                .append(this.getString(R.string.status))
-                .append(":  ")
-                .append(term.getStatus().getFriendlyName());
-        statusView.setText(statusText);
+            TextView statusView = findViewById(R.id.term_text_status);
+            StringBuilder statusText = new StringBuilder()
+                    .append(this.getString(R.string.status))
+                    .append(":  ")
+                    .append(term.getStatus().getFriendlyName());
+            statusView.setText(statusText);
 
-        TextView startView = findViewById(R.id.term_text_start);
-        startView.setText(
-                String.format("%s: %s", getString(R.string.start), DateUtils.getFormattedDate(term.getStartDate())));
+            TextView startView = findViewById(R.id.term_text_start);
+            startView.setText(
+                    String.format("%s: %s", getString(R.string.start), DateUtils.getFormattedDate(term.getStartDate())));
 
-        TextView endView = findViewById(R.id.term_text_end);
-        endView.setText(
-                String.format("%s: %s", getString(R.string.end), DateUtils.getFormattedDate(term.getEndDate())));
+            TextView endView = findViewById(R.id.term_text_end);
+            endView.setText(
+                    String.format("%s: %s", getString(R.string.end), DateUtils.getFormattedDate(term.getEndDate())));
+        }
     }
 
 

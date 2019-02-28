@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import com.clstephenson.mywgutracker.R;
 import com.clstephenson.mywgutracker.ui.adapters.CourseListAdapter;
 import com.clstephenson.mywgutracker.ui.viewmodels.CourseListViewModel;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -54,6 +55,10 @@ public class CourseListFragment extends Fragment {
             } else {
                 // list of all courses
                 courseListViewModel.getAllCourses().observe(getActivity(), adapter::setCourses);
+
+                //configure floating action button
+                FloatingActionButton fab = getActivity().findViewById(R.id.fab_add_term);
+                fab.hide();
             }
         }
     }

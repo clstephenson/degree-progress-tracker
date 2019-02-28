@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.clstephenson.mywgutracker.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -34,6 +35,11 @@ public class HomeFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        //configure floating action button
+        FloatingActionButton fab = getActivity().findViewById(R.id.fab_add_term);
+        fab.hide();
+
         Bundle bundle = getArguments();
         if (bundle != null) {
             if (bundle.containsKey(MainActivity.TITLE_RESOURCE_ID)) {

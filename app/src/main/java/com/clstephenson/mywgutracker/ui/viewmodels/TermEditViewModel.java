@@ -6,6 +6,8 @@ import com.clstephenson.mywgutracker.data.models.Term;
 import com.clstephenson.mywgutracker.repositories.OnAsyncTaskResultListener;
 import com.clstephenson.mywgutracker.repositories.TermRepository;
 
+import java.util.Date;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
@@ -17,6 +19,10 @@ public class TermEditViewModel extends AndroidViewModel {
     public TermEditViewModel(@NonNull Application application) {
         super(application);
         termRepository = new TermRepository(application);
+    }
+
+    public Term getNewTerm() {
+        return new Term("", new Date(), new Date());
     }
 
     public LiveData<Term> getTermById(long id) {
@@ -35,4 +41,7 @@ public class TermEditViewModel extends AndroidViewModel {
         termRepository.setOnAsyncTaskResultListener(delegate);
     }
 
+    public void insertTerm(Term term) {
+        termRepository.insert(term);
+    }
 }

@@ -11,6 +11,7 @@ import com.clstephenson.mywgutracker.R;
 import com.clstephenson.mywgutracker.data.models.Term;
 import com.clstephenson.mywgutracker.ui.adapters.TermListAdapter;
 import com.clstephenson.mywgutracker.ui.viewmodels.TermListViewModel;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -38,6 +39,11 @@ public class TermListFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        //configure floating action button
+        FloatingActionButton fab = getActivity().findViewById(R.id.fab_add_term);
+        fab.setOnClickListener(this::openTermEditActivityForNewTerm);
+        fab.show();
+
         RecyclerView recyclerView = getView().findViewById(R.id.term_recyclerview);
 
         final TermListAdapter adapter = new TermListAdapter(getActivity());
@@ -60,6 +66,11 @@ public class TermListFragment extends Fragment {
                 title = getString(getArguments().getInt(MainActivity.TITLE_RESOURCE_ID));
             }
         }
+    }
+
+    private void openTermEditActivityForNewTerm(View view) {
+        Intent intent = new Intent(getActivity(), TermEditActivity.class);
+        startActivity(intent);
     }
 
     @Override
