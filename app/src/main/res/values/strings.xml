@@ -48,4 +48,5 @@
     <string name="delete_course">Delete Course?</string>
     <string name="course_assessments">Course Assessments</string>
     <string name="course_mentor">Course Mentor</string>
+    <string name="due">Due</string>
 </resources>

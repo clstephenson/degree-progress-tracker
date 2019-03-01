@@ -11,8 +11,6 @@ import org.junit.Test;
 import java.util.Calendar;
 import java.util.Date;
 
-import androidx.test.core.app.ApplicationProvider;
-
 import static org.junit.Assert.assertEquals;
 
 public class DateUtilsTest {
@@ -22,7 +20,6 @@ public class DateUtilsTest {
     @Before
     public void setUp() throws Exception {
 
-        context = ApplicationProvider.getApplicationContext();
     }
 
     @After
@@ -32,14 +29,14 @@ public class DateUtilsTest {
     @Test
     public void getFormattedDate() {
         Date date = createDate(2019, 1, 15);
-        assertEquals("2/15/2019", DateUtils.getFormattedDate(context, date));
+        assertEquals("2/15/2019", DateUtils.getFormattedDate(date));
     }
 
     @Test
     public void getFormattedDateRange() {
         Date date1 = createDate(2019, 1, 15);
         Date date2 = createDate(2019, 5, 20);
-        assertEquals("2/15/2019 - 6/20/2019", DateUtils.getFormattedDateRange(context, date1, date2));
+        assertEquals("2/15/2019 - 6/20/2019", DateUtils.getFormattedDateRange(date1, date2));
     }
 
     private Date createDate(int year, int zeroBasedMonth, int dayOfMoth) {

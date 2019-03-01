@@ -63,11 +63,13 @@ public abstract class AppDatabase extends RoomDatabase {
         private final TermDao termDao;
         private final MentorDao mentorDao;
         private final CourseDao courseDao;
+        private final AssessmentDao assessmentDao;
 
         SeedDBAsync(AppDatabase db) {
             termDao = db.termDao();
             mentorDao = db.mentorDao();
             courseDao = db.courseDao();
+            assessmentDao = db.assessmentDao();
         }
 
         @Override
@@ -77,6 +79,8 @@ public abstract class AppDatabase extends RoomDatabase {
             long termId = termDao.insert(term);
             Course course = TestDataGenerator.createCourse(mentorId, termId);
             long courseId = courseDao.insert(course);
+            Assessment assessment = TestDataGenerator.createAssessment(courseId);
+            long assessmentId = assessmentDao.insert(assessment);
             return null;
         }
     }

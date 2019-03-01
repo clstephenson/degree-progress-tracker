@@ -18,6 +18,9 @@ import com.google.android.material.snackbar.Snackbar;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 
 public class CourseActivity extends AppCompatActivity implements OnAsyncTaskResultListener {
@@ -91,15 +94,14 @@ public class CourseActivity extends AppCompatActivity implements OnAsyncTaskResu
     }
 
     private void setupAssessmentListFragment(long courseId) {
-        //todo uncomment this when assessment list fragment has been implemented
-//        Bundle bundle = new Bundle();
-//        bundle.putLong(EXTRA_COURSE_ID, courseId);
-//        FragmentManager fragmentManager = getSupportFragmentManager();
-//        Fragment assessmentListFragment = new AssessmentListFragment();
-//        assessmentListFragment.setArguments(bundle);
-//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//        fragmentTransaction.add(R.id.course_content_fragment, assessmentListFragment);
-//        fragmentTransaction.commit();
+        Bundle bundle = new Bundle();
+        bundle.putLong(EXTRA_COURSE_ID, courseId);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        Fragment assessmentListFragment = new AssessmentListFragment();
+        assessmentListFragment.setArguments(bundle);
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.add(R.id.course_content_fragment, assessmentListFragment);
+        fragmentTransaction.commit();
     }
 
     @Override

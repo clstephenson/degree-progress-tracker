@@ -38,10 +38,10 @@ public class TermListAdapter extends RecyclerView.Adapter<TermListAdapter.TermVi
             Context context = holder.termDatesView.getContext();
             Term current = terms.get(position);
             holder.termNameView.setText(current.getName());
-            StringBuilder statusText = new StringBuilder()
-                    .append(context.getString(R.string.status))
-                    .append(":  ")
-                    .append(current.getStatus().getFriendlyName());
+            String statusText = String.format(
+                    "%s: %s",
+                    context.getString(R.string.status),
+                    current.getStatus().getFriendlyName());
             holder.termStatusView.setText(statusText);
             holder.termDatesView.setText(
                     DateUtils.getFormattedDateRange(current.getStartDate(), current.getEndDate()));

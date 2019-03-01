@@ -38,10 +38,10 @@ public class CourseListAdapter extends RecyclerView.Adapter<CourseListAdapter.Co
             Context context = holder.courseDatesView.getContext();
             Course current = courses.get(position);
             holder.courseNameView.setText(current.getName());
-            StringBuilder statusText = new StringBuilder()
-                    .append(context.getString(R.string.status))
-                    .append(":  ")
-                    .append(current.getStatus().getFriendlyName());
+            String statusText = String.format(
+                    "%s: %s",
+                    context.getString(R.string.status),
+                    current.getStatus().getFriendlyName());
             holder.courseStatusView.setText(statusText);
             holder.courseDatesView.setText(
                     DateUtils.getFormattedDateRange(current.getStartDate(), current.getEndDate()));

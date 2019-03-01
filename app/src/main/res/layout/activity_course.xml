@@ -12,7 +12,7 @@
         android:id="@+id/course_content_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/term_details_section_height" />
+        android:layout_marginTop="@dimen/course_details_section_height" />
 
     <!--<com.google.android.material.floatingactionbutton.FloatingActionButton-->
     <!--android:id="@+id/fab"-->
