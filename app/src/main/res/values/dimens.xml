@@ -15,4 +15,5 @@
     <dimen name="term_card_height">110dp</dimen>
     <dimen name="course_card_height">110dp</dimen>
     <dimen name="term_details_section_height">140dp</dimen>
+    <dimen name="course_details_section_height">260dp</dimen>
 </resources>

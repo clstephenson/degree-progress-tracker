@@ -47,4 +47,5 @@
     <string name="title_activity_course">View Course</string>
     <string name="delete_course">Delete Course?</string>
     <string name="course_assessments">Course Assessments</string>
+    <string name="course_mentor">Course Mentor</string>
 </resources>

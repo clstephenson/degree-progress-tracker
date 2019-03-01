@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.clstephenson.mywgutracker.R;
 import com.clstephenson.mywgutracker.data.models.Course;
+import com.clstephenson.mywgutracker.data.models.Mentor;
 import com.clstephenson.mywgutracker.repositories.AsyncTaskResult;
 import com.clstephenson.mywgutracker.repositories.OnAsyncTaskResultListener;
 import com.clstephenson.mywgutracker.ui.viewmodels.CourseViewModel;
@@ -36,7 +37,7 @@ public class CourseActivity extends AppCompatActivity implements OnAsyncTaskResu
         viewModel = ViewModelProviders.of(this).get(CourseViewModel.class);
         viewModel.setBackgroundTaskResultListener(this);
         long courseId = getIntent().getLongExtra(EXTRA_COURSE_ID, 0);
-        viewModel.getCourseById(courseId).observe(this, this::setupCourseViews);
+        viewModel.getCourseById(courseId).observe(this, this::setupViews);
         setupAssessmentListFragment(courseId);
         setTitle(R.string.title_activity_course);
     }
@@ -46,6 +47,47 @@ public class CourseActivity extends AppCompatActivity implements OnAsyncTaskResu
 //        fab.setOnClickListener(view ->
 //                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                        .setAction("Action", null).show());
+    }
+
+    private void setupViews(Course course) {
+        //todo: this is getting called when deleting a term, but not sure why. Checking for null is a work-around.  Need to fix.
+        if (course != null) {
+            currentCourse = course;
+            setupCourseViews(course);
+
+            viewModel.getMentorId(course.getMentorId()).observe(this, this::setupMentorViews);
+        }
+    }
+
+    private void setupCourseViews(Course course) {
+        TextView nameView = findViewById(R.id.course_text_name);
+        nameView.setText(course.getName());
+
+        TextView statusView = findViewById(R.id.course_text_status);
+        StringBuilder statusText = new StringBuilder()
+                .append(this.getString(R.string.status))
+                .append(":  ")
+                .append(course.getStatus().getFriendlyName());
+        statusView.setText(statusText);
+
+        TextView startView = findViewById(R.id.course_text_start);
+        startView.setText(
+                String.format("%s: %s", getString(R.string.start), DateUtils.getFormattedDate(course.getStartDate())));
+
+        TextView endView = findViewById(R.id.course_text_end);
+        endView.setText(
+                String.format("%s: %s", getString(R.string.end), DateUtils.getFormattedDate(course.getEndDate())));
+    }
+
+    private void setupMentorViews(Mentor mentor) {
+        TextView mentorName = findViewById(R.id.course_text_mentor_name);
+        mentorName.setText(String.format("%s %s", mentor.getFirstName(), mentor.getLastName()));
+
+        TextView mentorEmail = findViewById(R.id.course_text_mentor_email);
+        mentorEmail.setText(mentor.getEmail());
+
+        TextView mentorPhone = findViewById(R.id.course_text_mentor_phone);
+        mentorPhone.setText(mentor.getPhone());
     }
 
     private void setupAssessmentListFragment(long courseId) {
@@ -112,30 +154,6 @@ public class CourseActivity extends AppCompatActivity implements OnAsyncTaskResu
                 })
                 .create()
                 .show();
-    }
-
-    private void setupCourseViews(Course course) {
-        //todo: this is getting called when deleting a term, but not sure why. Checking for null is a work-around.  Need to fix.
-        if (course != null) {
-            currentCourse = course;
-            TextView nameView = findViewById(R.id.course_text_name);
-            nameView.setText(course.getName());
-
-            TextView statusView = findViewById(R.id.course_text_status);
-            StringBuilder statusText = new StringBuilder()
-                    .append(this.getString(R.string.status))
-                    .append(":  ")
-                    .append(course.getStatus().getFriendlyName());
-            statusView.setText(statusText);
-
-            TextView startView = findViewById(R.id.course_text_start);
-            startView.setText(
-                    String.format("%s: %s", getString(R.string.start), DateUtils.getFormattedDate(course.getStartDate())));
-
-            TextView endView = findViewById(R.id.course_text_end);
-            endView.setText(
-                    String.format("%s: %s", getString(R.string.end), DateUtils.getFormattedDate(course.getEndDate())));
-        }
     }
 
 
