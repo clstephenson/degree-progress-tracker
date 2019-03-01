@@ -97,7 +97,6 @@ public class TermEditActivity extends AppCompatActivity implements OnAsyncTaskRe
                 currentTerm.setStartDate(dirtyTerm.getStartDate());
                 currentTerm.setEndDate(dirtyTerm.getEndDate());
 
-                // todo implement input validation
                 if (entryMode == MODE.UPDATE) {
                     viewModel.updateTerm(currentTerm);
                     Intent intent = new Intent(this, TermActivity.class);

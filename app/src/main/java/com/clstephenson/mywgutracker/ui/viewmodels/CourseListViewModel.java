@@ -30,6 +30,10 @@ public class CourseListViewModel extends AndroidViewModel {
         return repository.getByTermId(termId);
     }
 
+    public Course getCourse(int position) {
+        return allCourses.getValue().get(position);
+    }
+
     public void insert(Course course) {
         repository.insert(course);
     }

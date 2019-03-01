@@ -1,6 +1,5 @@
 package com.clstephenson.mywgutracker.ui;
 
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;

@@ -1,7 +1,7 @@
 package com.clstephenson.mywgutracker.repositories;
 
 import android.app.Application;
-import android.os.AsyncTask;
+import android.util.Pair;
 
 import com.clstephenson.mywgutracker.data.db.AppDatabase;
 import com.clstephenson.mywgutracker.data.db.AssessmentDao;
@@ -16,6 +16,7 @@ public class AssessmentRepository implements Repository<Assessment> {
 
     private AssessmentDao assessmentDao;
     private LiveData<List<Assessment>> allAssessments;
+    private OnAsyncTaskResultListener onAsyncTaskResultListener;
 
     public AssessmentRepository(@NonNull Application application) {
         AppDatabase db = AppDatabase.getDatabase(application);
@@ -33,37 +34,32 @@ public class AssessmentRepository implements Repository<Assessment> {
         return assessmentDao.getById(id);
     }
 
+    public LiveData<List<Assessment>> getByCourseId(long id) {
+        return assessmentDao.getByCourseId(id);
+    }
+
     @Override
     public void insert(Assessment assessment) {
-        new AssessmentRepository.insertAsyncTask(assessmentDao).execute(assessment);
+        new InsertDataAsyncTask<Assessment>(AssessmentDao.class, assessmentDao).execute(Pair.create(assessment, onAsyncTaskResultListener));
     }
 
     @Override
     public void update(Assessment assessment) {
-        assessmentDao.update(assessment);
+        new UpdateDataAsyncTask<Assessment>(AssessmentDao.class, assessmentDao).execute(Pair.create(assessment, onAsyncTaskResultListener));
     }
 
     @Override
     public void deleteById(long id) {
-        assessmentDao.deleteById(id);
+        throw new UnsupportedOperationException();
     }
 
     @Override
-    public void delete(Assessment object) {
-        assessmentDao.delete(object);
+    public void delete(Assessment assessment) {
+        new DeleteDataAsyncTask<Assessment>(AssessmentDao.class, assessmentDao).execute(Pair.create(assessment, onAsyncTaskResultListener));
     }
 
-    private static class insertAsyncTask extends AsyncTask<Assessment, Void, Void> {
-        private AssessmentDao asyncTaskDao;
-
-        insertAsyncTask(AssessmentDao dao) {
-            asyncTaskDao = dao;
-        }
-
-        @Override
-        protected Void doInBackground(final Assessment... params) {
-            asyncTaskDao.insert(params[0]);
-            return null;
-        }
+    public void setOnAsyncTaskResultListener(OnAsyncTaskResultListener listener) {
+        this.onAsyncTaskResultListener = listener;
     }
+
 }

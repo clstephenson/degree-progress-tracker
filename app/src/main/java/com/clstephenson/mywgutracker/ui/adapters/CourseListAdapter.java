@@ -19,6 +19,7 @@ public class CourseListAdapter extends RecyclerView.Adapter<CourseListAdapter.Co
 
     private final LayoutInflater inflater;
     private List<Course> courses;
+    private OnItemInteractionListener listener;
 
     public CourseListAdapter(Context context) {
         inflater = LayoutInflater.from(context);
@@ -37,10 +38,10 @@ public class CourseListAdapter extends RecyclerView.Adapter<CourseListAdapter.Co
             Context context = holder.courseDatesView.getContext();
             Course current = courses.get(position);
             holder.courseNameView.setText(current.getName());
-            StringBuilder statusText = new StringBuilder()
-                    .append(context.getString(R.string.status))
-                    .append(":  ")
-                    .append(current.getStatus().getFriendlyName());
+            String statusText = String.format(
+                    "%s: %s",
+                    context.getString(R.string.status),
+                    current.getStatus().getFriendlyName());
             holder.courseStatusView.setText(statusText);
             holder.courseDatesView.setText(
                     DateUtils.getFormattedDateRange(current.getStartDate(), current.getEndDate()));
@@ -63,16 +64,29 @@ public class CourseListAdapter extends RecyclerView.Adapter<CourseListAdapter.Co
         }
     }
 
-    public class CourseViewHolder extends RecyclerView.ViewHolder {
+    public void setOnItemInteractionListener(OnItemInteractionListener listener) {
+        this.listener = listener;
+    }
+
+    public class CourseViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private final TextView courseNameView;
         private final TextView courseStatusView;
         private final TextView courseDatesView;
 
         private CourseViewHolder(View itemView) {
             super(itemView);
+            itemView.setOnClickListener(this);
             courseNameView = itemView.findViewById(R.id.course_list_text_name);
             courseStatusView = itemView.findViewById(R.id.course_list_text_status);
             courseDatesView = itemView.findViewById(R.id.course_list_text_dates);
+        }
+
+        @Override
+        public void onClick(View v) {
+            int position = getAdapterPosition();
+            if (listener != null && position != RecyclerView.NO_POSITION) {
+                listener.onClick(v, position);
+            }
         }
     }
 }

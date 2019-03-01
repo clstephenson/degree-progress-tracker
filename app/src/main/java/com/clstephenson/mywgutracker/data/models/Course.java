@@ -85,7 +85,17 @@ public class Course extends BaseModel {
         this.termId = termId;
     }
 
-    //todo create copy constructor
+    /**
+     * Copy constructor
+     *
+     * @param course
+     */
+    @Ignore
+    public Course(Course course) {
+        this(course.getId(), course.getName(), course.getStartDate(), course.getEndDate(),
+                course.isStartAlertOn(), course.isEndAlertOn(), course.getStatus(),
+                course.getMentorId(), course.getTermId());
+    }
 
     @NonNull
     public String getName() {
@@ -177,17 +187,16 @@ public class Course extends BaseModel {
                 isEndAlertOn == course.isEndAlertOn &&
                 mentorId == course.mentorId &&
                 termId == course.termId &&
+                Objects.equals(id, course.id) &&
                 Objects.equals(name, course.name) &&
                 Objects.equals(startDate, course.startDate) &&
                 Objects.equals(endDate, course.endDate) &&
-                status == course.status &&
-                Objects.equals(notes, course.notes) &&
-                Objects.equals(assessments, course.assessments);
+                status == course.status;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, startDate, endDate, isStartAlertOn, isEndAlertOn, status, mentorId, termId, notes, assessments);
+        return Objects.hash(id, name, startDate, endDate, isStartAlertOn, isEndAlertOn, status, mentorId, termId);
     }
 
     @Override
@@ -201,8 +210,6 @@ public class Course extends BaseModel {
                 ", status=" + status +
                 ", mentorId=" + mentorId +
                 ", termId=" + termId +
-                ", notes=" + notes +
-                ", assessments=" + assessments +
                 '}';
     }
 }
