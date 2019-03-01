@@ -1,5 +1,6 @@
 package com.clstephenson.mywgutracker.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -7,9 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.clstephenson.mywgutracker.R;
+import com.clstephenson.mywgutracker.data.models.Course;
 import com.clstephenson.mywgutracker.ui.adapters.CourseListAdapter;
 import com.clstephenson.mywgutracker.ui.viewmodels.CourseListViewModel;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -37,28 +38,32 @@ public class CourseListFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        //configure floating action button
+        //todo uncomment once edit course edit form is implemented
+//        FloatingActionButton fab = getActivity().findViewById(R.id.fab_add_course);
+//        fab.setOnClickListener(this::openCourseEditActivityForNewCourse);
+//        fab.show();
+
         RecyclerView recyclerView = getView().findViewById(R.id.course_recyclerview);
+
         final CourseListAdapter adapter = new CourseListAdapter(getActivity());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         courseListViewModel = ViewModelProviders.of(this).get(CourseListViewModel.class);
+        courseListViewModel.getAllCourses().observe(getActivity(), adapter::setCourses);
+
+        adapter.setOnItemInteractionListener(((view, position) -> {
+            Intent intent = new Intent(getActivity(), CourseActivity.class);
+            Course selectedCourse = courseListViewModel.getCourse(position);
+            intent.putExtra(CourseActivity.EXTRA_COURSE_ID, selectedCourse.getId());
+            startActivity(intent);
+        }));
+
         Bundle bundle = getArguments();
         if (bundle != null) {
             if (bundle.containsKey(MainActivity.TITLE_RESOURCE_ID)) {
                 title = getString(getArguments().getInt(MainActivity.TITLE_RESOURCE_ID));
-            }
-            if (bundle.containsKey(TermActivity.EXTRA_TERM_ID)) {
-                // list of courses for a specified term
-                long termId = getArguments().getLong(TermActivity.EXTRA_TERM_ID);
-                courseListViewModel.getCoursesByTermId(termId).observe(getActivity(), adapter::setCourses);
-            } else {
-                // list of all courses
-                courseListViewModel.getAllCourses().observe(getActivity(), adapter::setCourses);
-
-                //configure floating action button
-                FloatingActionButton fab = getActivity().findViewById(R.id.fab_add_term);
-                fab.hide();
             }
         }
     }

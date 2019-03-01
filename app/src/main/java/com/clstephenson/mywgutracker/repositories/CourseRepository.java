@@ -1,7 +1,7 @@
 package com.clstephenson.mywgutracker.repositories;
 
 import android.app.Application;
-import android.os.AsyncTask;
+import android.util.Pair;
 
 import com.clstephenson.mywgutracker.data.db.AppDatabase;
 import com.clstephenson.mywgutracker.data.db.CourseDao;
@@ -16,6 +16,7 @@ public class CourseRepository implements Repository<Course> {
 
     private CourseDao courseDao;
     private LiveData<List<Course>> allCourses;
+    private OnAsyncTaskResultListener onAsyncTaskResultListener;
 
     public CourseRepository(@NonNull Application application) {
         AppDatabase db = AppDatabase.getDatabase(application);
@@ -39,36 +40,26 @@ public class CourseRepository implements Repository<Course> {
 
     @Override
     public void deleteById(long id) {
-        courseDao.deleteById(id);
+        throw new UnsupportedOperationException();
     }
 
     @Override
-    public void delete(Course object) {
-        courseDao.delete(object);
+    public void delete(Course course) {
+        new DeleteDataAsyncTask<Course>(courseDao.getClass(), courseDao).execute(Pair.create(course, onAsyncTaskResultListener));
     }
 
     @Override
     public void update(Course course) {
-        courseDao.update(course);
+        new UpdateDataAsyncTask<Course>(courseDao.getClass(), courseDao).execute(Pair.create(course, onAsyncTaskResultListener));
     }
 
     @Override
     public void insert(Course course) {
-        new CourseRepository.insertAsyncTask(courseDao).execute(course);
+        new InsertDataAsyncTask<Course>(courseDao.getClass(), courseDao).execute(Pair.create(course, onAsyncTaskResultListener));
     }
 
-    private static class insertAsyncTask extends AsyncTask<Course, Void, Void> {
-        private CourseDao asyncTaskDao;
-
-        insertAsyncTask(CourseDao dao) {
-            asyncTaskDao = dao;
-        }
-
-        @Override
-        protected Void doInBackground(final Course... params) {
-            asyncTaskDao.insert(params[0]);
-            return null;
-        }
+    public void setOnAsyncTaskResultListener(OnAsyncTaskResultListener listener) {
+        this.onAsyncTaskResultListener = listener;
     }
 
 }

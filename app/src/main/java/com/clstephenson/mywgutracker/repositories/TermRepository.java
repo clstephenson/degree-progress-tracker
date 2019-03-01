@@ -36,7 +36,7 @@ public class TermRepository implements Repository<Term> {
 
     @Override
     public void deleteById(long id) {
-        //todo not implemented
+        throw new UnsupportedOperationException();
     }
 
     @Override
