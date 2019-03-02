@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".ui.CourseEditActivity"
+    tools:showIn="@layout/activity_course_edit">
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/course_input_title_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        app:errorEnabled="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/course_input_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/course_title"
+            android:inputType="textCapCharacters" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/course_input_start_layout"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:errorEnabled="false"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/course_input_title_layout">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/course_input_start"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusable="false"
+            android:hint="@string/start_date"
+            android:inputType="date"
+            android:onClick="handleStartDateInputClick" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Switch
+        android:id="@+id/course_switch_alert_start"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/activity_margin_small"
+        android:switchPadding="@dimen/activity_margin_small"
+        android:text="@string/enable_start_alert"
+        android:textSize="@dimen/text_size_editor"
+        app:layout_constraintBottom_toBottomOf="@+id/course_input_start_layout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/course_input_start_layout" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/course_input_end_layout"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:errorEnabled="false"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/course_input_start_layout">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/course_input_end"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusable="false"
+            android:hint="@string/end_date"
+            android:inputType="date"
+            android:onClick="handleEndDateInputClick" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Switch
+        android:id="@+id/course_switch_alert_end"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/activity_margin_small"
+        android:switchPadding="@dimen/activity_margin_small"
+        android:text="@string/enable_end_alert"
+        android:textSize="@dimen/text_size_editor"
+        app:layout_constraintBottom_toBottomOf="@+id/course_input_end_layout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/course_input_end_layout" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/course_input_status_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        app:errorEnabled="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/course_input_end_layout">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/course_input_status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/course_status"
+            android:inputType="textCapCharacters" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/mentor_text_description_1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/activity_margin_small"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="@dimen/activity_margin_small"
+        android:text="@string/select_a_mentor_description"
+        app:layout_constraintTop_toBottomOf="@id/course_input_status_layout" />
+
+    <ExpandableListView
+        android:id="@+id/mentor_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/activity_margin_small"
+        android:layout_marginTop="@dimen/activity_margin_small"
+        android:layout_marginEnd="@dimen/activity_margin_small"
+        android:scrollbars="vertical"
+        android:text="select a course mentor"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/mentor_text_description_1" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/activity_margin_small"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/mentor_list" />
+
+    <TextView
+        android:id="@+id/mentor_text_description_2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/activity_margin_small"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="@dimen/activity_margin_small"
+        android:text="@string/mentor_not_present_description"
+        app:layout_constraintTop_toBottomOf="@id/divider" />
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/mentor_input_first_name_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        app:errorEnabled="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/mentor_text_description_2">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/mentor_input_first_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/first_name"
+            android:inputType="textCapCharacters" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/mentor_input_last_name_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        app:errorEnabled="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/mentor_input_first_name_layout">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/mentor_input_last_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/last_name"
+            android:inputType="textCapCharacters" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/mentor_input_phone_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        app:errorEnabled="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/mentor_input_last_name_layout">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/mentor_input_phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/phone_number"
+            android:inputType="textCapCharacters" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/mentor_input_email_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        app:errorEnabled="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/mentor_input_phone_layout">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/mentor_input_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/email_address"
+            android:inputType="textCapCharacters" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <Button
+        android:id="@+id/course_button_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:onClick="handleSaveCourse"
+        android:text="@string/save"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/mentor_input_email_layout" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

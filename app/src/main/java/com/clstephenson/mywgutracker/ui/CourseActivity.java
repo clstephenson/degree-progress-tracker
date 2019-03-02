@@ -128,10 +128,9 @@ public class CourseActivity extends AppCompatActivity implements OnAsyncTaskResu
     }
 
     private void handleEditCourse() {
-        //todo uncomment this when course edit activity has been implemented
-//        Intent intent = new Intent(this, CourseEditActivity.class);
-//        intent.putExtra(EXTRA_COURSE_ID, currentCourse.getId());
-//        startActivityForResult(intent, 1);
+        Intent intent = new Intent(this, CourseEditActivity.class);
+        intent.putExtra(EXTRA_COURSE_ID, currentCourse.getId());
+        startActivityForResult(intent, 1);
     }
 
     @Override

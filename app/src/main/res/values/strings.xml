@@ -49,4 +49,13 @@
     <string name="course_assessments">Course Assessments</string>
     <string name="course_mentor">Course Mentor</string>
     <string name="due">Due</string>
+    <string name="enable_start_alert">Enable Start Alert</string>
+    <string name="enable_end_alert">Enable End Alert</string>
+    <string name="course_status">Course Status</string>
+    <string name="first_name">First Name</string>
+    <string name="email_address">Email Address</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="last_name">Last Name</string>
+    <string name="select_a_mentor_description">Select a mentor or enter a new one below.</string>
+    <string name="mentor_not_present_description">If not present in the list, create a new mentor.</string>
 </resources>
