@@ -7,12 +7,15 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.CalendarView;
-import android.widget.ExpandableListView;
+import android.widget.Spinner;
 import android.widget.Switch;
 
 import com.clstephenson.mywgutracker.R;
+import com.clstephenson.mywgutracker.data.CourseStatus;
 import com.clstephenson.mywgutracker.data.models.Course;
+import com.clstephenson.mywgutracker.data.models.Mentor;
 import com.clstephenson.mywgutracker.repositories.AsyncTaskResult;
 import com.clstephenson.mywgutracker.repositories.OnAsyncTaskResultListener;
 import com.clstephenson.mywgutracker.ui.viewmodels.CourseEditViewModel;
@@ -37,14 +40,13 @@ public class CourseEditActivity extends AppCompatActivity implements OnAsyncTask
     private TextInputEditText titleInput;
     private TextInputEditText endDateInput;
     private TextInputEditText startDateInput;
-    private TextInputEditText statusInput;
+    private Spinner statusInput;
     private TextInputEditText mentorFirstNameInput;
     private TextInputEditText mentorLastNameInput;
     private TextInputEditText mentorPhoneInput;
     private TextInputEditText mentorEmailInput;
     private Switch enableAlertStartSwitch;
     private Switch enableAlertEndSwitch;
-    private ExpandableListView mentorListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +66,6 @@ public class CourseEditActivity extends AppCompatActivity implements OnAsyncTask
             this.setTitle(R.string.edit_course);
             viewModel.getCourseById(courseId).observe(this, this::setupCourseViews);
         }
-
     }
 
     private void setupCourseViews(@Nullable Course course) {
@@ -74,23 +75,36 @@ public class CourseEditActivity extends AppCompatActivity implements OnAsyncTask
         statusInput = findViewById(R.id.course_input_status);
         enableAlertStartSwitch = findViewById(R.id.course_switch_alert_start);
         enableAlertEndSwitch = findViewById(R.id.course_switch_alert_end);
-        mentorFirstNameInput = findViewById(R.id.mentor_input_first_name);
-        mentorLastNameInput = findViewById(R.id.mentor_input_last_name);
-        mentorPhoneInput = findViewById(R.id.mentor_input_phone);
-        mentorEmailInput = findViewById(R.id.mentor_input_email);
-        mentorListView = findViewById(R.id.mentor_list);
+
+        ArrayAdapter<CourseStatus> adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_dropdown_item_1line, CourseStatus.values());
+        statusInput.setAdapter(adapter);
 
         if (entryMode == MODE.UPDATE) {
             currentCourse = course;
             titleInput.setText(currentCourse.getName());
             startDateInput.setText(DateUtils.getFormattedDate(currentCourse.getStartDate()));
             endDateInput.setText(DateUtils.getFormattedDate(currentCourse.getEndDate()));
-            statusInput.setText(currentCourse.getStatus().getFriendlyName()); //todo change this to a list
-
+            statusInput.setSelection(adapter.getPosition(currentCourse.getStatus()));
+            enableAlertStartSwitch.setChecked(currentCourse.isStartAlertOn());
+            enableAlertEndSwitch.setChecked(currentCourse.isEndAlertOn());
+            viewModel.getMentor(currentCourse.getMentorId()).observe(this, this::setupMentorList);
         } else {
             currentCourse = viewModel.getNewCourse();
         }
         dirtyCourse = new Course(currentCourse);
+    }
+
+    private void setupMentorList(Mentor mentor) {
+        mentorFirstNameInput = findViewById(R.id.mentor_input_first_name);
+        mentorLastNameInput = findViewById(R.id.mentor_input_last_name);
+        mentorPhoneInput = findViewById(R.id.mentor_input_phone);
+        mentorEmailInput = findViewById(R.id.mentor_input_email);
+
+        mentorFirstNameInput.setText(mentor.getFirstName());
+        mentorLastNameInput.setText(mentor.getLastName());
+        mentorEmailInput.setText(mentor.getEmail());
+        mentorPhoneInput.setText(mentor.getPhone());
     }
 
     @Override

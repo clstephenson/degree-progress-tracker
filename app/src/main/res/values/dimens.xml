@@ -18,4 +18,5 @@
     <dimen name="course_details_section_height">260dp</dimen>
     <dimen name="assessment_card_height">110dp</dimen>
     <dimen name="text_size_editor">18sp</dimen>
+    <dimen name="activity_margin_large">16dp</dimen>
 </resources>

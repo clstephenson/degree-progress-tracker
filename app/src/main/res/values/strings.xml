@@ -58,4 +58,10 @@
     <string name="last_name">Last Name</string>
     <string name="select_a_mentor_description">Select a mentor or enter a new one below.</string>
     <string name="mentor_not_present_description">If not present in the list, create a new mentor.</string>
+    <string name="select_a_course_mentor">select a course mentor</string>
+    <string-array name="sample_list_items">
+        <item>First item</item>
+        <item>Second item</item>
+        <item>Third item</item>
+    </string-array>
 </resources>

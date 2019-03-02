@@ -23,14 +23,14 @@ public class TestDataGenerator {
 
     public static Course createCourse(long mentorId, long termId) {
         long todayPlus30Days = new Date().getTime() + DateUtils.MILLISECONDS_IN_DAY * 30;
-        return new Course("Mobile Application Development", new Date(), new Date(todayPlus30Days), false, false,
+        return new Course("Mobile Application Development", new Date(), new Date(todayPlus30Days), false, true,
                 CourseStatus.STARTED, mentorId, termId);
     }
 
     public static Assessment createAssessment(long courseId) {
         long todayPlus30Days = new Date().getTime() + DateUtils.MILLISECONDS_IN_DAY * 30;
         return new Assessment("TEST_CODE", "Mobile App Project",
-                new Date(todayPlus30Days), false, courseId, AssessmentType.PERFORMANCE);
+                new Date(todayPlus30Days), true, courseId, AssessmentType.PERFORMANCE);
     }
 
     public static Note createNote(long courseId) {

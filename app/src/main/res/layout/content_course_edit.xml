@@ -97,82 +97,50 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/course_input_end_layout" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/course_input_status_layout"
-        android:layout_width="match_parent"
+
+    <TextView
+        android:id="@+id/course_status_label"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="@dimen/activity_margin_small"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        app:errorEnabled="false"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="@dimen/activity_margin_large"
+        android:text="@string/course_status"
+        android:textSize="@dimen/text_size_editor"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/course_input_end_layout">
+        app:layout_constraintTop_toBottomOf="@id/course_input_end_layout" />
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/course_input_status"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/course_status"
-            android:inputType="textCapCharacters" />
-
-    </com.google.android.material.textfield.TextInputLayout>
+    <Spinner
+        android:id="@+id/course_input_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/activity_margin_large"
+        android:entries="@array/sample_list_items"
+        app:layout_constraintBottom_toBottomOf="@id/course_status_label"
+        app:layout_constraintStart_toEndOf="@id/course_status_label"
+        app:layout_constraintTop_toTopOf="@id/course_status_label" />
 
     <TextView
         android:id="@+id/mentor_text_description_1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/activity_margin_small"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="@dimen/activity_margin_large"
         android:layout_marginEnd="@dimen/activity_margin_small"
-        android:text="@string/select_a_mentor_description"
-        app:layout_constraintTop_toBottomOf="@id/course_input_status_layout" />
-
-    <ExpandableListView
-        android:id="@+id/mentor_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/activity_margin_small"
-        android:layout_marginTop="@dimen/activity_margin_small"
-        android:layout_marginEnd="@dimen/activity_margin_small"
-        android:scrollbars="vertical"
-        android:text="select a course mentor"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/mentor_text_description_1" />
-
-    <View
-        android:id="@+id/divider"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="@dimen/activity_margin_small"
-        android:background="?android:attr/listDivider"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/mentor_list" />
-
-    <TextView
-        android:id="@+id/mentor_text_description_2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/activity_margin_small"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="@dimen/activity_margin_small"
-        android:text="@string/mentor_not_present_description"
-        app:layout_constraintTop_toBottomOf="@id/divider" />
-
+        android:text="@string/course_mentor"
+        android:textSize="@dimen/text_size_editor"
+        app:layout_constraintTop_toBottomOf="@id/course_status_label" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/mentor_input_first_name_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         app:errorEnabled="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/mentor_text_description_2">
+        app:layout_constraintTop_toBottomOf="@id/mentor_text_description_1">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/mentor_input_first_name"
@@ -221,7 +189,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/phone_number"
-            android:inputType="textCapCharacters" />
+            android:inputType="phone" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -242,7 +210,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/email_address"
-            android:inputType="textCapCharacters" />
+            android:inputType="textEmailAddress" />
 
     </com.google.android.material.textfield.TextInputLayout>
 

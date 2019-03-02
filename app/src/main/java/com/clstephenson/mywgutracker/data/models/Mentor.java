@@ -81,7 +81,8 @@ public class Mentor extends BaseModel {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Mentor mentor = (Mentor) o;
-        return Objects.equals(firstName, mentor.firstName) &&
+        return Objects.equals(id, mentor.id) &&
+                Objects.equals(firstName, mentor.firstName) &&
                 Objects.equals(lastName, mentor.lastName) &&
                 Objects.equals(phone, mentor.phone) &&
                 Objects.equals(email, mentor.email);
@@ -89,16 +90,11 @@ public class Mentor extends BaseModel {
 
     @Override
     public int hashCode() {
-        return Objects.hash(firstName, lastName, phone, email);
+        return Objects.hash(id, firstName, lastName, phone, email);
     }
 
     @Override
     public String toString() {
-        return "Mentor{" +
-                "firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", phone='" + phone + '\'' +
-                ", email='" + email + '\'' +
-                '}';
+        return String.format("%s %s", firstName, lastName);
     }
 }
