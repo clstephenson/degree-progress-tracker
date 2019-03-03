@@ -128,6 +128,10 @@ public class CourseEditActivity extends AppCompatActivity implements OnAsyncTask
                 currentCourse.setName(titleInput.getText().toString());
                 currentCourse.setStartDate(dirtyCourse.getStartDate());
                 currentCourse.setEndDate(dirtyCourse.getEndDate());
+                currentCourse.setStatus((CourseStatus) statusInput.getSelectedItem());
+                currentCourse.setStartAlertOn(enableAlertStartSwitch.isChecked());
+                currentCourse.setEndAlertOn(enableAlertEndSwitch.isChecked());
+                //todo need to handle mentor save
 
                 if (entryMode == MODE.UPDATE) {
                     viewModel.updateCourse(currentCourse);
@@ -307,6 +311,9 @@ public class CourseEditActivity extends AppCompatActivity implements OnAsyncTask
         dirtyCourse.setName(titleInput.getText().toString());
         dirtyCourse.setStartDate(DateUtils.getDateFromFormattedString(startDateInput.getText().toString()));
         dirtyCourse.setEndDate(DateUtils.getDateFromFormattedString(endDateInput.getText().toString()));
+        dirtyCourse.setStatus((CourseStatus) statusInput.getSelectedItem());
+        dirtyCourse.setEndAlertOn(enableAlertEndSwitch.isChecked());
+        dirtyCourse.setStartAlertOn(enableAlertStartSwitch.isChecked());
     }
 
     private enum MODE {
