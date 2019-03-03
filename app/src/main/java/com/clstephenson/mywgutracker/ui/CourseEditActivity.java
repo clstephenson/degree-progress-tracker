@@ -88,7 +88,8 @@ public class CourseEditActivity extends AppCompatActivity implements OnAsyncTask
             statusInput.setSelection(adapter.getPosition(currentCourse.getStatus()));
             enableAlertStartSwitch.setChecked(currentCourse.isStartAlertOn());
             enableAlertEndSwitch.setChecked(currentCourse.isEndAlertOn());
-            viewModel.getMentor(currentCourse.getMentorId()).observe(this, this::setupMentorList);
+            setupMentorList(currentCourse.getMentor());
+            //viewModel.getMentor(currentCourse.getMentorId()).observe(this, this::setupMentorList);
         } else {
             currentCourse = viewModel.getNewCourse();
         }
@@ -131,7 +132,13 @@ public class CourseEditActivity extends AppCompatActivity implements OnAsyncTask
                 currentCourse.setStatus((CourseStatus) statusInput.getSelectedItem());
                 currentCourse.setStartAlertOn(enableAlertStartSwitch.isChecked());
                 currentCourse.setEndAlertOn(enableAlertEndSwitch.isChecked());
-                //todo need to handle mentor save
+
+                if (!dirtyCourse.getMentor().equals(currentCourse.getMentor())) {
+                    currentCourse.getMentor().setFirstName(dirtyCourse.getMentor().getFirstName());
+                    currentCourse.getMentor().setLastName(dirtyCourse.getMentor().getLastName());
+                    currentCourse.getMentor().setPhone(dirtyCourse.getMentor().getPhone());
+                    currentCourse.getMentor().setEmail(dirtyCourse.getMentor().getEmail());
+                }
 
                 if (entryMode == MODE.UPDATE) {
                     viewModel.updateCourse(currentCourse);
@@ -149,7 +156,10 @@ public class CourseEditActivity extends AppCompatActivity implements OnAsyncTask
     private boolean isFormValid() {
         boolean isValid = true;
 
-        clearInputErrors(R.id.course_input_title_layout, R.id.course_input_start_layout, R.id.course_input_end_layout);
+        clearInputErrors(R.id.course_input_title_layout, R.id.course_input_start_layout,
+                R.id.course_input_end_layout, R.id.mentor_input_first_name_layout,
+                R.id.mentor_input_last_name_layout, R.id.mentor_input_email_layout,
+                R.id.mentor_input_phone_layout);
 
         if (ValidationUtils.isEmpty(titleInput.getText().toString())) {
             showValidationError(R.id.course_input_title_layout, R.string.validation_required);
@@ -163,6 +173,18 @@ public class CourseEditActivity extends AppCompatActivity implements OnAsyncTask
         } else if (ValidationUtils.isEndBeforeStart(startDateInput.getText().toString(),
                 endDateInput.getText().toString())) {
             showValidationError(R.id.course_input_end_layout, R.string.validation_end_before_start);
+            isValid = false;
+        } else if (ValidationUtils.isEmpty(mentorFirstNameInput.getText().toString())) {
+            showValidationError(R.id.mentor_input_first_name_layout, R.string.validation_required);
+            isValid = false;
+        } else if (ValidationUtils.isEmpty(mentorLastNameInput.getText().toString())) {
+            showValidationError(R.id.mentor_input_last_name_layout, R.string.validation_required);
+            isValid = false;
+        } else if (!ValidationUtils.isTelephone(mentorPhoneInput.getText().toString())) {
+            showValidationError(R.id.mentor_input_phone_layout, R.string.validation_phone);
+            isValid = false;
+        } else if (!ValidationUtils.isEmail(mentorEmailInput.getText().toString())) {
+            showValidationError(R.id.mentor_input_email_layout, R.string.validation_email);
             isValid = false;
         }
 
@@ -314,6 +336,10 @@ public class CourseEditActivity extends AppCompatActivity implements OnAsyncTask
         dirtyCourse.setStatus((CourseStatus) statusInput.getSelectedItem());
         dirtyCourse.setEndAlertOn(enableAlertEndSwitch.isChecked());
         dirtyCourse.setStartAlertOn(enableAlertStartSwitch.isChecked());
+        dirtyCourse.getMentor().setFirstName(mentorFirstNameInput.getText().toString());
+        dirtyCourse.getMentor().setLastName(mentorLastNameInput.getText().toString());
+        dirtyCourse.getMentor().setPhone(mentorPhoneInput.getText().toString());
+        dirtyCourse.getMentor().setEmail(mentorEmailInput.getText().toString());
     }
 
     private enum MODE {

@@ -57,8 +57,7 @@ public class CourseActivity extends AppCompatActivity implements OnAsyncTaskResu
         if (course != null) {
             currentCourse = course;
             setupCourseViews(course);
-
-            viewModel.getMentorId(course.getMentorId()).observe(this, this::setupMentorViews);
+            setupMentorViews(course.getMentor());
         }
     }
 

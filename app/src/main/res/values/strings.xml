@@ -59,6 +59,8 @@
     <string name="select_a_mentor_description">Select a mentor or enter a new one below.</string>
     <string name="mentor_not_present_description">If not present in the list, create a new mentor.</string>
     <string name="select_a_course_mentor">select a course mentor</string>
+    <string name="validation_phone">Please enter a valid telephone number.</string>
+    <string name="validation_email">Please enter a valid email address.</string>
     <string-array name="sample_list_items">
         <item>First item</item>
         <item>Second item</item>

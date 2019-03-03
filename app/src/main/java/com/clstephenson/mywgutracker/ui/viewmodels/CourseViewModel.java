@@ -3,9 +3,7 @@ package com.clstephenson.mywgutracker.ui.viewmodels;
 import android.app.Application;
 
 import com.clstephenson.mywgutracker.data.models.Course;
-import com.clstephenson.mywgutracker.data.models.Mentor;
 import com.clstephenson.mywgutracker.repositories.CourseRepository;
-import com.clstephenson.mywgutracker.repositories.MentorRepository;
 import com.clstephenson.mywgutracker.repositories.OnAsyncTaskResultListener;
 
 import androidx.annotation.NonNull;
@@ -15,12 +13,10 @@ import androidx.lifecycle.LiveData;
 public class CourseViewModel extends AndroidViewModel {
 
     CourseRepository courseRepository;
-    MentorRepository mentorRepository;
 
     public CourseViewModel(@NonNull Application application) {
         super(application);
         courseRepository = new CourseRepository(application);
-        mentorRepository = new MentorRepository(application);
     }
 
     public LiveData<Course> getCourseById(long id) {
@@ -33,10 +29,6 @@ public class CourseViewModel extends AndroidViewModel {
 
     public void setBackgroundTaskResultListener(OnAsyncTaskResultListener listener) {
         courseRepository.setOnAsyncTaskResultListener(listener);
-    }
-
-    public LiveData<Mentor> getMentorId(long mentorId) {
-        return mentorRepository.getById(mentorId);
     }
 
 

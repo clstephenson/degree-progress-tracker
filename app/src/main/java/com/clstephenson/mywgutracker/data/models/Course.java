@@ -9,6 +9,7 @@ import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
+import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Ignore;
@@ -17,10 +18,9 @@ import androidx.room.Index;
 @Entity(
         tableName = "course",
         foreignKeys = {
-                @ForeignKey(entity = Mentor.class, parentColumns = "id", childColumns = "mentor_id"),
                 @ForeignKey(entity = Term.class, parentColumns = "id", childColumns = "term_id")
         },
-        indices = {@Index("mentor_id"), @Index("term_id")}
+        indices = {@Index("term_id")}
 )
 public class Course extends BaseModel {
 
@@ -45,8 +45,8 @@ public class Course extends BaseModel {
     @ColumnInfo(name = "status")
     private CourseStatus status;
 
-    @ColumnInfo(name = "mentor_id")
-    private long mentorId;
+    @Embedded
+    private Mentor mentor;
 
     @ColumnInfo(name = "term_id")
     private long termId;
@@ -58,7 +58,7 @@ public class Course extends BaseModel {
     private List<Note> notes = Collections.emptyList();
 
     public Course(long id, @NonNull String name, Date startDate, Date endDate,
-                  boolean isStartAlertOn, boolean isEndAlertOn, CourseStatus status, long mentorId,
+                  boolean isStartAlertOn, boolean isEndAlertOn, CourseStatus status, Mentor mentor,
                   long termId) {
         this.id = id;
         this.name = name;
@@ -67,13 +67,13 @@ public class Course extends BaseModel {
         this.isStartAlertOn = isStartAlertOn;
         this.isEndAlertOn = isEndAlertOn;
         this.status = status;
-        this.mentorId = mentorId;
+        this.mentor = mentor;
         this.termId = termId;
     }
 
     @Ignore
     public Course(@NonNull String name, Date startDate, Date endDate,
-                  boolean isStartAlertOn, boolean isEndAlertOn, CourseStatus status, long mentorId,
+                  boolean isStartAlertOn, boolean isEndAlertOn, CourseStatus status, Mentor mentor,
                   long termId) {
         this.name = name;
         this.startDate = startDate;
@@ -81,7 +81,7 @@ public class Course extends BaseModel {
         this.isStartAlertOn = isStartAlertOn;
         this.isEndAlertOn = isEndAlertOn;
         this.status = status;
-        this.mentorId = mentorId;
+        this.mentor = mentor;
         this.termId = termId;
     }
 
@@ -94,7 +94,7 @@ public class Course extends BaseModel {
     public Course(Course course) {
         this(course.getId(), course.getName(), course.getStartDate(), course.getEndDate(),
                 course.isStartAlertOn(), course.isEndAlertOn(), course.getStatus(),
-                course.getMentorId(), course.getTermId());
+                new Mentor(course.getMentor()), course.getTermId());
     }
 
     @NonNull
@@ -130,12 +130,12 @@ public class Course extends BaseModel {
         this.endDate = endDate;
     }
 
-    public long getMentorId() {
-        return mentorId;
+    public Mentor getMentor() {
+        return mentor;
     }
 
-    public void setMentorId(long mentorId) {
-        this.mentorId = mentorId;
+    public void setMentor(Mentor mentor) {
+        this.mentor = mentor;
     }
 
     public long getTermId() {
@@ -185,7 +185,7 @@ public class Course extends BaseModel {
         Course course = (Course) o;
         return isStartAlertOn == course.isStartAlertOn &&
                 isEndAlertOn == course.isEndAlertOn &&
-                mentorId == course.mentorId &&
+                mentor == course.mentor &&
                 termId == course.termId &&
                 Objects.equals(id, course.id) &&
                 Objects.equals(name, course.name) &&
@@ -196,7 +196,7 @@ public class Course extends BaseModel {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, startDate, endDate, isStartAlertOn, isEndAlertOn, status, mentorId, termId);
+        return Objects.hash(id, name, startDate, endDate, isStartAlertOn, isEndAlertOn, status, mentor, termId);
     }
 
     @Override
@@ -208,7 +208,6 @@ public class Course extends BaseModel {
                 ", isStartAlertOn=" + isStartAlertOn +
                 ", isEndAlertOn=" + isEndAlertOn +
                 ", status=" + status +
-                ", mentorId=" + mentorId +
                 ", termId=" + termId +
                 '}';
     }
