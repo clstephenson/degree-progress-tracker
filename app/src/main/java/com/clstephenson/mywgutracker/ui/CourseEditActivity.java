@@ -80,7 +80,7 @@ public class CourseEditActivity extends AppCompatActivity implements OnAsyncTask
                 android.R.layout.simple_dropdown_item_1line, CourseStatus.values());
         statusInput.setAdapter(adapter);
 
-        if (entryMode == MODE.UPDATE) {
+        if (entryMode == MODE.UPDATE && course != null) {
             currentCourse = course;
             titleInput.setText(currentCourse.getName());
             startDateInput.setText(DateUtils.getFormattedDate(currentCourse.getStartDate()));
@@ -89,7 +89,6 @@ public class CourseEditActivity extends AppCompatActivity implements OnAsyncTask
             enableAlertStartSwitch.setChecked(currentCourse.isStartAlertOn());
             enableAlertEndSwitch.setChecked(currentCourse.isEndAlertOn());
             setupMentorList(currentCourse.getMentor());
-            //viewModel.getMentor(currentCourse.getMentorId()).observe(this, this::setupMentorList);
         } else {
             currentCourse = viewModel.getNewCourse();
         }

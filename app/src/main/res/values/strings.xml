@@ -14,7 +14,7 @@
     <string name="start">Start</string>
     <string name="end">End</string>
     <string name="confirm_delete_term">Are you sure you want to delete the currently selected term?</string>
-    <string name="confirm_delete_course">Are you sure you want to delete the currently selected course?</string>
+    <string name="confirm_delete_course">Are you sure you want to delete the selected course and its assessments?</string>
     <string name="term_deleted">The term was deleted successfully.</string>
     <string name="course_deleted">The course was deleted successfully.</string>
     <string name="term_delete_failed">Delete failed: Not allowed to delete a term that contains courses.</string>
