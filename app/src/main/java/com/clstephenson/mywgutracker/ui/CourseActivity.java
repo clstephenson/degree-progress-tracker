@@ -79,6 +79,9 @@ public class CourseActivity extends AppCompatActivity implements OnAsyncTaskResu
         TextView endView = findViewById(R.id.course_text_end);
         endView.setText(
                 String.format("%s: %s", getString(R.string.end), DateUtils.getFormattedDate(course.getEndDate())));
+
+        TextView termView = findViewById(R.id.course_term);
+        termView.setText(String.format("%s: %s", getString(R.string.term), viewModel.getTerm(course)));
     }
 
     private void setupMentorViews(Mentor mentor) {

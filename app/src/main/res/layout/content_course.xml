@@ -47,6 +47,14 @@
             tools:text="End Date" />
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/course_term"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/indent_size"
+        android:layout_marginTop="@dimen/text_line_spacing"
+        android:textSize="@dimen/text_size_standard"
+        tools:text="Term" />
 
     <TextView
         android:id="@+id/course_text_mentor_heading"

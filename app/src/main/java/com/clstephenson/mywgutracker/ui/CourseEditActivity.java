@@ -41,6 +41,7 @@ public class CourseEditActivity extends AppCompatActivity implements OnAsyncTask
     private TextInputEditText endDateInput;
     private TextInputEditText startDateInput;
     private Spinner statusInput;
+    private Spinner termInput;
     private TextInputEditText mentorFirstNameInput;
     private TextInputEditText mentorLastNameInput;
     private TextInputEditText mentorPhoneInput;
@@ -73,19 +74,25 @@ public class CourseEditActivity extends AppCompatActivity implements OnAsyncTask
         endDateInput = findViewById(R.id.course_input_end);
         startDateInput = findViewById(R.id.course_input_start);
         statusInput = findViewById(R.id.course_input_status);
+        termInput = findViewById(R.id.course_input_term);
         enableAlertStartSwitch = findViewById(R.id.course_switch_alert_start);
         enableAlertEndSwitch = findViewById(R.id.course_switch_alert_end);
 
-        ArrayAdapter<CourseStatus> adapter = new ArrayAdapter<>(this,
+        ArrayAdapter<CourseStatus> statusAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_dropdown_item_1line, CourseStatus.values());
-        statusInput.setAdapter(adapter);
+        statusInput.setAdapter(statusAdapter);
+
+        ArrayAdapter termAdapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_dropdown_item_1line, viewModel.getAllTerms());
+        termInput.setAdapter(termAdapter);
 
         if (entryMode == MODE.UPDATE && course != null) {
             currentCourse = course;
             titleInput.setText(currentCourse.getName());
             startDateInput.setText(DateUtils.getFormattedDate(currentCourse.getStartDate()));
             endDateInput.setText(DateUtils.getFormattedDate(currentCourse.getEndDate()));
-            statusInput.setSelection(adapter.getPosition(currentCourse.getStatus()));
+            statusInput.setSelection(statusAdapter.getPosition(currentCourse.getStatus()));
+            termInput.setSelection(termAdapter.getPosition(viewModel.getTermById(currentCourse.getTermId())));
             enableAlertStartSwitch.setChecked(currentCourse.isStartAlertOn());
             enableAlertEndSwitch.setChecked(currentCourse.isEndAlertOn());
             setupMentorList(currentCourse.getMentor());
@@ -121,6 +128,7 @@ public class CourseEditActivity extends AppCompatActivity implements OnAsyncTask
     }
 
     public void handleSaveCourse(View view) {
+        //todo need to save the changes to term
         if (isFormValid()) {
             updateDirtyCourse();
 

@@ -116,11 +116,6 @@ public class Term extends BaseModel {
 
     @Override
     public String toString() {
-        return "Term{" +
-                "id='" + id + '\'' +
-                "name='" + name + '\'' +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
-                '}';
+        return name;
     }
 }
