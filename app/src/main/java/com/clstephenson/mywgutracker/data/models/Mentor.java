@@ -4,28 +4,25 @@ import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
-import androidx.room.Entity;
 import androidx.room.Ignore;
 
-@Entity(tableName = "mentor")
-public class Mentor extends BaseModel {
+public class Mentor {
 
     @NonNull
-    @ColumnInfo(name = "first_name")
+    @ColumnInfo(name = "mentor_first_name")
     private String firstName;
 
     @NonNull
-    @ColumnInfo(name = "last_name")
+    @ColumnInfo(name = "mentor_last_name")
     private String lastName;
 
-    @ColumnInfo(name = "phone")
+    @ColumnInfo(name = "mentor_phone")
     private String phone;
 
-    @ColumnInfo(name = "email")
+    @ColumnInfo(name = "mentor_email")
     private String email;
 
-    public Mentor(long id, @NonNull String firstName, @NonNull String lastName, String phone, String email) {
-        this.id = id;
+    public Mentor(String firstName, String lastName, String phone, String email) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.phone = phone;
@@ -33,14 +30,9 @@ public class Mentor extends BaseModel {
     }
 
     @Ignore
-    public Mentor(@NonNull String firstName, @NonNull String lastName, String phone, String email) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.phone = phone;
-        this.email = email;
+    public Mentor(Mentor mentor) {
+        this(mentor.getFirstName(), mentor.getLastName(), mentor.getPhone(), mentor.getEmail());
     }
-
-    //todo create copy constructor
 
     @NonNull
     public String getFirstName() {
@@ -94,11 +86,6 @@ public class Mentor extends BaseModel {
 
     @Override
     public String toString() {
-        return "Mentor{" +
-                "firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", phone='" + phone + '\'' +
-                ", email='" + email + '\'' +
-                '}';
+        return String.format("%s %s", firstName, lastName);
     }
 }

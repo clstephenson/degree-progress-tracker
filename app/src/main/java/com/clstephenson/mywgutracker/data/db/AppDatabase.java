@@ -7,7 +7,6 @@ import com.clstephenson.mywgutracker.data.DataTypeConverter;
 import com.clstephenson.mywgutracker.data.TestDataGenerator;
 import com.clstephenson.mywgutracker.data.models.Assessment;
 import com.clstephenson.mywgutracker.data.models.Course;
-import com.clstephenson.mywgutracker.data.models.Mentor;
 import com.clstephenson.mywgutracker.data.models.Note;
 import com.clstephenson.mywgutracker.data.models.Term;
 
@@ -16,7 +15,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
-@Database(entities = {Assessment.class, Course.class, Mentor.class, Note.class, Term.class}, version = 1)
+@Database(entities = {Assessment.class, Course.class, Note.class, Term.class}, version = 1)
 @TypeConverters({DataTypeConverter.class})
 public abstract class AppDatabase extends RoomDatabase {
 
@@ -61,23 +60,20 @@ public abstract class AppDatabase extends RoomDatabase {
 
     private static class SeedDBAsync extends AsyncTask<Void, Void, Void> {
         private final TermDao termDao;
-        private final MentorDao mentorDao;
         private final CourseDao courseDao;
         private final AssessmentDao assessmentDao;
 
         SeedDBAsync(AppDatabase db) {
             termDao = db.termDao();
-            mentorDao = db.mentorDao();
             courseDao = db.courseDao();
             assessmentDao = db.assessmentDao();
         }
 
         @Override
         protected Void doInBackground(Void... voids) {
-            long mentorId = mentorDao.insert(TestDataGenerator.createMentor());
             Term term = TestDataGenerator.createTerm();
             long termId = termDao.insert(term);
-            Course course = TestDataGenerator.createCourse(mentorId, termId);
+            Course course = TestDataGenerator.createCourse(termId);
             long courseId = courseDao.insert(course);
             Assessment assessment = TestDataGenerator.createAssessment(courseId);
             long assessmentId = assessmentDao.insert(assessment);
@@ -88,8 +84,6 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract AssessmentDao assessmentDao();
 
     public abstract CourseDao courseDao();
-
-    public abstract MentorDao mentorDao();
 
     public abstract NoteDao noteDao();
 

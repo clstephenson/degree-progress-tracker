@@ -21,16 +21,17 @@ public class TestDataGenerator {
         return new Term("Test Term", new Date(), new Date(todayPlus180Days));
     }
 
-    public static Course createCourse(long mentorId, long termId) {
+    public static Course createCourse(long termId) {
         long todayPlus30Days = new Date().getTime() + DateUtils.MILLISECONDS_IN_DAY * 30;
-        return new Course("Mobile Application Development", new Date(), new Date(todayPlus30Days), false, false,
-                CourseStatus.STARTED, mentorId, termId);
+        Mentor mentor = createMentor();
+        return new Course("Mobile Application Development", new Date(), new Date(todayPlus30Days), false, true,
+                CourseStatus.STARTED, mentor, termId);
     }
 
     public static Assessment createAssessment(long courseId) {
         long todayPlus30Days = new Date().getTime() + DateUtils.MILLISECONDS_IN_DAY * 30;
         return new Assessment("TEST_CODE", "Mobile App Project",
-                new Date(todayPlus30Days), false, courseId, AssessmentType.PERFORMANCE);
+                new Date(todayPlus30Days), true, courseId, AssessmentType.PERFORMANCE);
     }
 
     public static Note createNote(long courseId) {

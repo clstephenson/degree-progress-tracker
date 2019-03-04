@@ -57,8 +57,7 @@ public class CourseActivity extends AppCompatActivity implements OnAsyncTaskResu
         if (course != null) {
             currentCourse = course;
             setupCourseViews(course);
-
-            viewModel.getMentorId(course.getMentorId()).observe(this, this::setupMentorViews);
+            setupMentorViews(course.getMentor());
         }
     }
 
@@ -80,6 +79,9 @@ public class CourseActivity extends AppCompatActivity implements OnAsyncTaskResu
         TextView endView = findViewById(R.id.course_text_end);
         endView.setText(
                 String.format("%s: %s", getString(R.string.end), DateUtils.getFormattedDate(course.getEndDate())));
+
+        TextView termView = findViewById(R.id.course_term);
+        termView.setText(String.format("%s: %s", getString(R.string.term), viewModel.getTerm(course)));
     }
 
     private void setupMentorViews(Mentor mentor) {
@@ -128,10 +130,9 @@ public class CourseActivity extends AppCompatActivity implements OnAsyncTaskResu
     }
 
     private void handleEditCourse() {
-        //todo uncomment this when course edit activity has been implemented
-//        Intent intent = new Intent(this, CourseEditActivity.class);
-//        intent.putExtra(EXTRA_COURSE_ID, currentCourse.getId());
-//        startActivityForResult(intent, 1);
+        Intent intent = new Intent(this, CourseEditActivity.class);
+        intent.putExtra(EXTRA_COURSE_ID, currentCourse.getId());
+        startActivityForResult(intent, 1);
     }
 
     @Override

@@ -15,7 +15,8 @@ import androidx.room.Index;
 @Entity(
         tableName = "assessment",
         foreignKeys = {
-                @ForeignKey(entity = Course.class, parentColumns = "id", childColumns = "course_id")
+                @ForeignKey(entity = Course.class, parentColumns = "id", childColumns = "course_id",
+                        onDelete = ForeignKey.CASCADE)
         },
         indices = {@Index("course_id")}
 )

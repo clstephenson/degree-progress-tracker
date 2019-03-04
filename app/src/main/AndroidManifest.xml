@@ -16,6 +16,9 @@
             android:name=".ui.TermEditActivity"
             android:label="@string/edit_term" />
         <activity
+            android:name=".ui.CourseEditActivity"
+            android:label="@string/edit_term" />
+        <activity
             android:name=".ui.TermActivity"
             android:label="@string/title_activity_term"
             android:parentActivityName=".ui.MainActivity">
