@@ -72,6 +72,9 @@
     <string name="confirm_delete_assessment">Are you sure you want to delete the current assessment?</string>
     <string name="assessment_deleted">The assessment was deleted successfully.</string>
     <string name="assessment_delete_failed">The assessment could not be deleted.</string>
+    <string name="course_notes">Course Notes</string>
+    <string name="confirm_delete_note">Are you sure you want to delete the selected note?</string>
+    <string name="notes">Notes</string>
     <string-array name="sample_list_items">
         <item>First item</item>
         <item>Second item</item>

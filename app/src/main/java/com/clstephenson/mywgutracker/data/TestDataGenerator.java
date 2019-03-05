@@ -34,7 +34,11 @@ public class TestDataGenerator {
                 new Date(todayPlus30Days), true, courseId, AssessmentType.PERFORMANCE);
     }
 
-    public static Note createNote(long courseId) {
-        return new Note("This is a test note", courseId);
+    public static Note createNote(int numToAppend, long courseId) {
+        return new Note(String.format("%d - %s", numToAppend,
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
+                        "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, " +
+                        "quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."),
+                courseId);
     }
 }

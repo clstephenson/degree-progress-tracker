@@ -37,7 +37,10 @@ public class Note extends BaseModel {
         this.courseId = courseId;
     }
 
-    //todo create copy constructor
+    @Ignore
+    public Note(Note note) {
+        this(note.getId(), note.getNote(), note.getCourseId());
+    }
 
     @NonNull
     public String getNote() {
@@ -61,21 +64,19 @@ public class Note extends BaseModel {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Note note1 = (Note) o;
-        return courseId == note1.courseId &&
+        return id == note1.id &&
+                courseId == note1.courseId &&
                 Objects.equals(note, note1.note);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(note, courseId);
+        return Objects.hash(id, note, courseId);
     }
 
     @Override
     public String toString() {
         int length = note.length() > 25 ? 25 : note.length();
-        return "Note{" +
-                "note='" + note.substring(0, length) + "..." + '\'' +
-                ", courseId=" + courseId +
-                '}';
+        return String.format("%s...", note.substring(0, length));
     }
 }

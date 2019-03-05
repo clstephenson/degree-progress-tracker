@@ -140,9 +140,18 @@ public class CourseActivity extends AppCompatActivity implements OnDataTaskResul
             case R.id.action_edit_course:
                 handleEditCourse();
                 break;
+            case R.id.action_view_notes:
+                openNotesList();
+                break;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void openNotesList() {
+        Intent intent = new Intent(this, NotesListActivity.class);
+        intent.putExtra(EXTRA_COURSE_ID, currentCourse.getId());
+        startActivityForResult(intent, 1);
     }
 
     private void handleEditCourse() {
