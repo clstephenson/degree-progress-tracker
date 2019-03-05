@@ -16,21 +16,21 @@ public class TestDataGenerator {
                 "john.smith@example.com");
     }
 
-    public static Term createTerm() {
+    public static Term createTerm(int numToAppend) {
         long todayPlus180Days = new Date().getTime() + DateUtils.MILLISECONDS_IN_DAY * 180;
-        return new Term("Test Term", new Date(), new Date(todayPlus180Days));
+        return new Term(String.format("Test Term %d", numToAppend), new Date(), new Date(todayPlus180Days));
     }
 
-    public static Course createCourse(long termId) {
+    public static Course createCourse(int numToAppend, long termId) {
         long todayPlus30Days = new Date().getTime() + DateUtils.MILLISECONDS_IN_DAY * 30;
         Mentor mentor = createMentor();
-        return new Course("Mobile Application Development", new Date(), new Date(todayPlus30Days), false, true,
+        return new Course(String.format("Test Course %d", numToAppend), new Date(), new Date(todayPlus30Days), false, true,
                 CourseStatus.STARTED, mentor, termId);
     }
 
-    public static Assessment createAssessment(long courseId) {
+    public static Assessment createAssessment(int numToAppend, long courseId) {
         long todayPlus30Days = new Date().getTime() + DateUtils.MILLISECONDS_IN_DAY * 30;
-        return new Assessment("TEST_CODE", "Mobile App Project",
+        return new Assessment(String.format("Test Code %d", numToAppend), String.format("Test Assessment %d", numToAppend),
                 new Date(todayPlus30Days), true, courseId, AssessmentType.PERFORMANCE);
     }
 
