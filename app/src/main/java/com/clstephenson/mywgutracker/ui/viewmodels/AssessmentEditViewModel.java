@@ -22,8 +22,8 @@ public class AssessmentEditViewModel extends AndroidViewModel {
         assessmentRepository = new AssessmentRepository(application);
     }
 
-    public Assessment getNewAssessment() {
-        return new Assessment("", "", new Date(), false, 0,
+    public Assessment getNewAssessment(long courseId) {
+        return new Assessment("", "", new Date(), false, courseId,
                 AssessmentType.OBJECTIVE);
     }
 

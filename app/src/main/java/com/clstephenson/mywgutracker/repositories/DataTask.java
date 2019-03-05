@@ -2,6 +2,7 @@ package com.clstephenson.mywgutracker.repositories;
 
 import android.database.sqlite.SQLiteConstraintException;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.clstephenson.mywgutracker.data.db.BaseDao;
 import com.clstephenson.mywgutracker.data.models.BaseModel;
@@ -15,6 +16,7 @@ public class DataTask<T extends BaseModel> extends AsyncTask<T, Void, DataTaskRe
     private OnDataTaskResultListener listener;
     private BaseDao asyncTaskDao;
     private Action action;
+    private final String TAG = this.getClass().getSimpleName();
 
     /**
      * @param daoClass The class describing the dao object in the second parameter.
@@ -50,8 +52,10 @@ public class DataTask<T extends BaseModel> extends AsyncTask<T, Void, DataTaskRe
             dataTaskResult.setResult(DataTaskResult.Result.SUCCESS);
             return dataTaskResult;
         } catch (SQLiteConstraintException e) {
+            Log.d(TAG, "doInBackground: " + e.getLocalizedMessage());
             dataTaskResult.setConstraintException(new EntityConstraintException(e));
         } catch (Exception e) {
+            Log.d(TAG, "doInBackground: " + e.getLocalizedMessage());
             dataTaskResult.setOtherException(e);
         } finally {
             return dataTaskResult;
