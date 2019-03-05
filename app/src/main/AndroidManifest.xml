@@ -17,7 +17,10 @@
             android:label="@string/edit_term" />
         <activity
             android:name=".ui.CourseEditActivity"
-            android:label="@string/edit_term" />
+            android:label="@string/edit_course" />
+        <activity
+            android:name=".ui.AssessmentEditActivity"
+            android:label="@string/edit_assessment" />
         <activity
             android:name=".ui.TermActivity"
             android:label="@string/title_activity_term"

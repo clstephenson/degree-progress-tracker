@@ -16,8 +16,8 @@ import com.clstephenson.mywgutracker.R;
 import com.clstephenson.mywgutracker.data.CourseStatus;
 import com.clstephenson.mywgutracker.data.models.Course;
 import com.clstephenson.mywgutracker.data.models.Mentor;
-import com.clstephenson.mywgutracker.repositories.AsyncTaskResult;
-import com.clstephenson.mywgutracker.repositories.OnAsyncTaskResultListener;
+import com.clstephenson.mywgutracker.repositories.DataTaskResult;
+import com.clstephenson.mywgutracker.repositories.OnDataTaskResultListener;
 import com.clstephenson.mywgutracker.ui.viewmodels.CourseEditViewModel;
 import com.clstephenson.mywgutracker.utils.DateUtils;
 import com.clstephenson.mywgutracker.utils.ValidationUtils;
@@ -31,7 +31,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 
-public class CourseEditActivity extends AppCompatActivity implements OnAsyncTaskResultListener {
+public class CourseEditActivity extends AppCompatActivity implements OnDataTaskResultListener {
 
     CourseEditViewModel viewModel;
     private MODE entryMode;
@@ -56,7 +56,7 @@ public class CourseEditActivity extends AppCompatActivity implements OnAsyncTask
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         viewModel = ViewModelProviders.of(this).get(CourseEditViewModel.class);
-        viewModel.setBackgroundTaskResultListener(this);
+        viewModel.setDataTaskResultListener(this);
         long courseId = getIntent().getLongExtra(CourseActivity.EXTRA_COURSE_ID, 0);
         if (courseId == 0) {
             entryMode = MODE.CREATE;
@@ -228,20 +228,41 @@ public class CourseEditActivity extends AppCompatActivity implements OnAsyncTask
     }
 
     @Override
-    public void onAsyncInsertDataCompleted(AsyncTaskResult result) {
-        if (result.isSuccessful()) {
-            openCourseList(R.string.course_added, Snackbar.LENGTH_LONG);
-        } else {
-            int messageResourceId;
-            if (result.getConstraintException() != null) {
-                messageResourceId = R.string.course_add_failed;
-            } else {
-                messageResourceId = R.string.unexpected_error;
-            }
-            Snackbar snackbar = Snackbar.make(
-                    findViewById(R.id.course_edit_coordinator_layout), messageResourceId, Snackbar.LENGTH_INDEFINITE);
-            snackbar.setAction(getString(R.string.dismiss), v -> snackbar.dismiss());
-            snackbar.show();
+    public void onNotifyDataChanged(DataTaskResult result) {
+        switch (result.getAction()) {
+            case DELETE:
+                if (result.isSuccessful()) {
+                    openCourseList(R.string.course_deleted, Snackbar.LENGTH_LONG);
+                } else {
+                    int messageResourceId;
+                    if (result.getConstraintException() != null) {
+                        messageResourceId = R.string.course_delete_failed;
+                    } else {
+                        messageResourceId = R.string.unexpected_error;
+                    }
+                    showDataChangedSnackbarMessage(messageResourceId);
+                }
+                break;
+            case UPDATE:
+                if (result.isSuccessful()) {
+                    finish();
+                } else {
+                    showDataChangedSnackbarMessage(R.string.unexpected_error);
+                }
+                break;
+            case INSERT:
+                if (result.isSuccessful()) {
+                    openCourseList(R.string.course_added, Snackbar.LENGTH_LONG);
+                } else {
+                    int messageResourceId;
+                    if (result.getConstraintException() != null) {
+                        messageResourceId = R.string.course_add_failed;
+                    } else {
+                        messageResourceId = R.string.unexpected_error;
+                    }
+                    showDataChangedSnackbarMessage(messageResourceId);
+                }
+                break;
         }
     }
 
@@ -257,36 +278,6 @@ public class CourseEditActivity extends AppCompatActivity implements OnAsyncTask
                 })
                 .create()
                 .show();
-    }
-
-    @Override
-    public void onAsyncDeleteDataCompleted(AsyncTaskResult result) {
-        if (result.isSuccessful()) {
-            openCourseList(R.string.course_deleted, Snackbar.LENGTH_LONG);
-        } else {
-            int messageResourceId;
-            if (result.getConstraintException() != null) {
-                messageResourceId = R.string.course_delete_failed;
-            } else {
-                messageResourceId = R.string.unexpected_error;
-            }
-            Snackbar snackbar = Snackbar.make(
-                    findViewById(R.id.course_edit_coordinator_layout), messageResourceId, Snackbar.LENGTH_INDEFINITE);
-            snackbar.setAction(getString(R.string.dismiss), v -> snackbar.dismiss());
-            snackbar.show();
-        }
-    }
-
-    @Override
-    public void onAsyncUpdateDataCompleted(AsyncTaskResult result) {
-        if (result.isSuccessful()) {
-            finish();
-        } else {
-            Snackbar snackbar = Snackbar.make(
-                    findViewById(R.id.course_edit_coordinator_layout), R.string.unexpected_error, Snackbar.LENGTH_INDEFINITE);
-            snackbar.setAction(getString(R.string.dismiss), v -> snackbar.dismiss());
-            snackbar.show();
-        }
     }
 
     private void openCourseList(int messageId, int snackbarLength) {
@@ -334,6 +325,13 @@ public class CourseEditActivity extends AppCompatActivity implements OnAsyncTask
         Dialog calendarDialog = new Dialog(this);
         calendarDialog.setContentView(R.layout.calendar_dialog_content);
         return calendarDialog;
+    }
+
+    private void showDataChangedSnackbarMessage(int messageResourceId) {
+        Snackbar snackbar = Snackbar.make(
+                findViewById(R.id.course_edit_coordinator_layout), messageResourceId, Snackbar.LENGTH_INDEFINITE);
+        snackbar.setAction(getString(R.string.dismiss), v -> snackbar.dismiss());
+        snackbar.show();
     }
 
     private void updateDirtyCourse() {

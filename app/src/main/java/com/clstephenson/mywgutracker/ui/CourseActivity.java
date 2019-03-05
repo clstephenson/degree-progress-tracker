@@ -10,8 +10,8 @@ import android.widget.TextView;
 import com.clstephenson.mywgutracker.R;
 import com.clstephenson.mywgutracker.data.models.Course;
 import com.clstephenson.mywgutracker.data.models.Mentor;
-import com.clstephenson.mywgutracker.repositories.AsyncTaskResult;
-import com.clstephenson.mywgutracker.repositories.OnAsyncTaskResultListener;
+import com.clstephenson.mywgutracker.repositories.DataTaskResult;
+import com.clstephenson.mywgutracker.repositories.OnDataTaskResultListener;
 import com.clstephenson.mywgutracker.ui.viewmodels.CourseViewModel;
 import com.clstephenson.mywgutracker.utils.DateUtils;
 import com.google.android.material.snackbar.Snackbar;
@@ -23,9 +23,12 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 
-public class CourseActivity extends AppCompatActivity implements OnAsyncTaskResultListener {
+public class CourseActivity extends AppCompatActivity implements OnDataTaskResultListener {
 
     public static final String EXTRA_COURSE_ID = CourseActivity.class.getSimpleName() + "extra_course_id";
+    public static final String EXTRA_ASSESSMENT_ID = CourseActivity.class.getSimpleName() + "extra_assessment_id";
+    public static final String EXTRA_MESSAGE_STRING_ID = MainActivity.class.getSimpleName() + "REQUESTED_MESSAGE";
+    public static final String EXTRA_MESSAGE_LENGTH = MainActivity.class.getSimpleName() + "REQUESTED_SNACKBAR_LENGTH";
     private CourseViewModel viewModel;
     private Course currentCourse;
 
@@ -38,11 +41,23 @@ public class CourseActivity extends AppCompatActivity implements OnAsyncTaskResu
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         viewModel = ViewModelProviders.of(this).get(CourseViewModel.class);
-        viewModel.setBackgroundTaskResultListener(this);
+        viewModel.setDataTaskResultListener(this);
         long courseId = getIntent().getLongExtra(EXTRA_COURSE_ID, 0);
         viewModel.getCourseById(courseId).observe(this, this::setupViews);
         setupAssessmentListFragment(courseId);
         setTitle(R.string.title_activity_course);
+        processIntentExtraData(getIntent());
+    }
+
+    private void processIntentExtraData(Intent intent) {
+        if (intent.hasExtra(EXTRA_MESSAGE_STRING_ID) && intent.hasExtra(EXTRA_MESSAGE_LENGTH)) {
+            Snackbar snackbar = Snackbar.make(
+                    findViewById(R.id.course_coordinator_layout),
+                    intent.getIntExtra(EXTRA_MESSAGE_STRING_ID, 0),
+                    intent.getIntExtra(EXTRA_MESSAGE_LENGTH, Snackbar.LENGTH_LONG));
+            snackbar.setAction(getString(R.string.dismiss).toUpperCase(), v -> snackbar.dismiss());
+            snackbar.show();
+        }
     }
 
     private void setupFloatingActionButton() {
@@ -159,34 +174,55 @@ public class CourseActivity extends AppCompatActivity implements OnAsyncTaskResu
                 .show();
     }
 
-
     @Override
-    public void onAsyncDeleteDataCompleted(AsyncTaskResult result) {
-        if (result.isSuccessful()) {
-            openCourseList(R.string.course_deleted, Snackbar.LENGTH_LONG);
-        } else {
-            int messageResourceId;
-            if (result.getConstraintException() != null) {
-                messageResourceId = R.string.course_delete_failed;
-            } else {
-                messageResourceId = R.string.unexpected_error;
-            }
-            Snackbar snackbar = Snackbar.make(
-                    findViewById(R.id.course_coordinator_layout), messageResourceId, Snackbar.LENGTH_INDEFINITE);
-            snackbar.setAction(getString(R.string.dismiss), v -> snackbar.dismiss());
-            snackbar.show();
+    public void onNotifyDataChanged(DataTaskResult result) {
+        switch (result.getAction()) {
+            case DELETE:
+                if (result.isSuccessful()) {
+                    openCourseList(R.string.course_deleted, Snackbar.LENGTH_LONG);
+                } else {
+                    int messageResourceId;
+                    if (result.getConstraintException() != null) {
+                        messageResourceId = R.string.course_delete_failed;
+                    } else {
+                        messageResourceId = R.string.unexpected_error;
+                    }
+                    Snackbar snackbar = Snackbar.make(
+                            findViewById(R.id.course_coordinator_layout), messageResourceId, Snackbar.LENGTH_INDEFINITE);
+                    snackbar.setAction(getString(R.string.dismiss), v -> snackbar.dismiss());
+                    snackbar.show();
+                }
+                break;
         }
     }
 
-    @Override
-    public void onAsyncUpdateDataCompleted(AsyncTaskResult result) {
-        throw new UnsupportedOperationException();
-    }
+//    @Override
+//    public void onAsyncDeleteDataCompleted(DataTaskResult result) {
+//        if (result.isSuccessful()) {
+//            openCourseList(R.string.course_deleted, Snackbar.LENGTH_LONG);
+//        } else {
+//            int messageResourceId;
+//            if (result.getConstraintException() != null) {
+//                messageResourceId = R.string.course_delete_failed;
+//            } else {
+//                messageResourceId = R.string.unexpected_error;
+//            }
+//            Snackbar snackbar = Snackbar.make(
+//                    findViewById(R.id.course_coordinator_layout), messageResourceId, Snackbar.LENGTH_INDEFINITE);
+//            snackbar.setAction(getString(R.string.dismiss), v -> snackbar.dismiss());
+//            snackbar.show();
+//        }
+//    }
 
-    @Override
-    public void onAsyncInsertDataCompleted(AsyncTaskResult result) {
-        throw new UnsupportedOperationException();
-    }
+//    @Override
+//    public void onAsyncUpdateDataCompleted(DataTaskResult result) {
+//        throw new UnsupportedOperationException();
+//    }
+//
+//    @Override
+//    public void onAsyncInsertDataCompleted(DataTaskResult result) {
+//        throw new UnsupportedOperationException();
+//    }
 
     private void openCourseList(int messageId, int snackbarLength) {
         Intent intent = new Intent(this, MainActivity.class);

@@ -1,5 +1,6 @@
 package com.clstephenson.mywgutracker.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -7,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.clstephenson.mywgutracker.R;
+import com.clstephenson.mywgutracker.data.models.Assessment;
 import com.clstephenson.mywgutracker.ui.adapters.AssessmentListAdapter;
 import com.clstephenson.mywgutracker.ui.viewmodels.AssessmentListViewModel;
 
@@ -59,16 +61,15 @@ public class AssessmentListFragment extends Fragment {
                 long courseId = bundle.getLong(CourseActivity.EXTRA_COURSE_ID);
                 viewModel.getAssessmentsByCourseId(courseId).observe(getActivity(), adapter::setAssessments);
             } else {
-                viewModel.getAllAssessments().observe(getActivity(), adapter::setAssessments);
+                viewModel.getAssessments().observe(getActivity(), adapter::setAssessments);
             }
         }
 
         adapter.setOnItemInteractionListener(((view, position) -> {
-            throw new UnsupportedOperationException();
-//            Intent intent = new Intent(getActivity(), AssessmentActivity.class);
-//            Assessment selectedAssessment = viewModel.getAssessment(position);
-//            intent.putExtra(AssessmentActivity.EXTRA_ASSESSMENT_ID, selectedAssessment.getId());
-//            startActivity(intent);
+            Intent intent = new Intent(getActivity(), AssessmentEditActivity.class);
+            Assessment selectedAssessment = viewModel.getAssessment(position);
+            intent.putExtra(CourseActivity.EXTRA_ASSESSMENT_ID, selectedAssessment.getId());
+            startActivity(intent);
         }));
     }
 

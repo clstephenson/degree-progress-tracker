@@ -11,8 +11,8 @@ import android.widget.CalendarView;
 
 import com.clstephenson.mywgutracker.R;
 import com.clstephenson.mywgutracker.data.models.Term;
-import com.clstephenson.mywgutracker.repositories.AsyncTaskResult;
-import com.clstephenson.mywgutracker.repositories.OnAsyncTaskResultListener;
+import com.clstephenson.mywgutracker.repositories.DataTaskResult;
+import com.clstephenson.mywgutracker.repositories.OnDataTaskResultListener;
 import com.clstephenson.mywgutracker.ui.viewmodels.TermEditViewModel;
 import com.clstephenson.mywgutracker.utils.DateUtils;
 import com.clstephenson.mywgutracker.utils.ValidationUtils;
@@ -26,7 +26,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 
-public class TermEditActivity extends AppCompatActivity implements OnAsyncTaskResultListener {
+public class TermEditActivity extends AppCompatActivity implements OnDataTaskResultListener {
 
     private MODE entryMode;
 
@@ -162,23 +162,23 @@ public class TermEditActivity extends AppCompatActivity implements OnAsyncTaskRe
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onAsyncInsertDataCompleted(AsyncTaskResult result) {
-        if (result.isSuccessful()) {
-            openTermList(R.string.term_added, Snackbar.LENGTH_LONG);
-        } else {
-            int messageResourceId;
-            if (result.getConstraintException() != null) {
-                messageResourceId = R.string.term_add_failed;
-            } else {
-                messageResourceId = R.string.unexpected_error;
-            }
-            Snackbar snackbar = Snackbar.make(
-                    findViewById(R.id.term_edit_coordinator_layout), messageResourceId, Snackbar.LENGTH_INDEFINITE);
-            snackbar.setAction(getString(R.string.dismiss), v -> snackbar.dismiss());
-            snackbar.show();
-        }
-    }
+//    @Override
+//    public void onAsyncInsertDataCompleted(DataTaskResult result) {
+//        if (result.isSuccessful()) {
+//            openTermList(R.string.term_added, Snackbar.LENGTH_LONG);
+//        } else {
+//            int messageResourceId;
+//            if (result.getConstraintException() != null) {
+//                messageResourceId = R.string.term_add_failed;
+//            } else {
+//                messageResourceId = R.string.unexpected_error;
+//            }
+//            Snackbar snackbar = Snackbar.make(
+//                    findViewById(R.id.term_edit_coordinator_layout), messageResourceId, Snackbar.LENGTH_INDEFINITE);
+//            snackbar.setAction(getString(R.string.dismiss), v -> snackbar.dismiss());
+//            snackbar.show();
+//        }
+//    }
 
     private void handleDeleteTerm() {
         new AlertDialog.Builder(this)
@@ -195,32 +195,41 @@ public class TermEditActivity extends AppCompatActivity implements OnAsyncTaskRe
     }
 
     @Override
-    public void onAsyncDeleteDataCompleted(AsyncTaskResult result) {
-        if (result.isSuccessful()) {
-            openTermList(R.string.term_deleted, Snackbar.LENGTH_LONG);
-        } else {
-            int messageResourceId;
-            if (result.getConstraintException() != null) {
-                messageResourceId = R.string.term_delete_failed;
-            } else {
-                messageResourceId = R.string.unexpected_error;
-            }
-            Snackbar snackbar = Snackbar.make(
-                    findViewById(R.id.term_edit_coordinator_layout), messageResourceId, Snackbar.LENGTH_INDEFINITE);
-            snackbar.setAction(getString(R.string.dismiss), v -> snackbar.dismiss());
-            snackbar.show();
-        }
-    }
-
-    @Override
-    public void onAsyncUpdateDataCompleted(AsyncTaskResult result) {
-        if (result.isSuccessful()) {
-            finish();
-        } else {
-            Snackbar snackbar = Snackbar.make(
-                    findViewById(R.id.term_edit_coordinator_layout), R.string.unexpected_error, Snackbar.LENGTH_INDEFINITE);
-            snackbar.setAction(getString(R.string.dismiss), v -> snackbar.dismiss());
-            snackbar.show();
+    public void onNotifyDataChanged(DataTaskResult result) {
+        switch (result.getAction()) {
+            case DELETE:
+                if (result.isSuccessful()) {
+                    openTermList(R.string.term_deleted, Snackbar.LENGTH_LONG);
+                } else {
+                    int messageResourceId;
+                    if (result.getConstraintException() != null) {
+                        messageResourceId = R.string.term_delete_failed;
+                    } else {
+                        messageResourceId = R.string.unexpected_error;
+                    }
+                    showDataChangedSnackbarMessage(messageResourceId);
+                }
+                break;
+            case UPDATE:
+                if (result.isSuccessful()) {
+                    finish();
+                } else {
+                    showDataChangedSnackbarMessage(R.string.unexpected_error);
+                }
+                break;
+            case INSERT:
+                if (result.isSuccessful()) {
+                    openTermList(R.string.term_added, Snackbar.LENGTH_LONG);
+                } else {
+                    int messageResourceId;
+                    if (result.getConstraintException() != null) {
+                        messageResourceId = R.string.term_add_failed;
+                    } else {
+                        messageResourceId = R.string.unexpected_error;
+                    }
+                    showDataChangedSnackbarMessage(messageResourceId);
+                }
+                break;
         }
     }
 
@@ -273,6 +282,13 @@ public class TermEditActivity extends AppCompatActivity implements OnAsyncTaskRe
         Dialog calendarDialog = new Dialog(this);
         calendarDialog.setContentView(R.layout.calendar_dialog_content);
         return calendarDialog;
+    }
+
+    private void showDataChangedSnackbarMessage(int messageResourceId) {
+        Snackbar snackbar = Snackbar.make(
+                findViewById(R.id.term_edit_coordinator_layout), messageResourceId, Snackbar.LENGTH_INDEFINITE);
+        snackbar.setAction(getString(R.string.dismiss), v -> snackbar.dismiss());
+        snackbar.show();
     }
 
     private void updateDirtyTerm() {

@@ -7,7 +7,7 @@ import com.clstephenson.mywgutracker.data.models.Course;
 import com.clstephenson.mywgutracker.data.models.Mentor;
 import com.clstephenson.mywgutracker.data.models.Term;
 import com.clstephenson.mywgutracker.repositories.CourseRepository;
-import com.clstephenson.mywgutracker.repositories.OnAsyncTaskResultListener;
+import com.clstephenson.mywgutracker.repositories.OnDataTaskResultListener;
 import com.clstephenson.mywgutracker.repositories.TermRepository;
 
 import java.util.Date;
@@ -67,8 +67,8 @@ public class CourseEditViewModel extends AndroidViewModel {
         courseRepository.update(course);
     }
 
-    public void setBackgroundTaskResultListener(OnAsyncTaskResultListener delegate) {
-        courseRepository.setOnAsyncTaskResultListener(delegate);
+    public void setDataTaskResultListener(OnDataTaskResultListener listener) {
+        courseRepository.setOnDataTaskResultListener(listener);
     }
 
     public void insertCourse(Course course) {

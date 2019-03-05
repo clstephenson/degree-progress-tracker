@@ -71,12 +71,18 @@ public abstract class AppDatabase extends RoomDatabase {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            Term term = TestDataGenerator.createTerm();
-            long termId = termDao.insert(term);
-            Course course = TestDataGenerator.createCourse(termId);
-            long courseId = courseDao.insert(course);
-            Assessment assessment = TestDataGenerator.createAssessment(courseId);
-            long assessmentId = assessmentDao.insert(assessment);
+            for (int i = 1; i < 3; i++) {
+                Term term = TestDataGenerator.createTerm(i);
+                long termId = termDao.insert(term);
+                for (int j = 1; j < 3; j++) {
+                    Course course = TestDataGenerator.createCourse(j, termId);
+                    long courseId = courseDao.insert(course);
+                    for (int k = 1; k < 3; k++) {
+                        Assessment assessment = TestDataGenerator.createAssessment(k, courseId);
+                        long assessmentId = assessmentDao.insert(assessment);
+                    }
+                }
+            }
             return null;
         }
     }

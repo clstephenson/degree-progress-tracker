@@ -5,7 +5,7 @@ import android.app.Application;
 import com.clstephenson.mywgutracker.data.models.Course;
 import com.clstephenson.mywgutracker.data.models.Term;
 import com.clstephenson.mywgutracker.repositories.CourseRepository;
-import com.clstephenson.mywgutracker.repositories.OnAsyncTaskResultListener;
+import com.clstephenson.mywgutracker.repositories.OnDataTaskResultListener;
 import com.clstephenson.mywgutracker.repositories.TermRepository;
 
 import java.util.List;
@@ -48,8 +48,8 @@ public class CourseViewModel extends AndroidViewModel {
         courseRepository.delete(course);
     }
 
-    public void setBackgroundTaskResultListener(OnAsyncTaskResultListener listener) {
-        courseRepository.setOnAsyncTaskResultListener(listener);
+    public void setDataTaskResultListener(OnDataTaskResultListener listener) {
+        courseRepository.setOnDataTaskResultListener(listener);
     }
 
 

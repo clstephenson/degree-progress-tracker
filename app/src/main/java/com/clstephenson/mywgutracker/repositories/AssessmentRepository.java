@@ -1,7 +1,6 @@
 package com.clstephenson.mywgutracker.repositories;
 
 import android.app.Application;
-import android.util.Pair;
 
 import com.clstephenson.mywgutracker.data.db.AppDatabase;
 import com.clstephenson.mywgutracker.data.db.AssessmentDao;
@@ -16,7 +15,7 @@ public class AssessmentRepository implements Repository<Assessment> {
 
     private AssessmentDao assessmentDao;
     private LiveData<List<Assessment>> allAssessments;
-    private OnAsyncTaskResultListener onAsyncTaskResultListener;
+    private OnDataTaskResultListener onDataTaskResultListener;
 
     public AssessmentRepository(@NonNull Application application) {
         AppDatabase db = AppDatabase.getDatabase(application);
@@ -40,12 +39,12 @@ public class AssessmentRepository implements Repository<Assessment> {
 
     @Override
     public void insert(Assessment assessment) {
-        new InsertDataAsyncTask<Assessment>(AssessmentDao.class, assessmentDao).execute(Pair.create(assessment, onAsyncTaskResultListener));
+        new DataTask<Assessment>(AssessmentDao.class, assessmentDao, DataTask.Action.INSERT, onDataTaskResultListener).execute(assessment);
     }
 
     @Override
     public void update(Assessment assessment) {
-        new UpdateDataAsyncTask<Assessment>(AssessmentDao.class, assessmentDao).execute(Pair.create(assessment, onAsyncTaskResultListener));
+        new DataTask<Assessment>(AssessmentDao.class, assessmentDao, DataTask.Action.UPDATE, onDataTaskResultListener).execute(assessment);
     }
 
     @Override
@@ -55,11 +54,11 @@ public class AssessmentRepository implements Repository<Assessment> {
 
     @Override
     public void delete(Assessment assessment) {
-        new DeleteDataAsyncTask<Assessment>(AssessmentDao.class, assessmentDao).execute(Pair.create(assessment, onAsyncTaskResultListener));
+        new DataTask<Assessment>(AssessmentDao.class, assessmentDao, DataTask.Action.DELETE, onDataTaskResultListener).execute(assessment);
     }
 
-    public void setOnAsyncTaskResultListener(OnAsyncTaskResultListener listener) {
-        this.onAsyncTaskResultListener = listener;
+    public void setOnDataTaskResultListener(OnDataTaskResultListener listener) {
+        this.onDataTaskResultListener = listener;
     }
 
 }

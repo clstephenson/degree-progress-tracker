@@ -3,7 +3,7 @@ package com.clstephenson.mywgutracker.ui.viewmodels;
 import android.app.Application;
 
 import com.clstephenson.mywgutracker.data.models.Term;
-import com.clstephenson.mywgutracker.repositories.OnAsyncTaskResultListener;
+import com.clstephenson.mywgutracker.repositories.OnDataTaskResultListener;
 import com.clstephenson.mywgutracker.repositories.TermRepository;
 
 import androidx.annotation.NonNull;
@@ -31,8 +31,8 @@ public class TermViewModel extends AndroidViewModel {
         termRepository.delete(term);
     }
 
-    public void setBackgroundTaskResultListener(OnAsyncTaskResultListener listener) {
-        termRepository.setOnAsyncTaskResultListener(listener);
+    public void setDataTaskResultListener(OnDataTaskResultListener listener) {
+        termRepository.setOnDataTaskResultListener(listener);
     }
 
 

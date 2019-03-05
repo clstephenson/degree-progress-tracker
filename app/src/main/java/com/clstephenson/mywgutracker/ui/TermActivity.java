@@ -9,8 +9,8 @@ import android.widget.TextView;
 
 import com.clstephenson.mywgutracker.R;
 import com.clstephenson.mywgutracker.data.models.Term;
-import com.clstephenson.mywgutracker.repositories.AsyncTaskResult;
-import com.clstephenson.mywgutracker.repositories.OnAsyncTaskResultListener;
+import com.clstephenson.mywgutracker.repositories.DataTaskResult;
+import com.clstephenson.mywgutracker.repositories.OnDataTaskResultListener;
 import com.clstephenson.mywgutracker.ui.viewmodels.TermViewModel;
 import com.clstephenson.mywgutracker.utils.DateUtils;
 import com.google.android.material.snackbar.Snackbar;
@@ -22,7 +22,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 
-public class TermActivity extends AppCompatActivity implements OnAsyncTaskResultListener {
+public class TermActivity extends AppCompatActivity implements OnDataTaskResultListener {
 
     private TermViewModel termViewModel;
     private Term currentTerm;
@@ -38,7 +38,7 @@ public class TermActivity extends AppCompatActivity implements OnAsyncTaskResult
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         termViewModel = ViewModelProviders.of(this).get(TermViewModel.class);
-        termViewModel.setBackgroundTaskResultListener(this);
+        termViewModel.setDataTaskResultListener(this);
         long termId = getIntent().getLongExtra(EXTRA_TERM_ID, 0);
         termViewModel.getTermById(termId).observe(this, this::setupTermViews);
         setupCourseListFragment(termId);
@@ -142,31 +142,25 @@ public class TermActivity extends AppCompatActivity implements OnAsyncTaskResult
 
 
     @Override
-    public void onAsyncDeleteDataCompleted(AsyncTaskResult result) {
-        if (result.isSuccessful()) {
-            openTermList(R.string.term_deleted, Snackbar.LENGTH_LONG);
-        } else {
-            int messageResourceId;
-            if (result.getConstraintException() != null) {
-                messageResourceId = R.string.term_delete_failed;
-            } else {
-                messageResourceId = R.string.unexpected_error;
-            }
-            Snackbar snackbar = Snackbar.make(
-                    findViewById(R.id.term_coordinator_layout), messageResourceId, Snackbar.LENGTH_INDEFINITE);
-            snackbar.setAction(getString(R.string.dismiss), v -> snackbar.dismiss());
-            snackbar.show();
+    public void onNotifyDataChanged(DataTaskResult result) {
+        switch (result.getAction()) {
+            case DELETE:
+                if (result.isSuccessful()) {
+                    openTermList(R.string.term_deleted, Snackbar.LENGTH_LONG);
+                } else {
+                    int messageResourceId;
+                    if (result.getConstraintException() != null) {
+                        messageResourceId = R.string.term_delete_failed;
+                    } else {
+                        messageResourceId = R.string.unexpected_error;
+                    }
+                    Snackbar snackbar = Snackbar.make(
+                            findViewById(R.id.term_coordinator_layout), messageResourceId, Snackbar.LENGTH_INDEFINITE);
+                    snackbar.setAction(getString(R.string.dismiss), v -> snackbar.dismiss());
+                    snackbar.show();
+                }
+                break;
         }
-    }
-
-    @Override
-    public void onAsyncUpdateDataCompleted(AsyncTaskResult result) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void onAsyncInsertDataCompleted(AsyncTaskResult result) {
-        throw new UnsupportedOperationException();
     }
 
     private void openTermList(int messageId, int snackbarLength) {

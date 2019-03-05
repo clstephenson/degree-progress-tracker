@@ -21,7 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class CourseListFragment extends Fragment {
 
-    private CourseListViewModel courseListViewModel;
+    private CourseListViewModel viewModel;
     private String title;
 
     public CourseListFragment() {
@@ -50,15 +50,22 @@ public class CourseListFragment extends Fragment {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        courseListViewModel = ViewModelProviders.of(this).get(CourseListViewModel.class);
-        courseListViewModel.getAllCourses().observe(getActivity(), adapter::setCourses);
-
         adapter.setOnItemInteractionListener(((view, position) -> {
             Intent intent = new Intent(getActivity(), CourseActivity.class);
-            Course selectedCourse = courseListViewModel.getCourse(position);
+            Course selectedCourse = viewModel.getCourse(position);
             intent.putExtra(CourseActivity.EXTRA_COURSE_ID, selectedCourse.getId());
             startActivity(intent);
         }));
+
+        viewModel = ViewModelProviders.of(this).get(CourseListViewModel.class);
+
+        long termId;
+        if (getArguments().containsKey(TermActivity.EXTRA_TERM_ID)) {
+            termId = getArguments().getLong(TermActivity.EXTRA_TERM_ID);
+            viewModel.getCoursesByTermId(termId).observe(getActivity(), adapter::setCourses);
+        } else {
+            viewModel.getCourses().observe(getActivity(), adapter::setCourses);
+        }
 
         Bundle bundle = getArguments();
         if (bundle != null) {
