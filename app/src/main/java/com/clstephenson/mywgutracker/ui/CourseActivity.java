@@ -52,7 +52,7 @@ public class CourseActivity extends AppCompatActivity implements OnDataTaskResul
     private void processIntentExtraData(Intent intent) {
         if (intent.hasExtra(EXTRA_MESSAGE_STRING_ID) && intent.hasExtra(EXTRA_MESSAGE_LENGTH)) {
             Snackbar snackbar = Snackbar.make(
-                    findViewById(R.id.main_coordinator_layout),
+                    findViewById(R.id.course_coordinator_layout),
                     intent.getIntExtra(EXTRA_MESSAGE_STRING_ID, 0),
                     intent.getIntExtra(EXTRA_MESSAGE_LENGTH, Snackbar.LENGTH_LONG));
             snackbar.setAction(getString(R.string.dismiss).toUpperCase(), v -> snackbar.dismiss());

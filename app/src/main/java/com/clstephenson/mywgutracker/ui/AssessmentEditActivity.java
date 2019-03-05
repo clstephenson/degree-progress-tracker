@@ -7,10 +7,13 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.CalendarView;
 import android.widget.Spinner;
+import android.widget.Switch;
 
 import com.clstephenson.mywgutracker.R;
+import com.clstephenson.mywgutracker.data.AssessmentType;
 import com.clstephenson.mywgutracker.data.models.Assessment;
 import com.clstephenson.mywgutracker.repositories.DataTaskResult;
 import com.clstephenson.mywgutracker.repositories.OnDataTaskResultListener;
@@ -35,6 +38,7 @@ public class AssessmentEditActivity extends AppCompatActivity implements OnDataT
     private TextInputEditText titleInput;
     private Spinner typeInput;
     private TextInputEditText goalDateInput;
+    private Switch alertInput;
 
     private AssessmentEditViewModel viewModel;
 
@@ -62,12 +66,18 @@ public class AssessmentEditActivity extends AppCompatActivity implements OnDataT
         titleInput = findViewById(R.id.assessment_input_title);
         typeInput = findViewById(R.id.assessment_input_type);
         goalDateInput = findViewById(R.id.assessment_input_goal);
+        alertInput = findViewById(R.id.assessment_switch_alert_goal);
 
-        if (entryMode == MODE.UPDATE) {
+        ArrayAdapter<AssessmentType> adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line,
+                AssessmentType.values());
+        typeInput.setAdapter(adapter);
+
+        if (entryMode == MODE.UPDATE && assessment != null) {
             currentAssessment = assessment;
             titleInput.setText(currentAssessment.getName());
             goalDateInput.setText(DateUtils.getFormattedDate(currentAssessment.getGoalDate()));
-            //typeInput.setText(DateUtils.getFormattedDate(currentAssessment.getEndDate()));
+            typeInput.setSelection(adapter.getPosition(currentAssessment.getType()));
+            alertInput.setChecked(currentAssessment.isGoalAlertOn());
         } else {
             currentAssessment = viewModel.getNewAssessment();
         }
@@ -93,8 +103,9 @@ public class AssessmentEditActivity extends AppCompatActivity implements OnDataT
 
             if (!dirtyAssessment.equals(currentAssessment)) {
                 currentAssessment.setName(titleInput.getText().toString());
-                //currentAssessment.setStartDate(dirtyAssessment.getStartDate());
+                currentAssessment.setType(dirtyAssessment.getType());
                 currentAssessment.setGoalDate(dirtyAssessment.getGoalDate());
+                currentAssessment.setGoalAlertOn(dirtyAssessment.isGoalAlertOn());
 
                 if (entryMode == MODE.UPDATE) {
                     viewModel.updateAssessment(currentAssessment);
@@ -247,8 +258,9 @@ public class AssessmentEditActivity extends AppCompatActivity implements OnDataT
 
     private void updateDirtyAssessment() {
         dirtyAssessment.setName(titleInput.getText().toString());
-        //dirtyAssessment.setStartDate(DateUtils.getDateFromFormattedString(goalDateInput.getText().toString()));
+        dirtyAssessment.setType((AssessmentType) typeInput.getSelectedItem());
         dirtyAssessment.setGoalDate(DateUtils.getDateFromFormattedString(goalDateInput.getText().toString()));
+        dirtyAssessment.setGoalAlertOn(alertInput.isChecked());
     }
 
     private enum MODE {
