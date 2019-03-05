@@ -1,7 +1,6 @@
 package com.clstephenson.mywgutracker.repositories;
 
 import android.app.Application;
-import android.util.Pair;
 
 import com.clstephenson.mywgutracker.data.db.AppDatabase;
 import com.clstephenson.mywgutracker.data.db.CourseDao;
@@ -16,7 +15,7 @@ public class CourseRepository implements Repository<Course> {
 
     private CourseDao courseDao;
     private LiveData<List<Course>> allCourses;
-    private OnAsyncTaskResultListener onAsyncTaskResultListener;
+    private OnDataTaskResultListener onDataTaskResultListener;
 
     public CourseRepository(@NonNull Application application) {
         AppDatabase db = AppDatabase.getDatabase(application);
@@ -45,21 +44,21 @@ public class CourseRepository implements Repository<Course> {
 
     @Override
     public void delete(Course course) {
-        new DeleteDataAsyncTask<Course>(courseDao.getClass(), courseDao).execute(Pair.create(course, onAsyncTaskResultListener));
+        new DataTask<Course>(courseDao.getClass(), courseDao, DataTask.Action.DELETE, onDataTaskResultListener).execute(course);
     }
 
     @Override
     public void update(Course course) {
-        new UpdateDataAsyncTask<Course>(courseDao.getClass(), courseDao).execute(Pair.create(course, onAsyncTaskResultListener));
+        new DataTask<Course>(courseDao.getClass(), courseDao, DataTask.Action.UPDATE, onDataTaskResultListener).execute(course);
     }
 
     @Override
     public void insert(Course course) {
-        new InsertDataAsyncTask<Course>(courseDao.getClass(), courseDao).execute(Pair.create(course, onAsyncTaskResultListener));
+        new DataTask<Course>(courseDao.getClass(), courseDao, DataTask.Action.INSERT, onDataTaskResultListener).execute(course);
     }
 
-    public void setOnAsyncTaskResultListener(OnAsyncTaskResultListener listener) {
-        this.onAsyncTaskResultListener = listener;
+    public void setOnDataTaskResultListener(OnDataTaskResultListener listener) {
+        this.onDataTaskResultListener = listener;
     }
 
 }

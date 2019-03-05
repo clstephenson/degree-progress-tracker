@@ -65,7 +65,11 @@ public class Assessment extends BaseModel {
         this.type = type;
     }
 
-    //todo create copy constructor
+    @Ignore
+    public Assessment(Assessment assessment) {
+        this(assessment.getId(), assessment.getName(), assessment.getCode(), assessment.getGoalDate(),
+                assessment.isGoalAlertOn(), assessment.getCourseId(), assessment.getType());
+    }
 
     @NonNull
     public String getName() {
@@ -122,7 +126,8 @@ public class Assessment extends BaseModel {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Assessment that = (Assessment) o;
-        return isGoalAlertOn == that.isGoalAlertOn &&
+        return id == that.id &&
+                isGoalAlertOn == that.isGoalAlertOn &&
                 courseId == that.courseId &&
                 Objects.equals(code, that.code) &&
                 Objects.equals(name, that.name) &&
@@ -132,18 +137,11 @@ public class Assessment extends BaseModel {
 
     @Override
     public int hashCode() {
-        return Objects.hash(code, name, goalDate, isGoalAlertOn, courseId, type);
+        return Objects.hash(id, code, name, goalDate, isGoalAlertOn, courseId, type);
     }
 
     @Override
     public String toString() {
-        return "Assessment{" +
-                "code='" + code + '\'' +
-                ", name='" + name + '\'' +
-                ", goalDate=" + goalDate +
-                ", isGoalAlertOn=" + isGoalAlertOn +
-                ", courseId=" + courseId +
-                ", type=" + type +
-                '}';
+        return name;
     }
 }

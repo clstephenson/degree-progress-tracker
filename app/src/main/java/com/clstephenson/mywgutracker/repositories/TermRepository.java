@@ -1,7 +1,6 @@
 package com.clstephenson.mywgutracker.repositories;
 
 import android.app.Application;
-import android.util.Pair;
 
 import com.clstephenson.mywgutracker.data.db.AppDatabase;
 import com.clstephenson.mywgutracker.data.db.TermDao;
@@ -16,7 +15,7 @@ public class TermRepository implements Repository<Term> {
 
     private TermDao termDao;
     private LiveData<List<Term>> allTerms;
-    private OnAsyncTaskResultListener onAsyncTaskResultListener;
+    private OnDataTaskResultListener onDataTaskResultListener;
 
     public TermRepository(@NonNull Application application) {
         AppDatabase db = AppDatabase.getDatabase(application);
@@ -41,21 +40,20 @@ public class TermRepository implements Repository<Term> {
 
     @Override
     public void delete(Term term) {
-        new DeleteDataAsyncTask<Term>(termDao.getClass(), termDao).execute(Pair.create(term, onAsyncTaskResultListener));
+        new DataTask<Term>(termDao.getClass(), termDao, DataTask.Action.DELETE, onDataTaskResultListener).execute(term);
     }
 
     @Override
     public void update(Term term) {
-        new UpdateDataAsyncTask<Term>(termDao.getClass(), termDao).execute(Pair.create(term, onAsyncTaskResultListener));
-        //termDao.update(term);
+        new DataTask<Term>(termDao.getClass(), termDao, DataTask.Action.UPDATE, onDataTaskResultListener).execute(term);
     }
 
     @Override
     public void insert(Term term) {
-        new InsertDataAsyncTask<Term>(termDao.getClass(), termDao).execute(Pair.create(term, onAsyncTaskResultListener));
+        new DataTask<Term>(termDao.getClass(), termDao, DataTask.Action.INSERT, onDataTaskResultListener).execute(term);
     }
 
-    public void setOnAsyncTaskResultListener(OnAsyncTaskResultListener listener) {
-        this.onAsyncTaskResultListener = listener;
+    public void setOnDataTaskResultListener(OnDataTaskResultListener listener) {
+        this.onDataTaskResultListener = listener;
     }
 }

@@ -1,7 +1,6 @@
 package com.clstephenson.mywgutracker.repositories;
 
 import android.app.Application;
-import android.os.AsyncTask;
 
 import com.clstephenson.mywgutracker.data.db.AppDatabase;
 import com.clstephenson.mywgutracker.data.db.NoteDao;
@@ -16,6 +15,7 @@ public class NoteRepository implements Repository<Note> {
 
     private NoteDao noteDao;
     private LiveData<List<Note>> allNotes;
+    private OnDataTaskResultListener onDataTaskResultListener;
 
     public NoteRepository(@NonNull Application application) {
         AppDatabase db = AppDatabase.getDatabase(application);
@@ -39,32 +39,22 @@ public class NoteRepository implements Repository<Note> {
     }
 
     @Override
-    public void delete(Note object) {
-        noteDao.delete(object);
+    public void delete(Note note) {
+        new DataTask<Note>(noteDao.getClass(), noteDao, DataTask.Action.DELETE, onDataTaskResultListener).execute(note);
     }
 
     @Override
     public void update(Note note) {
-        noteDao.update(note);
+        new DataTask<Note>(noteDao.getClass(), noteDao, DataTask.Action.UPDATE, onDataTaskResultListener).execute(note);
     }
 
     @Override
     public void insert(Note note) {
-        new NoteRepository.insertAsyncTask(noteDao).execute(note);
+        new DataTask<Note>(noteDao.getClass(), noteDao, DataTask.Action.INSERT, onDataTaskResultListener).execute(note);
     }
 
-    private static class insertAsyncTask extends AsyncTask<Note, Void, Void> {
-        private NoteDao asyncTaskDao;
-
-        insertAsyncTask(NoteDao dao) {
-            asyncTaskDao = dao;
-        }
-
-        @Override
-        protected Void doInBackground(final Note... params) {
-            asyncTaskDao.insert(params[0]);
-            return null;
-        }
+    public void setOnDataTaskResultListener(OnDataTaskResultListener listener) {
+        this.onDataTaskResultListener = listener;
     }
 
 }

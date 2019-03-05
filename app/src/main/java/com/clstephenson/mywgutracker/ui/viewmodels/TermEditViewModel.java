@@ -3,7 +3,7 @@ package com.clstephenson.mywgutracker.ui.viewmodels;
 import android.app.Application;
 
 import com.clstephenson.mywgutracker.data.models.Term;
-import com.clstephenson.mywgutracker.repositories.OnAsyncTaskResultListener;
+import com.clstephenson.mywgutracker.repositories.OnDataTaskResultListener;
 import com.clstephenson.mywgutracker.repositories.TermRepository;
 
 import java.util.Date;
@@ -37,8 +37,8 @@ public class TermEditViewModel extends AndroidViewModel {
         termRepository.update(term);
     }
 
-    public void setBackgroundTaskResultListener(OnAsyncTaskResultListener delegate) {
-        termRepository.setOnAsyncTaskResultListener(delegate);
+    public void setBackgroundTaskResultListener(OnDataTaskResultListener listener) {
+        termRepository.setOnDataTaskResultListener(listener);
     }
 
     public void insertTerm(Term term) {

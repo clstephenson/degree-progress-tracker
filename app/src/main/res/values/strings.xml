@@ -62,6 +62,16 @@
     <string name="validation_phone">Please enter a valid telephone number.</string>
     <string name="validation_email">Please enter a valid email address.</string>
     <string name="term">Term</string>
+    <string name="assessment_title">Assessment Name</string>
+    <string name="assessment_type">Assessment Type</string>
+    <string name="goal_date">Completion Goal Date</string>
+    <string name="new_assessment">Create New Assessment</string>
+    <string name="edit_assessment">Edit Assessment</string>
+    <string name="assessment_added">The assessment was added successfully.</string>
+    <string name="assessment_add_failed">The assessment could not be added.</string>
+    <string name="confirm_delete_assessment">Are you sure you want to delete the current assessment?</string>
+    <string name="assessment_deleted">The assessment was deleted successfully.</string>
+    <string name="assessment_delete_failed">The assessment could not be deleted.</string>
     <string-array name="sample_list_items">
         <item>First item</item>
         <item>Second item</item>
