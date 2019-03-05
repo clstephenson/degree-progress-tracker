@@ -61,7 +61,7 @@ public class AssessmentListFragment extends Fragment {
                 long courseId = bundle.getLong(CourseActivity.EXTRA_COURSE_ID);
                 viewModel.getAssessmentsByCourseId(courseId).observe(getActivity(), adapter::setAssessments);
             } else {
-                viewModel.getAllAssessments().observe(getActivity(), adapter::setAssessments);
+                viewModel.getAssessments().observe(getActivity(), adapter::setAssessments);
             }
         }
 

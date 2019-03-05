@@ -64,7 +64,7 @@ public class CourseListFragment extends Fragment {
             termId = getArguments().getLong(TermActivity.EXTRA_TERM_ID);
             viewModel.getCoursesByTermId(termId).observe(getActivity(), adapter::setCourses);
         } else {
-            viewModel.getAllCourses().observe(getActivity(), adapter::setCourses);
+            viewModel.getCourses().observe(getActivity(), adapter::setCourses);
         }
 
         Bundle bundle = getArguments();
