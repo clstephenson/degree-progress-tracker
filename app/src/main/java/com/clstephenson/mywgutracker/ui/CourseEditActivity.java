@@ -294,13 +294,14 @@ public class CourseEditActivity extends AppCompatActivity implements OnDataTaskR
         Dialog calendarDialog = getCalendarDialog(view);
         CalendarView calendarView = calendarDialog.findViewById(R.id.calendar_date_picker);
         if (entryMode == MODE.UPDATE) {
-            calendarView.setDate(DateUtils.getMillisFromDate(currentCourse.getStartDate()));
+            calendarView.setDate(DateUtils.getMillisFromDate(dirtyCourse.getStartDate()));
         } else {
             calendarView.setDate(DateUtils.getMillisFromDate(new Date()));
         }
         calendarView.setOnDateChangeListener((view1, year, month, dayOfMonth) -> {
             Date newDate = DateUtils.getDate(year, month, dayOfMonth);
             startDateInput.setText(DateUtils.getFormattedDate(newDate));
+            updateDirtyCourse();
             calendarDialog.dismiss();
         });
         calendarDialog.show();
@@ -310,13 +311,14 @@ public class CourseEditActivity extends AppCompatActivity implements OnDataTaskR
         Dialog calendarDialog = getCalendarDialog(view);
         CalendarView calendarView = calendarDialog.findViewById(R.id.calendar_date_picker);
         if (entryMode == MODE.UPDATE) {
-            calendarView.setDate(DateUtils.getMillisFromDate(currentCourse.getEndDate()));
+            calendarView.setDate(DateUtils.getMillisFromDate(dirtyCourse.getEndDate()));
         } else {
             calendarView.setDate(DateUtils.getMillisFromDate(new Date()));
         }
         calendarView.setOnDateChangeListener((view1, year, month, dayOfMonth) -> {
             Date newDate = DateUtils.getDate(year, month, dayOfMonth);
             endDateInput.setText(DateUtils.getFormattedDate(newDate));
+            updateDirtyCourse();
             calendarDialog.dismiss();
         });
         calendarDialog.show();

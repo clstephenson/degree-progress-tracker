@@ -250,13 +250,14 @@ public class TermEditActivity extends AppCompatActivity implements OnDataTaskRes
         Dialog calendarDialog = getCalendarDialog(view);
         CalendarView calendarView = calendarDialog.findViewById(R.id.calendar_date_picker);
         if (entryMode == MODE.UPDATE) {
-            calendarView.setDate(DateUtils.getMillisFromDate(currentTerm.getStartDate()));
+            calendarView.setDate(DateUtils.getMillisFromDate(dirtyTerm.getStartDate()));
         } else {
             calendarView.setDate(DateUtils.getMillisFromDate(new Date()));
         }
         calendarView.setOnDateChangeListener((view1, year, month, dayOfMonth) -> {
             Date newDate = DateUtils.getDate(year, month, dayOfMonth);
             startDateInput.setText(DateUtils.getFormattedDate(newDate));
+            updateDirtyTerm();
             calendarDialog.dismiss();
         });
         calendarDialog.show();
@@ -266,13 +267,14 @@ public class TermEditActivity extends AppCompatActivity implements OnDataTaskRes
         Dialog calendarDialog = getCalendarDialog(view);
         CalendarView calendarView = calendarDialog.findViewById(R.id.calendar_date_picker);
         if (entryMode == MODE.UPDATE) {
-            calendarView.setDate(DateUtils.getMillisFromDate(currentTerm.getEndDate()));
+            calendarView.setDate(DateUtils.getMillisFromDate(dirtyTerm.getEndDate()));
         } else {
             calendarView.setDate(DateUtils.getMillisFromDate(new Date()));
         }
         calendarView.setOnDateChangeListener((view1, year, month, dayOfMonth) -> {
             Date newDate = DateUtils.getDate(year, month, dayOfMonth);
             endDateInput.setText(DateUtils.getFormattedDate(newDate));
+            updateDirtyTerm();
             calendarDialog.dismiss();
         });
         calendarDialog.show();
