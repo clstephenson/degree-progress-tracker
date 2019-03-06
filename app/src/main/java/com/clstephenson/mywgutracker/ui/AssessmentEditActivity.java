@@ -234,13 +234,14 @@ public class AssessmentEditActivity extends AppCompatActivity implements OnDataT
         Dialog calendarDialog = getCalendarDialog(view);
         CalendarView calendarView = calendarDialog.findViewById(R.id.calendar_date_picker);
         if (entryMode == MODE.UPDATE) {
-            calendarView.setDate(DateUtils.getMillisFromDate(currentAssessment.getGoalDate()));
+            calendarView.setDate(DateUtils.getMillisFromDate(dirtyAssessment.getGoalDate()));
         } else {
             calendarView.setDate(DateUtils.getMillisFromDate(new Date()));
         }
         calendarView.setOnDateChangeListener((view1, year, month, dayOfMonth) -> {
             Date newDate = DateUtils.getDate(year, month, dayOfMonth);
             goalDateInput.setText(DateUtils.getFormattedDate(newDate));
+            updateDirtyAssessment();
             calendarDialog.dismiss();
         });
         calendarDialog.show();
