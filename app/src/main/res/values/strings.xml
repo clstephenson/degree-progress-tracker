@@ -84,6 +84,7 @@
     <string name="note_delete_failed">There was a problem and the note was not deleted.</string>
     <string name="note_update_failed">There was a problem and the note was not updated.</string>
     <string name="note_updated">The note was updated.</string>
+    <string name="share">Share</string>
     <string-array name="sample_list_items">
         <item>First item</item>
         <item>Second item</item>

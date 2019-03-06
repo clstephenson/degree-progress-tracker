@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.clstephenson.mywgutracker.R;
 import com.clstephenson.mywgutracker.data.models.Note;
@@ -33,16 +34,36 @@ public class NoteDialog extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(getArguments().getString("title"))
                 .setView(R.layout.dialog_note)
-                .setIcon(R.drawable.ic_note)
-                .setNeutralButton(R.string.delete, (dialog, which) -> handleDeleteNote())
-                .setNegativeButton(R.string.cancel, (dialog, which) -> dialog.dismiss())
-                .setPositiveButton(R.string.save, (dialog, which) -> saveNote());
+                .setIcon(R.drawable.ic_note);
+//                .setNeutralButton(R.string.delete, (dialog, which) -> deleteNote())
+//                .setNegativeButton(R.string.cancel, (dialog, which) -> dialog.dismiss())
+//                .setPositiveButton(R.string.save, (dialog, which) -> saveNote());
         return builder.create();
     }
 
     @Override
     public void onStart() {
         super.onStart();
+        TextView cancelButton = getDialog().findViewById(R.id.note_cancel);
+        if (cancelButton != null) {
+            cancelButton.setOnClickListener(v -> getDialog().cancel());
+        }
+
+        TextView saveButton = getDialog().findViewById(R.id.note_save);
+        if (saveButton != null) {
+            saveButton.setOnClickListener(v -> saveNote());
+        }
+
+        TextView deleteButton = getDialog().findViewById(R.id.note_delete);
+        if (deleteButton != null) {
+            deleteButton.setOnClickListener(v -> deleteNote());
+        }
+
+        TextView shareButton = getDialog().findViewById(R.id.note_share);
+        if (shareButton != null) {
+            shareButton.setOnClickListener(v -> shareNote());
+        }
+
         EditText noteText = getDialog().findViewById(R.id.note_edit_text);
         noteText.setText(note.getNote());
     }
@@ -59,13 +80,13 @@ public class NoteDialog extends DialogFragment {
                 note.setNote(noteView.getText().toString());
                 viewModel.update(note);
             } else {
-                handleDeleteNote();
+                deleteNote();
             }
         }
         getDialog().dismiss();
     }
 
-    private void handleDeleteNote() {
+    private void deleteNote() {
         new AlertDialog.Builder(getContext())
                 .setTitle("Delete Note?")
                 .setIcon(R.drawable.ic_warning)
@@ -74,9 +95,15 @@ public class NoteDialog extends DialogFragment {
                 .setPositiveButton(getString(R.string.yes), (dialog, which) -> {
                     viewModel.delete(note);
                     dialog.dismiss();
+                    getDialog().dismiss();
                 })
                 .create()
                 .show();
+
+    }
+
+    private void shareNote() {
+
     }
 
     public void setNote(Note note) {

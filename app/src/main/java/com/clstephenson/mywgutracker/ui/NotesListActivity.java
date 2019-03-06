@@ -101,7 +101,7 @@ public class NotesListActivity extends AppCompatActivity implements OnDataTaskRe
 
     private void showDataChangedSnackbarMessage(int messageResourceId) {
         Snackbar snackbar = Snackbar.make(
-                findViewById(R.id.notes_coordinator_layout), messageResourceId, Snackbar.LENGTH_INDEFINITE);
+                findViewById(R.id.notes_coordinator_layout), messageResourceId, Snackbar.LENGTH_LONG);
         snackbar.setAction(getString(R.string.dismiss), v -> snackbar.dismiss());
         snackbar.show();
     }
