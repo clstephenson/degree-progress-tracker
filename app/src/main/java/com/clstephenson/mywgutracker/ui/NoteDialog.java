@@ -17,15 +17,12 @@ import androidx.fragment.app.DialogFragment;
 public class NoteDialog extends DialogFragment {
 
     private NoteListViewModel viewModel;
-    private long noteId;
-    private long courseId;
+    private Note note;
 
-    public static NoteDialog newInstance(String title, long noteId, long courseId) {
+    public static NoteDialog newInstance(String title) {
         NoteDialog dialog = new NoteDialog();
         Bundle args = new Bundle();
         args.putString("title", title);
-        args.putLong("noteId", noteId);
-        args.putLong("courseId", courseId);
         dialog.setArguments(args);
         return dialog;
     }
@@ -33,12 +30,11 @@ public class NoteDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        noteId = getArguments().getLong("noteId");
-        courseId = getArguments().getLong("courseId");
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(getArguments().getString("title"))
                 .setView(R.layout.dialog_note)
                 .setIcon(R.drawable.ic_note)
+                .setNeutralButton(R.string.delete, (dialog, which) -> handleDeleteNote())
                 .setNegativeButton(R.string.cancel, (dialog, which) -> dialog.dismiss())
                 .setPositiveButton(R.string.save, (dialog, which) -> saveNote());
         return builder.create();
@@ -48,21 +44,43 @@ public class NoteDialog extends DialogFragment {
     public void onStart() {
         super.onStart();
         EditText noteText = getDialog().findViewById(R.id.note_edit_text);
-        //noteText.setText("This is a test note, not from the DB.");
+        noteText.setText(note.getNote());
     }
 
     private void saveNote() {
         EditText noteView = getDialog().findViewById(R.id.note_edit_text);
-        if (noteId == NotesListActivity.NEW_NOTE_DEFAULT_ID) {
+        if (note.getId() == NotesListActivity.NEW_NOTE_DEFAULT_ID) {
             if (TextUtils.getTrimmedLength(noteView.getText()) > 0) {
-                viewModel.insert(new Note(noteView.getText().toString(), courseId));
+                note.setNote(noteView.getText().toString());
+                viewModel.insert(note);
             }
-            getDialog().dismiss();
+        } else {
+            if (TextUtils.getTrimmedLength(noteView.getText()) > 0) {
+                note.setNote(noteView.getText().toString());
+                viewModel.update(note);
+            } else {
+                handleDeleteNote();
+            }
         }
+        getDialog().dismiss();
     }
 
-    public void setNoteId(long noteId) {
-        this.noteId = noteId;
+    private void handleDeleteNote() {
+        new AlertDialog.Builder(getContext())
+                .setTitle("Delete Note?")
+                .setIcon(R.drawable.ic_warning)
+                .setMessage(getString(R.string.confirm_delete_note))
+                .setNegativeButton(getString(R.string.no), (dialog, which) -> dialog.cancel())
+                .setPositiveButton(getString(R.string.yes), (dialog, which) -> {
+                    viewModel.delete(note);
+                    dialog.dismiss();
+                })
+                .create()
+                .show();
+    }
+
+    public void setNote(Note note) {
+        this.note = note;
     }
 
     public void setViewModel(NoteListViewModel viewModel) {

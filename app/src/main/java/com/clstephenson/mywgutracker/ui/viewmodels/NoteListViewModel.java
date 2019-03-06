@@ -27,6 +27,10 @@ public class NoteListViewModel extends AndroidViewModel {
         return notes;
     }
 
+    public Note getNewNote(long courseId) {
+        return new Note("", courseId);
+    }
+
     public Note getNote(int position) {
         return notes.getValue().get(position);
     }
@@ -37,6 +41,10 @@ public class NoteListViewModel extends AndroidViewModel {
 
     public void update(Note note) {
         repository.update(note);
+    }
+
+    public void delete(Note note) {
+        repository.delete(note);
     }
 
     public void setDataTaskResultListener(OnDataTaskResultListener listener) {

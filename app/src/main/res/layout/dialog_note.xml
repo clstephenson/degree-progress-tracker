@@ -13,6 +13,7 @@
         android:inputType="textMultiLine"
         android:lines="15"
         android:scrollbars="vertical"
+        android:padding="@dimen/activity_margin_small"
         tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis vehicula eros eget consequat venenatis. Nam aliquet metus id est feugiat elementum. Vestibulum non est vestibulum." />
 
 </LinearLayout>

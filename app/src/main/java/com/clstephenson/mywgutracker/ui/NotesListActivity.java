@@ -1,11 +1,10 @@
 package com.clstephenson.mywgutracker.ui;
 
-import android.app.AlertDialog;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.MenuItem;
 
 import com.clstephenson.mywgutracker.R;
+import com.clstephenson.mywgutracker.data.models.Note;
 import com.clstephenson.mywgutracker.repositories.DataTaskResult;
 import com.clstephenson.mywgutracker.repositories.OnDataTaskResultListener;
 import com.clstephenson.mywgutracker.ui.adapters.NoteListAdapter;
@@ -40,57 +39,38 @@ public class NotesListActivity extends AppCompatActivity implements OnDataTaskRe
         NoteListAdapter adapter = new NoteListAdapter(this);
         notesListView.setAdapter(adapter);
         notesListView.setLayoutManager(new LinearLayoutManager(this));
+        adapter.setOnItemInteractionListener(((view, position) -> {
+            showNoteDialog(getString(R.string.edit_note), viewModel.getNote(position));
+        }));
+
         viewModel.getNotes(courseId).observe(this, adapter::setNotes);
 
         setTitle(R.string.course_notes);
 
         FloatingActionButton fab = findViewById(R.id.fab_add_note);
-        fab.setOnClickListener(view -> showNoteDialog(NEW_NOTE_DEFAULT_ID));
+        fab.setOnClickListener(view ->
+                showNoteDialog(getString(R.string.create_new_note), viewModel.getNewNote(courseId))
+        );
     }
 
-    private void showNoteDialog(long noteId) {
+    private void showNoteDialog(String title, Note note) {
         FragmentManager manager = getSupportFragmentManager();
-        String title = noteId > NEW_NOTE_DEFAULT_ID ? getString(R.string.edit_note) : getString(R.string.create_new_note);
-        NoteDialog dialog = NoteDialog.newInstance(title, 0, courseId);
+        NoteDialog dialog = NoteDialog.newInstance(title);
+        dialog.setNote(note);
         dialog.setViewModel(viewModel);
         dialog.showNow(getSupportFragmentManager(), this.getClass().getSimpleName());
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        //getMenuInflater().inflate(R.menu.menu_notes, menu);
-        return true;
-    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         int itemId = item.getItemId();
-
         switch (itemId) {
             case android.R.id.home:
                 finish();
                 break;
         }
-
         return super.onOptionsItemSelected(item);
     }
-
-    private void handleDeleteNote() {
-        new AlertDialog.Builder(this)
-                .setTitle("Delete Term?")
-                .setIcon(R.drawable.ic_warning)
-                .setMessage(getString(R.string.confirm_delete_note))
-                .setNegativeButton(getString(R.string.no), (dialog, which) -> dialog.cancel())
-                .setPositiveButton(getString(R.string.yes), (dialog, which) -> {
-                    //viewModel.deleteNote(currentNote);
-                    dialog.dismiss();
-                })
-                .create()
-                .show();
-    }
-
 
     @Override
     public void onNotifyDataChanged(DataTaskResult result) {
@@ -98,22 +78,22 @@ public class NotesListActivity extends AppCompatActivity implements OnDataTaskRe
             case INSERT:
                 if (result.isSuccessful()) {
                     showDataChangedSnackbarMessage(R.string.note_added);
+                } else {
+                    showDataChangedSnackbarMessage(R.string.note_insert_failed);
                 }
                 break;
             case DELETE:
                 if (result.isSuccessful()) {
-                    //openTermList(R.string.term_deleted, Snackbar.LENGTH_LONG);
+                    showDataChangedSnackbarMessage(R.string.note_deleted);
                 } else {
-                    int messageResourceId;
-                    if (result.getConstraintException() != null) {
-                        messageResourceId = R.string.term_delete_failed;
-                    } else {
-                        messageResourceId = R.string.unexpected_error;
-                    }
-                    Snackbar snackbar = Snackbar.make(
-                            findViewById(R.id.term_coordinator_layout), messageResourceId, Snackbar.LENGTH_INDEFINITE);
-                    snackbar.setAction(getString(R.string.dismiss), v -> snackbar.dismiss());
-                    snackbar.show();
+                    showDataChangedSnackbarMessage(R.string.note_delete_failed);
+                }
+                break;
+            case UPDATE:
+                if (result.isSuccessful()) {
+                    showDataChangedSnackbarMessage(R.string.note_updated);
+                } else {
+                    showDataChangedSnackbarMessage(R.string.note_update_failed);
                 }
                 break;
         }
