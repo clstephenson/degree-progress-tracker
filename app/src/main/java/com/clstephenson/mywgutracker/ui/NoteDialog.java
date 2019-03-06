@@ -36,9 +36,6 @@ public class NoteDialog extends DialogFragment {
         builder.setTitle(getArguments().getString("title"))
                 .setView(R.layout.dialog_note)
                 .setIcon(R.drawable.ic_note);
-//                .setNeutralButton(R.string.delete, (dialog, which) -> deleteNote())
-//                .setNegativeButton(R.string.cancel, (dialog, which) -> dialog.dismiss())
-//                .setPositiveButton(R.string.save, (dialog, which) -> saveNote());
         return builder.create();
     }
 
