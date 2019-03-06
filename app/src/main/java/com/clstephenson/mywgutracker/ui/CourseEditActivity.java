@@ -16,6 +16,7 @@ import com.clstephenson.mywgutracker.R;
 import com.clstephenson.mywgutracker.data.CourseStatus;
 import com.clstephenson.mywgutracker.data.models.Course;
 import com.clstephenson.mywgutracker.data.models.Mentor;
+import com.clstephenson.mywgutracker.data.models.Term;
 import com.clstephenson.mywgutracker.repositories.DataTaskResult;
 import com.clstephenson.mywgutracker.repositories.OnDataTaskResultListener;
 import com.clstephenson.mywgutracker.ui.viewmodels.CourseEditViewModel;
@@ -82,7 +83,7 @@ public class CourseEditActivity extends AppCompatActivity implements OnDataTaskR
                 android.R.layout.simple_dropdown_item_1line, CourseStatus.values());
         statusInput.setAdapter(statusAdapter);
 
-        ArrayAdapter termAdapter = new ArrayAdapter<>(this,
+        ArrayAdapter<Term> termAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_dropdown_item_1line, viewModel.getAllTerms());
         termInput.setAdapter(termAdapter);
 
@@ -128,7 +129,6 @@ public class CourseEditActivity extends AppCompatActivity implements OnDataTaskR
     }
 
     public void handleSaveCourse(View view) {
-        //todo need to save the changes to term
         if (isFormValid()) {
             updateDirtyCourse();
 
@@ -137,6 +137,7 @@ public class CourseEditActivity extends AppCompatActivity implements OnDataTaskR
                 currentCourse.setStartDate(dirtyCourse.getStartDate());
                 currentCourse.setEndDate(dirtyCourse.getEndDate());
                 currentCourse.setStatus((CourseStatus) statusInput.getSelectedItem());
+                currentCourse.setTermId(((Term) termInput.getSelectedItem()).getId());
                 currentCourse.setStartAlertOn(enableAlertStartSwitch.isChecked());
                 currentCourse.setEndAlertOn(enableAlertEndSwitch.isChecked());
 
@@ -339,6 +340,7 @@ public class CourseEditActivity extends AppCompatActivity implements OnDataTaskR
         dirtyCourse.setStartDate(DateUtils.getDateFromFormattedString(startDateInput.getText().toString()));
         dirtyCourse.setEndDate(DateUtils.getDateFromFormattedString(endDateInput.getText().toString()));
         dirtyCourse.setStatus((CourseStatus) statusInput.getSelectedItem());
+        dirtyCourse.setTermId(((Term) termInput.getSelectedItem()).getId());
         dirtyCourse.setEndAlertOn(enableAlertEndSwitch.isChecked());
         dirtyCourse.setStartAlertOn(enableAlertStartSwitch.isChecked());
         dirtyCourse.getMentor().setFirstName(mentorFirstNameInput.getText().toString());
