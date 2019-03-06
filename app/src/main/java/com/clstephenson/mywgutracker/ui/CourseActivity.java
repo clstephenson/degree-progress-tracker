@@ -2,9 +2,11 @@ package com.clstephenson.mywgutracker.ui;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import com.clstephenson.mywgutracker.R;
@@ -213,5 +215,17 @@ public class CourseActivity extends AppCompatActivity implements OnDataTaskResul
         intent.putExtra(MainActivity.EXTRA_MESSAGE_LENGTH, snackbarLength);
         startActivity(intent);
         finish();
+    }
+
+    public void handleMentorPhoneClick(View view) {
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        intent.setData(Uri.parse(String.format("tel:%s", currentCourse.getMentor().getPhone())));
+        startActivity(intent);
+    }
+
+    public void handleMentorEmailClick(View view) {
+        Intent intent = new Intent(Intent.ACTION_SENDTO);
+        intent.setData(Uri.parse(String.format("mailto:%s", currentCourse.getMentor().getEmail())));
+        startActivity(intent);
     }
 }
