@@ -1,21 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/course_coordinator_layout"
+    android:id="@+id/notes_coordinator_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.CourseActivity">
+    tools:context=".ui.NotesListActivity">
 
-    <include layout="@layout/content_course" />
-
-    <FrameLayout
-        android:id="@+id/course_content_fragment"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/notes_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/course_details_section_height" />
+        tools:listitem="@layout/recyclerview_item_note" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_add_assessment"
+        android:id="@+id/fab_add_note"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"

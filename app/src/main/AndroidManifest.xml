@@ -16,6 +16,9 @@
             android:name=".ui.TermEditActivity"
             android:label="@string/edit_term" />
         <activity
+            android:name=".ui.NotesListActivity"
+            android:label="@string/course_notes" />
+        <activity
             android:name=".ui.CourseEditActivity"
             android:label="@string/edit_course" />
         <activity

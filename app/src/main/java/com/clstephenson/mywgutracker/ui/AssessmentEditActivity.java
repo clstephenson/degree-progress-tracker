@@ -32,6 +32,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 public class AssessmentEditActivity extends AppCompatActivity implements OnDataTaskResultListener {
 
+    public static final String EXTRA_COURSE_ID = CourseActivity.class.getSimpleName() + "extra_course_id";
     private MODE entryMode;
     private Assessment currentAssessment;
     private Assessment dirtyAssessment;
@@ -41,6 +42,7 @@ public class AssessmentEditActivity extends AppCompatActivity implements OnDataT
     private Switch alertInput;
 
     private AssessmentEditViewModel viewModel;
+    private long courseId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +53,7 @@ public class AssessmentEditActivity extends AppCompatActivity implements OnDataT
         viewModel = ViewModelProviders.of(this).get(AssessmentEditViewModel.class);
         viewModel.setDataTaskResultListener(this);
         long assessmentId = getIntent().getLongExtra(CourseActivity.EXTRA_ASSESSMENT_ID, 0);
+        courseId = getIntent().getLongExtra(EXTRA_COURSE_ID, 0);
         if (assessmentId == 0) {
             entryMode = MODE.CREATE;
             this.setTitle(R.string.new_assessment);
@@ -79,7 +82,7 @@ public class AssessmentEditActivity extends AppCompatActivity implements OnDataT
             typeInput.setSelection(adapter.getPosition(currentAssessment.getType()));
             alertInput.setChecked(currentAssessment.isGoalAlertOn());
         } else {
-            currentAssessment = viewModel.getNewAssessment();
+            currentAssessment = viewModel.getNewAssessment(courseId);
         }
         dirtyAssessment = new Assessment(currentAssessment);
     }

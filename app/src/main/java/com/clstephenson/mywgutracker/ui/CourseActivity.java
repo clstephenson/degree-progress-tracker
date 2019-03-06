@@ -14,6 +14,7 @@ import com.clstephenson.mywgutracker.repositories.DataTaskResult;
 import com.clstephenson.mywgutracker.repositories.OnDataTaskResultListener;
 import com.clstephenson.mywgutracker.ui.viewmodels.CourseViewModel;
 import com.clstephenson.mywgutracker.utils.DateUtils;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.annotation.Nullable;
@@ -36,8 +37,6 @@ public class CourseActivity extends AppCompatActivity implements OnDataTaskResul
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course);
-
-        setupFloatingActionButton();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         viewModel = ViewModelProviders.of(this).get(CourseViewModel.class);
@@ -45,6 +44,15 @@ public class CourseActivity extends AppCompatActivity implements OnDataTaskResul
         long courseId = getIntent().getLongExtra(EXTRA_COURSE_ID, 0);
         viewModel.getCourseById(courseId).observe(this, this::setupViews);
         setupAssessmentListFragment(courseId);
+
+        FloatingActionButton fab = findViewById(R.id.fab_add_assessment);
+        fab.setOnClickListener(view -> {
+            Intent intent = new Intent(this, AssessmentEditActivity.class);
+            intent.putExtra(AssessmentEditActivity.EXTRA_COURSE_ID, courseId);
+            startActivity(intent);
+        });
+        fab.show();
+
         setTitle(R.string.title_activity_course);
         processIntentExtraData(getIntent());
     }
@@ -58,13 +66,6 @@ public class CourseActivity extends AppCompatActivity implements OnDataTaskResul
             snackbar.setAction(getString(R.string.dismiss).toUpperCase(), v -> snackbar.dismiss());
             snackbar.show();
         }
-    }
-
-    private void setupFloatingActionButton() {
-//        FloatingActionButton fab = findViewById(R.id.fab);
-//        fab.setOnClickListener(view ->
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show());
     }
 
     private void setupViews(Course course) {
@@ -139,9 +140,18 @@ public class CourseActivity extends AppCompatActivity implements OnDataTaskResul
             case R.id.action_edit_course:
                 handleEditCourse();
                 break;
+            case R.id.action_view_notes:
+                openNotesList();
+                break;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void openNotesList() {
+        Intent intent = new Intent(this, NotesListActivity.class);
+        intent.putExtra(EXTRA_COURSE_ID, currentCourse.getId());
+        startActivityForResult(intent, 1);
     }
 
     private void handleEditCourse() {
@@ -195,34 +205,6 @@ public class CourseActivity extends AppCompatActivity implements OnDataTaskResul
                 break;
         }
     }
-
-//    @Override
-//    public void onAsyncDeleteDataCompleted(DataTaskResult result) {
-//        if (result.isSuccessful()) {
-//            openCourseList(R.string.course_deleted, Snackbar.LENGTH_LONG);
-//        } else {
-//            int messageResourceId;
-//            if (result.getConstraintException() != null) {
-//                messageResourceId = R.string.course_delete_failed;
-//            } else {
-//                messageResourceId = R.string.unexpected_error;
-//            }
-//            Snackbar snackbar = Snackbar.make(
-//                    findViewById(R.id.course_coordinator_layout), messageResourceId, Snackbar.LENGTH_INDEFINITE);
-//            snackbar.setAction(getString(R.string.dismiss), v -> snackbar.dismiss());
-//            snackbar.show();
-//        }
-//    }
-
-//    @Override
-//    public void onAsyncUpdateDataCompleted(DataTaskResult result) {
-//        throw new UnsupportedOperationException();
-//    }
-//
-//    @Override
-//    public void onAsyncInsertDataCompleted(DataTaskResult result) {
-//        throw new UnsupportedOperationException();
-//    }
 
     private void openCourseList(int messageId, int snackbarLength) {
         Intent intent = new Intent(this, MainActivity.class);

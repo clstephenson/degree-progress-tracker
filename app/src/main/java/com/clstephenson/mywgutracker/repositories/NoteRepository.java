@@ -33,6 +33,10 @@ public class NoteRepository implements Repository<Note> {
         return noteDao.getById(id);
     }
 
+    public LiveData<List<Note>> getByCourseId(long courseId) {
+        return noteDao.getByCourseId(courseId);
+    }
+
     @Override
     public void deleteById(long id) {
         noteDao.deleteById(id);
