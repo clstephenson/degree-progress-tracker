@@ -85,6 +85,8 @@
     <string name="note_update_failed">There was a problem and the note was not updated.</string>
     <string name="note_updated">The note was updated.</string>
     <string name="share">Share</string>
+    <string name="sharing_course_note">Sharing a course note...</string>
+    <string name="share_a_note">Share a Note</string>
     <string-array name="sample_list_items">
         <item>First item</item>
         <item>Second item</item>

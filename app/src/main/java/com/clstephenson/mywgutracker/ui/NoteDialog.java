@@ -2,6 +2,7 @@ package com.clstephenson.mywgutracker.ui;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.EditText;
@@ -103,7 +104,12 @@ public class NoteDialog extends DialogFragment {
     }
 
     private void shareNote() {
-
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_SUBJECT, R.string.sharing_course_note);
+        intent.putExtra(Intent.EXTRA_TEXT, note.getNote());
+        startActivity(Intent.createChooser(intent, getString(R.string.share_a_note)));
     }
 
     public void setNote(Note note) {
