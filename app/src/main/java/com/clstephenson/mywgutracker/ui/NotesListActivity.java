@@ -14,14 +14,17 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class NotesListActivity extends AppCompatActivity implements OnDataTaskResultListener {
 
+    public static final String EXTRA_NOTE_ID = CourseActivity.class.getSimpleName() + "extra_note_id";
     private NoteListViewModel viewModel;
     private long courseId;
+    public static final long NEW_NOTE_DEFAULT_ID = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,10 +45,17 @@ public class NotesListActivity extends AppCompatActivity implements OnDataTaskRe
         setTitle(R.string.course_notes);
 
         FloatingActionButton fab = findViewById(R.id.fab_add_note);
-        fab.setOnClickListener(view ->
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show());
+        fab.setOnClickListener(view -> showNoteDialog(NEW_NOTE_DEFAULT_ID));
     }
+
+    private void showNoteDialog(long noteId) {
+        FragmentManager manager = getSupportFragmentManager();
+        String title = noteId > NEW_NOTE_DEFAULT_ID ? getString(R.string.edit_note) : getString(R.string.create_new_note);
+        NoteDialog dialog = NoteDialog.newInstance(title, 0, courseId);
+        dialog.setViewModel(viewModel);
+        dialog.showNow(getSupportFragmentManager(), this.getClass().getSimpleName());
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -85,6 +95,11 @@ public class NotesListActivity extends AppCompatActivity implements OnDataTaskRe
     @Override
     public void onNotifyDataChanged(DataTaskResult result) {
         switch (result.getAction()) {
+            case INSERT:
+                if (result.isSuccessful()) {
+                    showDataChangedSnackbarMessage(R.string.note_added);
+                }
+                break;
             case DELETE:
                 if (result.isSuccessful()) {
                     //openTermList(R.string.term_deleted, Snackbar.LENGTH_LONG);
@@ -104,4 +119,10 @@ public class NotesListActivity extends AppCompatActivity implements OnDataTaskRe
         }
     }
 
+    private void showDataChangedSnackbarMessage(int messageResourceId) {
+        Snackbar snackbar = Snackbar.make(
+                findViewById(R.id.notes_coordinator_layout), messageResourceId, Snackbar.LENGTH_INDEFINITE);
+        snackbar.setAction(getString(R.string.dismiss), v -> snackbar.dismiss());
+        snackbar.show();
+    }
 }

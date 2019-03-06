@@ -75,6 +75,10 @@
     <string name="course_notes">Course Notes</string>
     <string name="confirm_delete_note">Are you sure you want to delete the selected note?</string>
     <string name="notes">Notes</string>
+    <string name="create_new_note">Create New Note</string>
+    <string name="edit_note">Edit Note</string>
+    <string name="cancel">Cancel</string>
+    <string name="note_added">A new note was created.</string>
     <string-array name="sample_list_items">
         <item>First item</item>
         <item>Second item</item>
