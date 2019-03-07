@@ -39,11 +39,6 @@ public class CourseListFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        //configure floating action button
-        FloatingActionButton fab = getActivity().findViewById(R.id.fab_add_main);
-        fab.setOnClickListener(this::openCourseEditActivityForNewCourse);
-        fab.show();
-
         RecyclerView recyclerView = getView().findViewById(R.id.course_recyclerview);
 
         final CourseListAdapter adapter = new CourseListAdapter(getActivity());
@@ -60,12 +55,19 @@ public class CourseListFragment extends Fragment {
         viewModel = ViewModelProviders.of(this).get(CourseListViewModel.class);
 
         long termId;
+        FloatingActionButton fab;
         if (getArguments().containsKey(TermActivity.EXTRA_TERM_ID)) {
             termId = getArguments().getLong(TermActivity.EXTRA_TERM_ID);
+            fab = getActivity().findViewById(R.id.fab_add_course);
             viewModel.getCoursesByTermId(termId).observe(getActivity(), adapter::setCourses);
         } else {
+            fab = getActivity().findViewById(R.id.fab_add_main);
             viewModel.getCourses().observe(getActivity(), adapter::setCourses);
         }
+
+        //configure floating action button
+        fab.setOnClickListener(this::openCourseEditActivityForNewCourse);
+        fab.show();
 
         Bundle bundle = getArguments();
         if (bundle != null) {
