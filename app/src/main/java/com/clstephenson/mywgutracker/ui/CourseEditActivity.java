@@ -94,7 +94,6 @@ public class CourseEditActivity extends AppCompatActivity implements OnDataTaskR
         startDateInput.setText(DateUtils.getFormattedDate(currentCourse.getStartDate()));
         endDateInput.setText(DateUtils.getFormattedDate(currentCourse.getEndDate()));
         statusInput.setSelection(statusAdapter.getPosition(currentCourse.getStatus()));
-        //termInput.setSelection(termAdapter.getPosition(getTermById(currentCourse.getTermId())));
         enableAlertStartSwitch.setChecked(currentCourse.isStartAlertOn());
         enableAlertEndSwitch.setChecked(currentCourse.isEndAlertOn());
         setupMentorList(currentCourse.getMentor());
@@ -146,10 +145,6 @@ public class CourseEditActivity extends AppCompatActivity implements OnDataTaskR
 
                 if (entryMode == MODE.UPDATE) {
                     viewModel.updateCourse(currentCourse);
-                    Intent intent = new Intent(this, CourseActivity.class);
-                    intent.putExtra(CourseActivity.EXTRA_COURSE_ID, currentCourse.getId());
-                    setResult(RESULT_OK, intent);
-                    finish();
                 } else {
                     viewModel.insertCourse(currentCourse);
                 }

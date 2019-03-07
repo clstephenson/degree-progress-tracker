@@ -105,4 +105,5 @@
     </string>
     <string name="channel_name">Alerts</string>
     <string name="channel_description">Alert notifications based on course and assessment dates.</string>
+    <string name="assessment_updated">The assessment was updated.</string>
 </resources>

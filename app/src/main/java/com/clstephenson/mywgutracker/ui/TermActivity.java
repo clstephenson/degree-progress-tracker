@@ -16,7 +16,6 @@ import com.clstephenson.mywgutracker.utils.DateUtils;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -91,17 +90,7 @@ public class TermActivity extends AppCompatActivity implements OnDataTaskResultL
     private void handleEditTerm() {
         Intent intent = new Intent(this, TermEditActivity.class);
         intent.putExtra(EXTRA_TERM_ID, currentTerm.getId());
-        startActivityForResult(intent, 1);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1) {
-            if (resultCode == RESULT_OK) {
-                long termId = data.getLongExtra(EXTRA_TERM_ID, 0);
-            }
-        }
+        startActivity(intent);
     }
 
     private void handleDeleteTerm() {

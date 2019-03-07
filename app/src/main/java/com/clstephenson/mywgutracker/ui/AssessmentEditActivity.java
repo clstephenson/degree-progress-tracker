@@ -112,10 +112,6 @@ public class AssessmentEditActivity extends AppCompatActivity implements OnDataT
 
                 if (entryMode == MODE.UPDATE) {
                     viewModel.updateAssessment(currentAssessment);
-                    Intent intent = new Intent(this, CourseActivity.class);
-                    intent.putExtra(CourseActivity.EXTRA_ASSESSMENT_ID, currentAssessment.getId());
-                    setResult(RESULT_OK, intent);
-                    finish();
                 } else {
                     viewModel.insertAssessment(currentAssessment);
                 }
@@ -188,7 +184,7 @@ public class AssessmentEditActivity extends AppCompatActivity implements OnDataT
                 break;
             case UPDATE:
                 if (result.isSuccessful()) {
-                    finish();
+                    openCourseActivity(R.string.assessment_updated, Snackbar.LENGTH_LONG);
                 } else {
                     showDataChangedSnackbarMessage(R.string.unexpected_error);
                 }
