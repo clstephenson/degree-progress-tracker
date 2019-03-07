@@ -100,7 +100,7 @@ public class AssessmentEditActivity extends AppCompatActivity implements OnDataT
         super.onBackPressed();
     }
 
-    public void handleSaveAssessment(View view) {
+    public void handleSaveAssessment() {
         if (isFormValid()) {
             updateDirtyAssessment();
 
@@ -164,6 +164,8 @@ public class AssessmentEditActivity extends AppCompatActivity implements OnDataT
             case R.id.action_delete_assessment_edit:
                 handleDeleteAssessment();
                 break;
+            case R.id.action_save_assessment_edit:
+                handleSaveAssessment();
         }
         return super.onOptionsItemSelected(item);
     }

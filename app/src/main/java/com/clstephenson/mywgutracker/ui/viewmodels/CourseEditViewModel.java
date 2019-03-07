@@ -5,63 +5,40 @@ import android.app.Application;
 import com.clstephenson.mywgutracker.data.CourseStatus;
 import com.clstephenson.mywgutracker.data.models.Course;
 import com.clstephenson.mywgutracker.data.models.Mentor;
-import com.clstephenson.mywgutracker.data.models.Term;
 import com.clstephenson.mywgutracker.repositories.CourseRepository;
 import com.clstephenson.mywgutracker.repositories.OnDataTaskResultListener;
 import com.clstephenson.mywgutracker.repositories.TermRepository;
 
 import java.util.Date;
-import java.util.List;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 public class CourseEditViewModel extends AndroidViewModel {
 
-    CourseRepository courseRepository;
-    TermRepository termRepository;
-    List<Term> allTerms;
+    private final String TAG = this.getClass().getSimpleName();
+    private CourseRepository courseRepository;
+    private TermRepository termRepository;
 
     public CourseEditViewModel(@NonNull Application application) {
         super(application);
         courseRepository = new CourseRepository(application);
         termRepository = new TermRepository(application);
-        termRepository.getAll().observeForever(this::setAllTerms);
     }
 
-    public List<Term> getAllTerms() {
-        return allTerms;
+    public void getAllTermsAsList() {
+        termRepository.getAllAsList();
     }
 
-    private void setAllTerms(List<Term> terms) {
-        allTerms = terms;
-    }
-
-    @Nullable
-    public Term getTermById(long id) {
-        for (Term term : allTerms) {
-            if (term.getId() == id) {
-                return term;
-            }
-        }
-        return null;
-    }
-
-    public Course getNewCourse() {
+    public Course getNewCourse(long termId) {
         return new Course("", new Date(), new Date(), false, false,
-                CourseStatus.NOT_STARTED, new Mentor("", "", "", ""), 0);
+                CourseStatus.NOT_STARTED, new Mentor("", "", "", ""), termId);
     }
 
     public LiveData<Course> getCourseById(long id) {
         return courseRepository.getById(id);
     }
-
-    public void deleteCourse(Course course) {
-        courseRepository.delete(course);
-    }
-
 
     public void updateCourse(Course course) {
         courseRepository.update(course);
@@ -69,6 +46,7 @@ public class CourseEditViewModel extends AndroidViewModel {
 
     public void setDataTaskResultListener(OnDataTaskResultListener listener) {
         courseRepository.setOnDataTaskResultListener(listener);
+        termRepository.setOnDataTaskResultListener(listener);
     }
 
     public void insertCourse(Course course) {

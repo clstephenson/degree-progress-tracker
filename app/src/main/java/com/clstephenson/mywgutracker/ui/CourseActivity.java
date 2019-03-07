@@ -28,6 +28,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 public class CourseActivity extends AppCompatActivity implements OnDataTaskResultListener {
 
+    private final String TAG = this.getClass().getSimpleName();
     public static final String EXTRA_COURSE_ID = CourseActivity.class.getSimpleName() + "extra_course_id";
     public static final String EXTRA_ASSESSMENT_ID = CourseActivity.class.getSimpleName() + "extra_assessment_id";
     public static final String EXTRA_MESSAGE_STRING_ID = MainActivity.class.getSimpleName() + "REQUESTED_MESSAGE";
@@ -71,7 +72,6 @@ public class CourseActivity extends AppCompatActivity implements OnDataTaskResul
     }
 
     private void setupViews(Course course) {
-        //todo: this is getting called when deleting a term, but not sure why. Checking for null is a work-around.  Need to fix.
         if (course != null) {
             currentCourse = course;
             setupCourseViews(course);

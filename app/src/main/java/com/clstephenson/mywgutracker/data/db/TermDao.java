@@ -14,6 +14,9 @@ public abstract class TermDao implements BaseDao<Term> {
     @Query("SELECT * FROM term")
     public abstract LiveData<List<Term>> getAll();
 
+    @Query("SELECT * FROM term")
+    public abstract List<Term> getAllAsList();
+
     @Query("SELECT * FROM term WHERE id = :id")
     public abstract LiveData<Term> getById(long id);
 

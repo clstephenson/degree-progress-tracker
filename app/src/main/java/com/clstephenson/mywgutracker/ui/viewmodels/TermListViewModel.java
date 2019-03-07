@@ -14,6 +14,7 @@ import androidx.lifecycle.LiveData;
 
 public class TermListViewModel extends AndroidViewModel {
 
+    private final String TAG = this.getClass().getSimpleName();
     private Repository<Term> repository;
     private LiveData<List<Term>> allTerms;
 

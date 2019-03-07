@@ -13,6 +13,7 @@ import com.clstephenson.mywgutracker.repositories.DataTaskResult;
 import com.clstephenson.mywgutracker.repositories.OnDataTaskResultListener;
 import com.clstephenson.mywgutracker.ui.viewmodels.TermViewModel;
 import com.clstephenson.mywgutracker.utils.DateUtils;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.annotation.Nullable;
@@ -24,6 +25,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 public class TermActivity extends AppCompatActivity implements OnDataTaskResultListener {
 
+    private final String TAG = this.getClass().getSimpleName();
     private TermViewModel termViewModel;
     private Term currentTerm;
 
@@ -34,7 +36,6 @@ public class TermActivity extends AppCompatActivity implements OnDataTaskResultL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_term);
 
-        setupFloatingActionButton();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         termViewModel = ViewModelProviders.of(this).get(TermViewModel.class);
@@ -43,13 +44,14 @@ public class TermActivity extends AppCompatActivity implements OnDataTaskResultL
         termViewModel.getTermById(termId).observe(this, this::setupTermViews);
         setupCourseListFragment(termId);
         setTitle(R.string.title_activity_term);
-    }
 
-    private void setupFloatingActionButton() {
-//        FloatingActionButton fab = findViewById(R.id.fab);
-//        fab.setOnClickListener(view ->
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show());
+        FloatingActionButton fab = findViewById(R.id.fab_add_course);
+        fab.setOnClickListener(view -> {
+            Intent intent = new Intent(this, CourseEditActivity.class);
+            intent.putExtra(EXTRA_TERM_ID, termId);
+            startActivity(intent);
+        });
+        fab.show();
     }
 
     private void setupCourseListFragment(long termId) {

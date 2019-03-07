@@ -23,10 +23,6 @@ public class TermViewModel extends AndroidViewModel {
         return termRepository.getById(id);
     }
 
-    public void deleteTermById(long id) {
-        termRepository.deleteById(id);
-    }
-
     public void deleteTerm(Term term) {
         termRepository.delete(term);
     }

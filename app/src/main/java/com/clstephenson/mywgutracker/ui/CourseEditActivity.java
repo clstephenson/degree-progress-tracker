@@ -1,9 +1,10 @@
 package com.clstephenson.mywgutracker.ui;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,6 +28,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.Date;
+import java.util.List;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -34,6 +36,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 public class CourseEditActivity extends AppCompatActivity implements OnDataTaskResultListener {
 
+    private final String TAG = this.getClass().getSimpleName();
     CourseEditViewModel viewModel;
     private MODE entryMode;
     private Course currentCourse;
@@ -49,6 +52,7 @@ public class CourseEditActivity extends AppCompatActivity implements OnDataTaskR
     private TextInputEditText mentorEmailInput;
     private Switch enableAlertStartSwitch;
     private Switch enableAlertEndSwitch;
+    private List<Term> allTerms;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +66,8 @@ public class CourseEditActivity extends AppCompatActivity implements OnDataTaskR
         if (courseId == 0) {
             entryMode = MODE.CREATE;
             this.setTitle(R.string.new_course);
-            setupCourseViews(null);
+            long termId = getIntent().getLongExtra(TermActivity.EXTRA_TERM_ID, 0);
+            setupCourseViews(viewModel.getNewCourse(termId));
         } else {
             entryMode = MODE.UPDATE;
             this.setTitle(R.string.edit_course);
@@ -70,7 +75,8 @@ public class CourseEditActivity extends AppCompatActivity implements OnDataTaskR
         }
     }
 
-    private void setupCourseViews(@Nullable Course course) {
+    private void setupCourseViews(Course course) {
+        currentCourse = course;
         titleInput = findViewById(R.id.course_input_title);
         endDateInput = findViewById(R.id.course_input_end);
         startDateInput = findViewById(R.id.course_input_start);
@@ -79,27 +85,19 @@ public class CourseEditActivity extends AppCompatActivity implements OnDataTaskR
         enableAlertStartSwitch = findViewById(R.id.course_switch_alert_start);
         enableAlertEndSwitch = findViewById(R.id.course_switch_alert_end);
 
+        viewModel.getAllTermsAsList();
+
         ArrayAdapter<CourseStatus> statusAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_dropdown_item_1line, CourseStatus.values());
         statusInput.setAdapter(statusAdapter);
-
-        ArrayAdapter<Term> termAdapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_dropdown_item_1line, viewModel.getAllTerms());
-        termInput.setAdapter(termAdapter);
-
-        if (entryMode == MODE.UPDATE && course != null) {
-            currentCourse = course;
-            titleInput.setText(currentCourse.getName());
-            startDateInput.setText(DateUtils.getFormattedDate(currentCourse.getStartDate()));
-            endDateInput.setText(DateUtils.getFormattedDate(currentCourse.getEndDate()));
-            statusInput.setSelection(statusAdapter.getPosition(currentCourse.getStatus()));
-            termInput.setSelection(termAdapter.getPosition(viewModel.getTermById(currentCourse.getTermId())));
-            enableAlertStartSwitch.setChecked(currentCourse.isStartAlertOn());
-            enableAlertEndSwitch.setChecked(currentCourse.isEndAlertOn());
-            setupMentorList(currentCourse.getMentor());
-        } else {
-            currentCourse = viewModel.getNewCourse();
-        }
+        titleInput.setText(currentCourse.getName());
+        startDateInput.setText(DateUtils.getFormattedDate(currentCourse.getStartDate()));
+        endDateInput.setText(DateUtils.getFormattedDate(currentCourse.getEndDate()));
+        statusInput.setSelection(statusAdapter.getPosition(currentCourse.getStatus()));
+        //termInput.setSelection(termAdapter.getPosition(getTermById(currentCourse.getTermId())));
+        enableAlertStartSwitch.setChecked(currentCourse.isStartAlertOn());
+        enableAlertEndSwitch.setChecked(currentCourse.isEndAlertOn());
+        setupMentorList(currentCourse.getMentor());
         dirtyCourse = new Course(currentCourse);
     }
 
@@ -117,9 +115,7 @@ public class CourseEditActivity extends AppCompatActivity implements OnDataTaskR
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (entryMode == MODE.UPDATE) {
-            getMenuInflater().inflate(R.menu.menu_course_edit, menu);
-        }
+        getMenuInflater().inflate(R.menu.menu_course_edit, menu);
         return true;
     }
 
@@ -128,7 +124,7 @@ public class CourseEditActivity extends AppCompatActivity implements OnDataTaskR
         super.onBackPressed();
     }
 
-    public void handleSaveCourse(View view) {
+    public void handleSaveCourse() {
         if (isFormValid()) {
             updateDirtyCourse();
 
@@ -221,8 +217,8 @@ public class CourseEditActivity extends AppCompatActivity implements OnDataTaskR
             case android.R.id.home:
                 onBackPressed();
                 break;
-            case R.id.action_delete_course_edit:
-                handleDeleteCourse();
+            case R.id.action_save_course_edit:
+                handleSaveCourse();
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -230,10 +226,11 @@ public class CourseEditActivity extends AppCompatActivity implements OnDataTaskR
 
     @Override
     public void onNotifyDataChanged(DataTaskResult result) {
+        Log.d(TAG, "onNotifyDataChanged() called with: result = [" + result + "]");
         switch (result.getAction()) {
             case DELETE:
                 if (result.isSuccessful()) {
-                    openCourseList(R.string.course_deleted, Snackbar.LENGTH_LONG);
+                    finish();
                 } else {
                     int messageResourceId;
                     if (result.getConstraintException() != null) {
@@ -253,7 +250,7 @@ public class CourseEditActivity extends AppCompatActivity implements OnDataTaskR
                 break;
             case INSERT:
                 if (result.isSuccessful()) {
-                    openCourseList(R.string.course_added, Snackbar.LENGTH_LONG);
+                    finish();
                 } else {
                     int messageResourceId;
                     if (result.getConstraintException() != null) {
@@ -264,21 +261,33 @@ public class CourseEditActivity extends AppCompatActivity implements OnDataTaskR
                     showDataChangedSnackbarMessage(messageResourceId);
                 }
                 break;
+            case GET:
+                // this will be the term list data
+                if (result.isSuccessful()) {
+                    setTerms((List<Term>) result.getData());
+                    ArrayAdapter<Term> termAdapter = new ArrayAdapter<>(this,
+                            android.R.layout.simple_dropdown_item_1line, allTerms);
+                    termInput.setAdapter(termAdapter);
+                    switch (entryMode) {
+                        case UPDATE:
+                            termInput.setSelection(termAdapter.getPosition(getTermById(currentCourse.getTermId())));
+                            break;
+                        case CREATE:
+                            if (currentCourse.getTermId() > 0) {
+                                termInput.setSelection(termAdapter.getPosition(getTermById(currentCourse.getTermId())));
+                            }
+                            break;
+                    }
+                }
         }
     }
 
-    private void handleDeleteCourse() {
-        new AlertDialog.Builder(this)
-                .setTitle("Delete Course?")
-                .setIcon(R.drawable.ic_warning)
-                .setMessage(getString(R.string.confirm_delete_course))
-                .setNegativeButton(getString(R.string.no), (dialog, which) -> dialog.cancel())
-                .setPositiveButton(getString(R.string.yes), (dialog, which) -> {
-                    viewModel.deleteCourse(currentCourse);
-                    dialog.dismiss();
-                })
-                .create()
-                .show();
+    private void openCourseActivity(int messageId, int snackbarLength) {
+        Intent intent = new Intent(this, CourseActivity.class);
+        intent.putExtra(MainActivity.EXTRA_MESSAGE_STRING_ID, messageId);
+        intent.putExtra(MainActivity.EXTRA_MESSAGE_LENGTH, snackbarLength);
+        startActivity(intent);
+        finish();
     }
 
     private void openCourseList(int messageId, int snackbarLength) {
@@ -339,8 +348,12 @@ public class CourseEditActivity extends AppCompatActivity implements OnDataTaskR
 
     private void updateDirtyCourse() {
         dirtyCourse.setName(titleInput.getText().toString());
-        dirtyCourse.setStartDate(DateUtils.getDateFromFormattedString(startDateInput.getText().toString()));
-        dirtyCourse.setEndDate(DateUtils.getDateFromFormattedString(endDateInput.getText().toString()));
+        if (!TextUtils.isEmpty(startDateInput.getText().toString())) {
+            dirtyCourse.setStartDate(DateUtils.getDateFromFormattedString(startDateInput.getText().toString()));
+        }
+        if (!TextUtils.isEmpty(endDateInput.getText().toString())) {
+            dirtyCourse.setEndDate(DateUtils.getDateFromFormattedString(endDateInput.getText().toString()));
+        }
         dirtyCourse.setStatus((CourseStatus) statusInput.getSelectedItem());
         dirtyCourse.setTermId(((Term) termInput.getSelectedItem()).getId());
         dirtyCourse.setEndAlertOn(enableAlertEndSwitch.isChecked());
@@ -349,6 +362,21 @@ public class CourseEditActivity extends AppCompatActivity implements OnDataTaskR
         dirtyCourse.getMentor().setLastName(mentorLastNameInput.getText().toString());
         dirtyCourse.getMentor().setPhone(mentorPhoneInput.getText().toString());
         dirtyCourse.getMentor().setEmail(mentorEmailInput.getText().toString());
+    }
+
+    private void setTerms(List<Term> terms) {
+        Log.d(TAG, "setTerms() called with: terms = [" + terms + "]");
+        this.allTerms = terms;
+    }
+
+    @Nullable
+    private Term getTermById(long id) {
+        for (Term term : allTerms) {
+            if (term.getId() == id) {
+                return term;
+            }
+        }
+        return null;
     }
 
     private enum MODE {

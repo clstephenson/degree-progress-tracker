@@ -29,10 +29,6 @@ public class TermEditViewModel extends AndroidViewModel {
         return termRepository.getById(id);
     }
 
-    public void deleteTerm(Term term) {
-        termRepository.delete(term);
-    }
-
     public void updateTerm(Term term) {
         termRepository.update(term);
     }
