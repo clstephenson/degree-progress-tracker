@@ -1,6 +1,5 @@
 package com.clstephenson.mywgutracker.ui;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -29,6 +28,11 @@ import androidx.lifecycle.ViewModelProviders;
 public class TermEditActivity extends AppCompatActivity implements OnDataTaskResultListener {
 
     private MODE entryMode;
+    private Term currentTerm;
+    private Term dirtyTerm;
+    private TextInputEditText titleInput;
+    private TextInputEditText endDateInput;
+    private TextInputEditText startDateInput;
 
     TermEditViewModel viewModel;
 
@@ -52,12 +56,6 @@ public class TermEditActivity extends AppCompatActivity implements OnDataTaskRes
         }
 
     }
-
-    private Term currentTerm;
-    private Term dirtyTerm;
-    private TextInputEditText titleInput;
-    private TextInputEditText endDateInput;
-    private TextInputEditText startDateInput;
 
     private void setupTermViews(@Nullable Term term) {
         titleInput = findViewById(R.id.term_input_title);
@@ -88,7 +86,7 @@ public class TermEditActivity extends AppCompatActivity implements OnDataTaskRes
         super.onBackPressed();
     }
 
-    public void handleSaveTerm(View view) {
+    public void handleSaveTerm() {
         if (isFormValid()) {
             updateDirtyTerm();
 
@@ -155,43 +153,11 @@ public class TermEditActivity extends AppCompatActivity implements OnDataTaskRes
             case android.R.id.home:
                 onBackPressed();
                 break;
-            case R.id.action_delete_term_edit:
-                handleDeleteTerm();
+            case R.id.action_save_term_edit:
+                handleSaveTerm();
                 break;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-//    @Override
-//    public void onAsyncInsertDataCompleted(DataTaskResult result) {
-//        if (result.isSuccessful()) {
-//            openTermList(R.string.term_added, Snackbar.LENGTH_LONG);
-//        } else {
-//            int messageResourceId;
-//            if (result.getConstraintException() != null) {
-//                messageResourceId = R.string.term_add_failed;
-//            } else {
-//                messageResourceId = R.string.unexpected_error;
-//            }
-//            Snackbar snackbar = Snackbar.make(
-//                    findViewById(R.id.term_edit_coordinator_layout), messageResourceId, Snackbar.LENGTH_INDEFINITE);
-//            snackbar.setAction(getString(R.string.dismiss), v -> snackbar.dismiss());
-//            snackbar.show();
-//        }
-//    }
-
-    private void handleDeleteTerm() {
-        new AlertDialog.Builder(this)
-                .setTitle("Delete Term?")
-                .setIcon(R.drawable.ic_warning)
-                .setMessage(getString(R.string.confirm_delete_term))
-                .setNegativeButton(getString(R.string.no), (dialog, which) -> dialog.cancel())
-                .setPositiveButton(getString(R.string.yes), (dialog, which) -> {
-                    viewModel.deleteTerm(currentTerm);
-                    dialog.dismiss();
-                })
-                .create()
-                .show();
     }
 
     @Override

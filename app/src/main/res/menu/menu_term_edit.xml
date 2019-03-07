@@ -4,10 +4,15 @@
     tools:context="com.clstephenson.mywgutracker.ui.TermEditActivity">
 
     <item
-        android:id="@+id/action_delete_term_edit"
-        android:icon="@drawable/ic_delete"
+        android:id="@+id/action_save_term_edit"
         android:orderInCategory="101"
-        android:title="@string/delete"
+        android:title="@string/save"
         app:showAsAction="always" />
+    <!--<item-->
+    <!--android:id="@+id/action_delete_term_edit"-->
+    <!--android:icon="@drawable/ic_delete"-->
+    <!--android:orderInCategory="101"-->
+    <!--android:title="@string/delete"-->
+    <!--app:showAsAction="always" />-->
 
 </menu>

@@ -39,7 +39,7 @@ public class TermListFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         //configure floating action button
-        FloatingActionButton fab = getActivity().findViewById(R.id.fab_add_term);
+        FloatingActionButton fab = getActivity().findViewById(R.id.fab_add_main);
         fab.setOnClickListener(this::openTermEditActivityForNewTerm);
         fab.show();
 

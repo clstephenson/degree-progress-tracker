@@ -81,10 +81,11 @@
 
         <ImageView
             android:id="@+id/course_mentor_email_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/mentor_icon_size"
+            android:layout_height="@dimen/mentor_icon_size"
             android:layout_gravity="center_vertical"
             android:layout_marginEnd="@dimen/text_line_spacing"
+            android:onClick="handleMentorEmailClick"
             android:src="@drawable/ic_email" />
 
         <TextView
@@ -93,6 +94,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:textSize="@dimen/text_size_standard"
+            android:onClick="handleMentorEmailClick"
             tools:text="Mentor Email" />
     </LinearLayout>
 
@@ -104,10 +106,11 @@
 
         <ImageView
             android:id="@+id/course_mentor_phone_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/mentor_icon_size"
+            android:layout_height="@dimen/mentor_icon_size"
             android:layout_gravity="center_vertical"
             android:layout_marginEnd="@dimen/text_line_spacing"
+            android:onClick="handleMentorPhoneClick"
             android:src="@drawable/ic_phone" />
 
         <TextView
@@ -116,6 +119,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:textSize="@dimen/text_size_standard"
+            android:onClick="handleMentorPhoneClick"
             tools:text="Mentor Phone" />
     </LinearLayout>
 

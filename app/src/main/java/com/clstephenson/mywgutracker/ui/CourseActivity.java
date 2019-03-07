@@ -2,9 +2,11 @@ package com.clstephenson.mywgutracker.ui;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import com.clstephenson.mywgutracker.R;
@@ -26,6 +28,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 public class CourseActivity extends AppCompatActivity implements OnDataTaskResultListener {
 
+    private final String TAG = this.getClass().getSimpleName();
     public static final String EXTRA_COURSE_ID = CourseActivity.class.getSimpleName() + "extra_course_id";
     public static final String EXTRA_ASSESSMENT_ID = CourseActivity.class.getSimpleName() + "extra_assessment_id";
     public static final String EXTRA_MESSAGE_STRING_ID = MainActivity.class.getSimpleName() + "REQUESTED_MESSAGE";
@@ -69,7 +72,6 @@ public class CourseActivity extends AppCompatActivity implements OnDataTaskResul
     }
 
     private void setupViews(Course course) {
-        //todo: this is getting called when deleting a term, but not sure why. Checking for null is a work-around.  Need to fix.
         if (course != null) {
             currentCourse = course;
             setupCourseViews(course);
@@ -213,5 +215,17 @@ public class CourseActivity extends AppCompatActivity implements OnDataTaskResul
         intent.putExtra(MainActivity.EXTRA_MESSAGE_LENGTH, snackbarLength);
         startActivity(intent);
         finish();
+    }
+
+    public void handleMentorPhoneClick(View view) {
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        intent.setData(Uri.parse(String.format("tel:%s", currentCourse.getMentor().getPhone())));
+        startActivity(intent);
+    }
+
+    public void handleMentorEmailClick(View view) {
+        Intent intent = new Intent(Intent.ACTION_SENDTO);
+        intent.setData(Uri.parse(String.format("mailto:%s", currentCourse.getMentor().getEmail())));
+        startActivity(intent);
     }
 }

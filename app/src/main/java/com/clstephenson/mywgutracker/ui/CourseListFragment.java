@@ -11,6 +11,7 @@ import com.clstephenson.mywgutracker.R;
 import com.clstephenson.mywgutracker.data.models.Course;
 import com.clstephenson.mywgutracker.ui.adapters.CourseListAdapter;
 import com.clstephenson.mywgutracker.ui.viewmodels.CourseListViewModel;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -39,10 +40,9 @@ public class CourseListFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         //configure floating action button
-        //todo uncomment once edit course edit form is implemented
-//        FloatingActionButton fab = getActivity().findViewById(R.id.fab_add_course);
-//        fab.setOnClickListener(this::openCourseEditActivityForNewCourse);
-//        fab.show();
+        FloatingActionButton fab = getActivity().findViewById(R.id.fab_add_main);
+        fab.setOnClickListener(this::openCourseEditActivityForNewCourse);
+        fab.show();
 
         RecyclerView recyclerView = getView().findViewById(R.id.course_recyclerview);
 
@@ -73,6 +73,11 @@ public class CourseListFragment extends Fragment {
                 title = getString(getArguments().getInt(MainActivity.TITLE_RESOURCE_ID));
             }
         }
+    }
+
+    private void openCourseEditActivityForNewCourse(View view) {
+        Intent intent = new Intent(getActivity(), CourseEditActivity.class);
+        startActivity(intent);
     }
 
     @Override

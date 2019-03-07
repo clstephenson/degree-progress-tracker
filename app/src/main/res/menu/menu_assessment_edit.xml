@@ -4,6 +4,12 @@
     tools:context="com.clstephenson.mywgutracker.ui.AssessmentEditActivity">
 
     <item
+        android:id="@+id/action_save_assessment_edit"
+        android:orderInCategory="100"
+        android:title="@string/save"
+        app:showAsAction="always" />
+
+    <item
         android:id="@+id/action_delete_assessment_edit"
         android:icon="@drawable/ic_delete"
         android:orderInCategory="101"
