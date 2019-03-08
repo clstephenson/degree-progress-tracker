@@ -3,6 +3,7 @@ package com.clstephenson.mywgutracker.ui;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -211,11 +212,7 @@ public class TermEditActivity extends AppCompatActivity implements OnDataTaskRes
     public void handleStartDateInputClick(View view) {
         Dialog calendarDialog = getCalendarDialog(view);
         CalendarView calendarView = calendarDialog.findViewById(R.id.calendar_date_picker);
-        if (entryMode == MODE.UPDATE) {
-            calendarView.setDate(DateUtils.getMillisFromDate(dirtyTerm.getStartDate()));
-        } else {
-            calendarView.setDate(DateUtils.getMillisFromDate(new Date()));
-        }
+        calendarView.setDate(DateUtils.getMillisFromDate(dirtyTerm.getStartDate()));
         calendarView.setOnDateChangeListener((view1, year, month, dayOfMonth) -> {
             Date newDate = DateUtils.getDate(year, month, dayOfMonth);
             startDateInput.setText(DateUtils.getFormattedDate(newDate));
@@ -228,11 +225,7 @@ public class TermEditActivity extends AppCompatActivity implements OnDataTaskRes
     public void handleEndDateInputClick(View view) {
         Dialog calendarDialog = getCalendarDialog(view);
         CalendarView calendarView = calendarDialog.findViewById(R.id.calendar_date_picker);
-        if (entryMode == MODE.UPDATE) {
-            calendarView.setDate(DateUtils.getMillisFromDate(dirtyTerm.getEndDate()));
-        } else {
-            calendarView.setDate(DateUtils.getMillisFromDate(new Date()));
-        }
+        calendarView.setDate(DateUtils.getMillisFromDate(dirtyTerm.getEndDate()));
         calendarView.setOnDateChangeListener((view1, year, month, dayOfMonth) -> {
             Date newDate = DateUtils.getDate(year, month, dayOfMonth);
             endDateInput.setText(DateUtils.getFormattedDate(newDate));
@@ -257,7 +250,11 @@ public class TermEditActivity extends AppCompatActivity implements OnDataTaskRes
 
     private void updateDirtyTerm() {
         dirtyTerm.setName(titleInput.getText().toString());
-        dirtyTerm.setStartDate(DateUtils.getDateFromFormattedString(startDateInput.getText().toString()));
-        dirtyTerm.setEndDate(DateUtils.getDateFromFormattedString(endDateInput.getText().toString()));
+        if (!TextUtils.isEmpty(startDateInput.getText().toString())) {
+            dirtyTerm.setStartDate(DateUtils.getDateFromFormattedString(startDateInput.getText().toString()));
+        }
+        if (!TextUtils.isEmpty(endDateInput.getText().toString())) {
+            dirtyTerm.setEndDate(DateUtils.getDateFromFormattedString(endDateInput.getText().toString()));
+        }
     }
 }

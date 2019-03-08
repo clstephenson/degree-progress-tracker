@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -239,11 +240,7 @@ public class AssessmentEditActivity extends AppCompatActivity implements OnDataT
     public void handleGoalDateInputClick(View view) {
         Dialog calendarDialog = getCalendarDialog(view);
         CalendarView calendarView = calendarDialog.findViewById(R.id.calendar_date_picker);
-        if (entryMode == MODE.UPDATE) {
-            calendarView.setDate(DateUtils.getMillisFromDate(dirtyAssessment.getGoalDate()));
-        } else {
-            calendarView.setDate(DateUtils.getMillisFromDate(new Date()));
-        }
+        calendarView.setDate(DateUtils.getMillisFromDate(dirtyAssessment.getGoalDate()));
         calendarView.setOnDateChangeListener((view1, year, month, dayOfMonth) -> {
             Date newDate = DateUtils.getDate(year, month, dayOfMonth);
             goalDateInput.setText(DateUtils.getFormattedDate(newDate));
@@ -269,7 +266,9 @@ public class AssessmentEditActivity extends AppCompatActivity implements OnDataT
     private void updateDirtyAssessment() {
         dirtyAssessment.setName(titleInput.getText().toString());
         dirtyAssessment.setType((AssessmentType) typeInput.getSelectedItem());
-        dirtyAssessment.setGoalDate(DateUtils.getDateFromFormattedString(goalDateInput.getText().toString()));
+        if (!TextUtils.isEmpty(goalDateInput.getText().toString())) {
+            dirtyAssessment.setGoalDate(DateUtils.getDateFromFormattedString(goalDateInput.getText().toString()));
+        }
         dirtyAssessment.setGoalAlertOn(alertInput.isChecked());
     }
 
