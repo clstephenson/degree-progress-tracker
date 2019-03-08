@@ -180,6 +180,7 @@ public class CourseActivity extends AppCompatActivity implements OnDataTaskResul
         switch (result.getAction()) {
             case DELETE:
                 if (result.isSuccessful()) {
+                    cancelCourseNotifications(currentCourse);
                     openCourseList(R.string.course_deleted, Snackbar.LENGTH_LONG);
                 } else {
                     int messageResourceId;
@@ -195,6 +196,13 @@ public class CourseActivity extends AppCompatActivity implements OnDataTaskResul
                 }
                 break;
         }
+    }
+
+    private void cancelCourseNotifications(Course course) {
+        CourseEditActivity.submitCourseNotificationRequest(this, course,
+                CourseEditActivity.NOTIFICATION_TYPE.START, true);
+        CourseEditActivity.submitCourseNotificationRequest(this, course,
+                CourseEditActivity.NOTIFICATION_TYPE.END, true);
     }
 
     private void openCourseList(int messageId, int snackbarLength) {

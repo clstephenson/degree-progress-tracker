@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,6 +29,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.Date;
+import java.util.Locale;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -35,6 +37,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 public class AssessmentEditActivity extends AppCompatActivity implements OnDataTaskResultListener {
 
+    private final String TAG = this.getClass().getSimpleName();
     public static final String EXTRA_COURSE_ID = CourseActivity.class.getSimpleName() + "extra_course_id";
     private MODE entryMode;
     private Assessment currentAssessment;
@@ -175,6 +178,7 @@ public class AssessmentEditActivity extends AppCompatActivity implements OnDataT
         switch (result.getAction()) {
             case DELETE:
                 if (result.isSuccessful()) {
+                    submitAssessmentNotificationRequest(true);
                     openCourseActivity(R.string.assessment_deleted, Snackbar.LENGTH_LONG);
                 } else {
                     int messageResourceId;
@@ -188,42 +192,14 @@ public class AssessmentEditActivity extends AppCompatActivity implements OnDataT
                 break;
             case UPDATE:
                 if (result.isSuccessful()) {
-                    if (currentAssessment.isGoalAlertOn()) {
-                        submitNotificationRequest();
-                        new AlertDialog.Builder(this)
-                                .setTitle("Alert Notification Added")
-                                .setIcon(R.drawable.ic_notifications)
-                                .setMessage(getString(R.string.assessment_notification_added, AlertNotification.REMINDER_DEFAULT_DAYS_BEFORE))
-                                .setPositiveButton(getString(android.R.string.ok), (dialog, which) -> {
-                                    openCourseActivity(R.string.assessment_updated, Snackbar.LENGTH_LONG);
-                                    dialog.cancel();
-                                })
-                                .create()
-                                .show();
-                    } else {
-                        openCourseActivity(R.string.assessment_updated, Snackbar.LENGTH_LONG);
-                    }
+                    handleAlertsIfSelectedAndFinish();
                 } else {
                     showDataChangedSnackbarMessage(R.string.unexpected_error);
                 }
                 break;
             case INSERT:
                 if (result.isSuccessful()) {
-                    if (currentAssessment.isGoalAlertOn()) {
-                        submitNotificationRequest();
-                        new AlertDialog.Builder(this)
-                                .setTitle("Alert Notification Added")
-                                .setIcon(R.drawable.ic_notifications)
-                                .setMessage(getString(R.string.assessment_notification_added, AlertNotification.REMINDER_DEFAULT_DAYS_BEFORE))
-                                .setPositiveButton(getString(android.R.string.ok), (dialog, which) -> {
-                                    openCourseActivity(R.string.assessment_added, Snackbar.LENGTH_LONG);
-                                    dialog.cancel();
-                                })
-                                .create()
-                                .show();
-                    } else {
-                        openCourseActivity(R.string.assessment_added, Snackbar.LENGTH_LONG);
-                    }
+                    handleAlertsIfSelectedAndFinish();
                 } else {
                     int messageResourceId;
                     if (result.getConstraintException() != null) {
@@ -297,29 +273,51 @@ public class AssessmentEditActivity extends AppCompatActivity implements OnDataT
         dirtyAssessment.setGoalAlertOn(alertInput.isChecked());
     }
 
+    private void handleAlertsIfSelectedAndFinish() {
+        submitAssessmentNotificationRequest(!currentAssessment.isGoalAlertOn());
+        if (currentAssessment.isGoalAlertOn()) {
+            new AlertDialog.Builder(this)
+                    .setTitle("Alert Notification Added")
+                    .setIcon(R.drawable.ic_notifications)
+                    .setMessage(getString(R.string.assessment_notification_added, AlertNotification.REMINDER_DEFAULT_DAYS_BEFORE))
+                    .setPositiveButton(getString(android.R.string.ok), (dialog, which) -> {
+                        openCourseActivity(R.string.assessment_updated, Snackbar.LENGTH_LONG);
+                        dialog.cancel();
+                    })
+                    .create()
+                    .show();
+        } else {
+            finish();
+        }
+    }
 
-    private void submitNotificationRequest() {
-        Intent intent = new Intent(this, CourseActivity.class);
-        intent.putExtra(CourseActivity.EXTRA_COURSE_ID, currentAssessment.getCourseId());
-
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-        stackBuilder.addNextIntentWithParentStack(intent);
-        PendingIntent pendingIntent = stackBuilder.getPendingIntent((int) currentAssessment.getId(),
-                PendingIntent.FLAG_UPDATE_CURRENT);
+    private void submitAssessmentNotificationRequest(boolean cancelRequest) {
+        int notificationId = (int) currentAssessment.getId();
 
         Date reminderDate = DateUtils.createReminderDate(currentAssessment.getGoalDate(),
-                AlertNotification.REMINDER_DEFAULT_DAYS_BEFORE, AlertNotification.REMINDER_USE_CURRENT_TIME_OF_DAY);
+                AlertNotification.REMINDER_DEFAULT_DAYS_BEFORE, AlertNotification.REMINDER_DEFAULT_HOUR_OF_DAY);
         long delay = reminderDate.getTime() - new Date().getTime();
         String goalDateString = DateUtils.getFormattedDate(currentAssessment.getGoalDate());
 
+        Log.d(TAG, String.format(Locale.getDefault(),
+                "submitAssessmentNotificationRequest: requesting assessment alert for %d millis from now.", delay));
         AlertNotification.scheduleAlert(this,
                 getString(R.string.assessment_goal_notification_title, currentAssessment.getType().getFriendlyName()),
                 getString(R.string.assessment_goal_notification_text,
                         currentAssessment.getName(), goalDateString),
                 delay,
-                (int) currentAssessment.getId(),
-                pendingIntent);
+                notificationId,
+                createPendingIntentForNotification(notificationId),
+                cancelRequest);
+    }
 
+    private PendingIntent createPendingIntentForNotification(int notificationId) {
+        Intent intent = new Intent(this, CourseActivity.class);
+        intent.putExtra(CourseActivity.EXTRA_COURSE_ID, currentAssessment.getCourseId());
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        stackBuilder.addNextIntentWithParentStack(intent);
+        return stackBuilder.getPendingIntent(notificationId,
+                PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     private enum MODE {

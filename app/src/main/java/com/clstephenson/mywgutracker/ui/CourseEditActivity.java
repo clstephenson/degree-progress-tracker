@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -33,15 +34,15 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 
 public class CourseEditActivity extends AppCompatActivity implements OnDataTaskResultListener {
 
-    private final String TAG = this.getClass().getSimpleName();
+    private static final String TAG = CourseEditActivity.class.getSimpleName();
     CourseEditViewModel viewModel;
     private MODE entryMode;
     private Course currentCourse;
@@ -224,96 +225,51 @@ public class CourseEditActivity extends AppCompatActivity implements OnDataTaskR
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onNotifyDataChanged(DataTaskResult result) {
-        Log.d(TAG, "onNotifyDataChanged() called with: result = [" + result + "]");
-        switch (result.getAction()) {
-            case DELETE:
-                if (result.isSuccessful()) {
-                    finish();
-                } else {
-                    int messageResourceId;
-                    if (result.getConstraintException() != null) {
-                        messageResourceId = R.string.course_delete_failed;
-                    } else {
-                        messageResourceId = R.string.unexpected_error;
-                    }
-                    showDataChangedSnackbarMessage(messageResourceId);
-                }
-                break;
-            case UPDATE:
-                if (result.isSuccessful()) {
-                    if (currentCourse.isStartAlertOn())
-                        submitNotificationRequest(NOTIFICATION_TYPE.START);
-                    if (currentCourse.isEndAlertOn())
-                        submitNotificationRequest(NOTIFICATION_TYPE.END);
-                    if (currentCourse.isEndAlertOn() || currentCourse.isStartAlertOn()) {
-                        new AlertDialog.Builder(this)
-                                .setTitle("Alert Notification Added")
-                                .setIcon(R.drawable.ic_notifications)
-                                .setMessage(getString(R.string.course_notification_added))
-                                .setPositiveButton(getString(android.R.string.ok), (dialog, which) -> {
-                                    finish();
-                                    dialog.cancel();
-                                })
-                                .create()
-                                .show();
-                    } else {
-                        finish();
-                    }
-                } else {
-                    showDataChangedSnackbarMessage(R.string.unexpected_error);
-                }
-                break;
-            case INSERT:
-                if (result.isSuccessful()) {
-                    if (currentCourse.isStartAlertOn())
-                        submitNotificationRequest(NOTIFICATION_TYPE.START);
-                    if (currentCourse.isEndAlertOn())
-                        submitNotificationRequest(NOTIFICATION_TYPE.END);
-                    if (currentCourse.isEndAlertOn() || currentCourse.isStartAlertOn()) {
-                        new AlertDialog.Builder(this)
-                                .setTitle("Alert Notification Added")
-                                .setIcon(R.drawable.ic_notifications)
-                                .setMessage(getString(R.string.course_notification_added))
-                                .setPositiveButton(getString(android.R.string.ok), (dialog, which) -> {
-                                    finish();
-                                    dialog.cancel();
-                                })
-                                .create()
-                                .show();
-                    } else {
-                        finish();
-                    }
-                } else {
-                    int messageResourceId;
-                    if (result.getConstraintException() != null) {
-                        messageResourceId = R.string.course_add_failed;
-                    } else {
-                        messageResourceId = R.string.unexpected_error;
-                    }
-                    showDataChangedSnackbarMessage(messageResourceId);
-                }
-                break;
-            case GET:
-                // this will be the term list data
-                if (result.isSuccessful()) {
-                    setTerms((List<Term>) result.getData());
-                    ArrayAdapter<Term> termAdapter = new ArrayAdapter<>(this,
-                            android.R.layout.simple_dropdown_item_1line, allTerms);
-                    termInput.setAdapter(termAdapter);
-                    switch (entryMode) {
-                        case UPDATE:
-                            termInput.setSelection(termAdapter.getPosition(getTermById(currentCourse.getTermId())));
-                            break;
-                        case CREATE:
-                            if (currentCourse.getTermId() > 0) {
-                                termInput.setSelection(termAdapter.getPosition(getTermById(currentCourse.getTermId())));
-                            }
-                            break;
-                    }
-                }
+    /**
+     * Method used to submit a request to create or cancel a course notification.  Made it a static
+     * method so it can be called from CourseActivity when a course is deleted.
+     *
+     * @param context
+     * @param course
+     * @param type
+     * @param cancelRequest
+     */
+    public static void submitCourseNotificationRequest(Context context, Course course,
+                                                       NOTIFICATION_TYPE type, boolean cancelRequest) {
+        // notification id is composed of the course id and hashcode of the type parameter.
+        // this will allow start and end notifications to exist at the same time.
+        int notificationId = (int) course.getId() + type.hashCode();
+
+        Intent intent = new Intent(context, CourseActivity.class);
+        intent.putExtra(CourseActivity.EXTRA_COURSE_ID, course.getId());
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+        stackBuilder.addNextIntentWithParentStack(intent);
+        PendingIntent notificationPendingIntent = stackBuilder.getPendingIntent(notificationId,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+
+        // setup the dates and resources based on whether it's a start or end date.
+        Date courseDate;
+        int textResource;
+        int titleResource;
+        if (type == NOTIFICATION_TYPE.START) {
+            courseDate = course.getStartDate();
+            textResource = R.string.course_start_notification_text;
+            titleResource = R.string.course_start_notification_title;
+        } else {
+            courseDate = course.getEndDate();
+            textResource = R.string.course_end_notification_text;
+            titleResource = R.string.course_end_notification_title;
         }
+
+        Date reminderDate = DateUtils.createReminderDate(courseDate, 0,
+                AlertNotification.REMINDER_DEFAULT_HOUR_OF_DAY);
+        long delay = reminderDate.getTime() - new Date().getTime();
+        String dateString = DateUtils.getFormattedDate(courseDate);
+        Log.d(TAG, String.format(Locale.getDefault(),
+                "submitCourseNotificationRequest: requesting course alert for %d millis from now.", delay));
+        AlertNotification.scheduleAlert(context, context.getString(titleResource),
+                context.getString(textResource, course.getName(), dateString),
+                delay, notificationId, notificationPendingIntent, cancelRequest);
     }
 
     public void handleStartDateInputClick(View view) {
@@ -396,49 +352,88 @@ public class CourseEditActivity extends AppCompatActivity implements OnDataTaskR
         return null;
     }
 
-    private void submitNotificationRequest(@NonNull NOTIFICATION_TYPE type) {
-        // notification id is composed of the course id and hashcode of the type parameter.
-        // this will allow start and end notifications to exist at the same time.
-        int notificationId = (int) currentCourse.getId() + type.hashCode();
-
-        // setup intent to launch when notification is clicked.
-        Intent intent = new Intent(this, CourseActivity.class);
-        intent.putExtra(CourseActivity.EXTRA_COURSE_ID, currentCourse.getId());
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-        stackBuilder.addNextIntentWithParentStack(intent);
-        PendingIntent pendingIntent = stackBuilder.getPendingIntent(notificationId,
-                PendingIntent.FLAG_UPDATE_CURRENT);
-
-        // setup the dates and resources based on whether it's a start or end date.
-        Date courseDate;
-        int textResource;
-        int titleResource;
-        if (type == NOTIFICATION_TYPE.START) {
-            courseDate = currentCourse.getStartDate();
-            textResource = R.string.course_start_notification_text;
-            titleResource = R.string.course_start_notification_title;
-        } else {
-            courseDate = currentCourse.getEndDate();
-            textResource = R.string.course_end_notification_text;
-            titleResource = R.string.course_end_notification_title;
+    @Override
+    public void onNotifyDataChanged(DataTaskResult result) {
+        Log.d(TAG, "onNotifyDataChanged() called with: result = [" + result + "]");
+        switch (result.getAction()) {
+            case DELETE:
+                if (result.isSuccessful()) {
+                    finish();
+                } else {
+                    int messageResourceId;
+                    if (result.getConstraintException() != null) {
+                        messageResourceId = R.string.course_delete_failed;
+                    } else {
+                        messageResourceId = R.string.unexpected_error;
+                    }
+                    showDataChangedSnackbarMessage(messageResourceId);
+                }
+                break;
+            case UPDATE:
+                if (result.isSuccessful()) {
+                    handleAlertsIfSelectedAndFinish();
+                } else {
+                    showDataChangedSnackbarMessage(R.string.unexpected_error);
+                }
+                break;
+            case INSERT:
+                if (result.isSuccessful()) {
+                    handleAlertsIfSelectedAndFinish();
+                } else {
+                    int messageResourceId;
+                    if (result.getConstraintException() != null) {
+                        messageResourceId = R.string.course_add_failed;
+                    } else {
+                        messageResourceId = R.string.unexpected_error;
+                    }
+                    showDataChangedSnackbarMessage(messageResourceId);
+                }
+                break;
+            case GET:
+                // this will be the term list data
+                if (result.isSuccessful()) {
+                    setTerms((List<Term>) result.getData());
+                    ArrayAdapter<Term> termAdapter = new ArrayAdapter<>(this,
+                            android.R.layout.simple_dropdown_item_1line, allTerms);
+                    termInput.setAdapter(termAdapter);
+                    switch (entryMode) {
+                        case UPDATE:
+                            termInput.setSelection(termAdapter.getPosition(getTermById(currentCourse.getTermId())));
+                            break;
+                        case CREATE:
+                            if (currentCourse.getTermId() > 0) {
+                                termInput.setSelection(termAdapter.getPosition(getTermById(currentCourse.getTermId())));
+                            }
+                            break;
+                    }
+                }
         }
+    }
 
-        Date reminderDate = DateUtils.createReminderDate(courseDate, 0,
-                AlertNotification.REMINDER_DEFAULT_HOUR_OF_DAY);
-        long delay = reminderDate.getTime() - new Date().getTime();
-        String dateString = DateUtils.getFormattedDate(courseDate);
-
-        Log.d(TAG, "submitNotificationRequest: requesting course alert for %l millis from now.");
-        AlertNotification.scheduleAlert(this, getString(titleResource),
-                getString(textResource, currentCourse.getName(), dateString),
-                delay, notificationId, pendingIntent);
+    private void handleAlertsIfSelectedAndFinish() {
+        submitCourseNotificationRequest(this, currentCourse, NOTIFICATION_TYPE.START, !currentCourse.isStartAlertOn());
+        submitCourseNotificationRequest(this, currentCourse, NOTIFICATION_TYPE.END, !currentCourse.isEndAlertOn());
+        if (currentCourse.isEndAlertOn() || currentCourse.isStartAlertOn()) {
+            new AlertDialog.Builder(this)
+                    .setTitle("Alert Notification Added")
+                    .setIcon(R.drawable.ic_notifications)
+                    .setMessage(getString(R.string.course_notification_added))
+                    .setPositiveButton(getString(android.R.string.ok), (dialog, which) -> {
+                        finish();
+                        dialog.cancel();
+                    })
+                    .create()
+                    .show();
+        } else {
+            finish();
+        }
     }
 
     private enum MODE {
         CREATE, UPDATE
     }
 
-    private enum NOTIFICATION_TYPE {
+    public enum NOTIFICATION_TYPE {
         START, END
     }
 }
