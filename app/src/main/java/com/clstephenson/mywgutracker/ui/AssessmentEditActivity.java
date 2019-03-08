@@ -2,6 +2,8 @@ package com.clstephenson.mywgutracker.ui;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -17,6 +19,7 @@ import com.clstephenson.mywgutracker.data.AssessmentType;
 import com.clstephenson.mywgutracker.data.models.Assessment;
 import com.clstephenson.mywgutracker.repositories.DataTaskResult;
 import com.clstephenson.mywgutracker.repositories.OnDataTaskResultListener;
+import com.clstephenson.mywgutracker.ui.notifications.AlertNotification;
 import com.clstephenson.mywgutracker.ui.viewmodels.AssessmentEditViewModel;
 import com.clstephenson.mywgutracker.utils.DateUtils;
 import com.clstephenson.mywgutracker.utils.ValidationUtils;
@@ -184,6 +187,9 @@ public class AssessmentEditActivity extends AppCompatActivity implements OnDataT
                 break;
             case UPDATE:
                 if (result.isSuccessful()) {
+                    if (currentAssessment.isGoalAlertOn()) {
+                        submitNotificationRequest();
+                    }
                     openCourseActivity(R.string.assessment_updated, Snackbar.LENGTH_LONG);
                 } else {
                     showDataChangedSnackbarMessage(R.string.unexpected_error);
@@ -191,6 +197,9 @@ public class AssessmentEditActivity extends AppCompatActivity implements OnDataT
                 break;
             case INSERT:
                 if (result.isSuccessful()) {
+                    if (currentAssessment.isGoalAlertOn()) {
+                        submitNotificationRequest();
+                    }
                     openCourseActivity(R.string.assessment_added, Snackbar.LENGTH_LONG);
                 } else {
                     int messageResourceId;
@@ -263,6 +272,30 @@ public class AssessmentEditActivity extends AppCompatActivity implements OnDataT
         dirtyAssessment.setType((AssessmentType) typeInput.getSelectedItem());
         dirtyAssessment.setGoalDate(DateUtils.getDateFromFormattedString(goalDateInput.getText().toString()));
         dirtyAssessment.setGoalAlertOn(alertInput.isChecked());
+    }
+
+
+    private void submitNotificationRequest() {
+        Intent intent = new Intent(this, CourseActivity.class);
+        intent.putExtra(CourseActivity.EXTRA_COURSE_ID, currentAssessment.getCourseId());
+
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        stackBuilder.addNextIntentWithParentStack(intent);
+        PendingIntent pendingIntent = stackBuilder.getPendingIntent((int) currentAssessment.getId(),
+                PendingIntent.FLAG_UPDATE_CURRENT);
+
+        Date reminderDate = DateUtils.createReminderDate(currentAssessment.getGoalDate(),
+                DateUtils.DEFAULT_REMINDER_DAYS);
+        long delay = reminderDate.getTime() - new Date().getTime();
+        String goalDateString = DateUtils.getFormattedDate(currentAssessment.getGoalDate());
+
+        AlertNotification.scheduleAlert(this,
+                getString(R.string.assessment_goal_notification_title, currentAssessment.getType().getFriendlyName()),
+                getString(R.string.assessment_goal_notification_text,
+                        currentAssessment.getName(), goalDateString),
+                delay,
+                (int) currentAssessment.getId(),
+                pendingIntent);
     }
 
     private enum MODE {

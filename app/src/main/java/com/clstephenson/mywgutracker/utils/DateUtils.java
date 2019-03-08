@@ -10,6 +10,7 @@ public class DateUtils {
 
     public static final long MILLISECONDS_IN_DAY = 86_400_000;
     public static final String DATE_FORMAT = "MMM d, yyyy";
+    public static final int DEFAULT_REMINDER_DAYS = 7;
 
     public static DateFormat getDateFormatter() {
         return new SimpleDateFormat(DATE_FORMAT);
@@ -94,8 +95,29 @@ public class DateUtils {
             calendar.set(Calendar.SECOND, 0);
             calendar.set(Calendar.MILLISECOND, 0);
             return calendar.getTimeInMillis();
-        } else {
-            return null;
         }
+        return null;
+
+    }
+
+    public static Date createReminderDate(Date date, int reminderDays) {
+        if (date != null) {
+            Calendar now = Calendar.getInstance();
+            // need to get these so that the reminder can be set based on the current time
+            // of day when created.  The date passed in is just the date, with zeros for time.
+            int hours = now.get(Calendar.HOUR_OF_DAY);
+            int minutes = now.get(Calendar.MINUTE);
+            int seconds = now.get(Calendar.SECOND);
+
+            Calendar reminder = Calendar.getInstance();
+            reminder.setTime(date);
+            reminder.set(Calendar.HOUR_OF_DAY, hours);
+            reminder.set(Calendar.MINUTE, minutes);
+            reminder.set(Calendar.SECOND, seconds);
+            reminder.add(Calendar.SECOND, 10); // added for ease of testing
+            reminder.add(Calendar.DAY_OF_MONTH, 0 - reminderDays);
+            return reminder.getTime();
+        }
+        return null;
     }
 }

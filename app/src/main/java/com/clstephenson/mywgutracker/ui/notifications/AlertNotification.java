@@ -27,9 +27,17 @@ public class AlertNotification {
      */
     private static final String NOTIFICATION_TAG = "Alert";
 
+
     /**
      * Shows the notification, or updates a previously shown notification of
      * this type, with the given parameters.
+     *
+     * @param context
+     * @param title heading test to use for the notification
+     * @param text main notification text
+     * @param delay delay in millis from the current time to schedule the notification
+     * @param notificationId identifies the notification in case of updates
+     * @param clickIntent Intent to use when the notification is clicked by the user
      */
     public static void scheduleAlert(final Context context, final String title, final String text,
                                      long delay, final int notificationId, PendingIntent clickIntent) {
