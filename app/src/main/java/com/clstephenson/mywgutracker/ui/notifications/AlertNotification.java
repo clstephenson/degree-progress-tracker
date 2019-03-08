@@ -8,11 +8,15 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.util.Log;
 
 import com.clstephenson.mywgutracker.MyApplication;
 import com.clstephenson.mywgutracker.R;
 
 import androidx.core.app.NotificationCompat;
+
+import static android.text.format.DateUtils.FORMAT_ABBREV_ALL;
+import static android.text.format.DateUtils.formatDateTime;
 
 /**
  * Helper class for showing and canceling alert
@@ -22,11 +26,14 @@ import androidx.core.app.NotificationCompat;
  * class to create notifications in a backward-compatible way.
  */
 public class AlertNotification {
+    public static final int REMINDER_DEFAULT_DAYS_BEFORE = 7;
+    private static final String NOTIFICATION_TAG = "Alert";
+    public static final int REMINDER_DEFAULT_HOUR_OF_DAY = 8;
+    public static final int REMINDER_USE_CURRENT_TIME_OF_DAY = -1;
     /**
      * The unique identifier for this type of notification.
      */
-    private static final String NOTIFICATION_TAG = "Alert";
-
+    private static final String TAG = AlertNotification.class.getSimpleName();
 
     /**
      * Shows the notification, or updates a previously shown notification of
@@ -41,6 +48,7 @@ public class AlertNotification {
      */
     public static void scheduleAlert(final Context context, final String title, final String text,
                                      long delay, final int notificationId, PendingIntent clickIntent) {
+        Log.d(TAG, "scheduleAlert() called with: title = [" + title + "], text = [" + text + "], delay = [" + delay + "], notificationId = [" + notificationId + "], ");
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(context, MyApplication.CHANNEL_ID)
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setSmallIcon(R.drawable.ic_wgu)
@@ -61,6 +69,7 @@ public class AlertNotification {
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, notificationId, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
         long futureInMillis = System.currentTimeMillis() + delay;
+        Log.d(TAG, "scheduleAlert: scheduling alert for " + formatDateTime(context, futureInMillis, FORMAT_ABBREV_ALL));
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         alarmManager.set(AlarmManager.RTC_WAKEUP, futureInMillis, pendingIntent);
     }

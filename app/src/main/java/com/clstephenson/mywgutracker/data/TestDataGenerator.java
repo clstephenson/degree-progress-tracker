@@ -8,6 +8,7 @@ import com.clstephenson.mywgutracker.data.models.Term;
 import com.clstephenson.mywgutracker.utils.DateUtils;
 
 import java.util.Date;
+import java.util.Locale;
 
 public class TestDataGenerator {
 
@@ -18,27 +19,25 @@ public class TestDataGenerator {
 
     public static Term createTerm(int numToAppend) {
         long todayPlus180Days = new Date().getTime() + DateUtils.MILLISECONDS_IN_DAY * 180;
-        return new Term(String.format("Test Term %d", numToAppend), new Date(), new Date(todayPlus180Days));
+        return new Term(String.format(Locale.getDefault(), "Test Term %d", numToAppend), new Date(), new Date(todayPlus180Days));
     }
 
     public static Course createCourse(int numToAppend, long termId) {
         long todayPlus30Days = new Date().getTime() + DateUtils.MILLISECONDS_IN_DAY * 30;
         Mentor mentor = createMentor();
-        return new Course(String.format("Test Course %d", numToAppend), new Date(), new Date(todayPlus30Days), false, true,
+        return new Course(String.format(Locale.getDefault(), "Test Course %d", numToAppend), new Date(), new Date(todayPlus30Days), false, false,
                 CourseStatus.STARTED, mentor, termId);
     }
 
     public static Assessment createAssessment(int numToAppend, long courseId) {
         long todayPlus30Days = new Date().getTime() + DateUtils.MILLISECONDS_IN_DAY * 30;
-        return new Assessment(String.format("Test Code %d", numToAppend), String.format("Test Assessment %d", numToAppend),
-                new Date(todayPlus30Days), true, courseId, AssessmentType.PERFORMANCE);
+        return new Assessment(String.format(Locale.getDefault(), "Test Code %d", numToAppend), String.format(Locale.getDefault(), "Test Assessment %d", numToAppend),
+                new Date(todayPlus30Days), false, courseId, AssessmentType.PERFORMANCE);
     }
 
     public static Note createNote(int numToAppend, long courseId) {
-        return new Note(String.format("%d - %s", numToAppend,
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
-                        "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, " +
-                        "quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."),
+        return new Note(String.format(Locale.getDefault(), "%d - %s", numToAppend,
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."),
                 courseId);
     }
 }

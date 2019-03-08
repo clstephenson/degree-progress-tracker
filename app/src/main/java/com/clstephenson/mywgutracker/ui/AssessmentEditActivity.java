@@ -187,9 +187,7 @@ public class AssessmentEditActivity extends AppCompatActivity implements OnDataT
                 break;
             case UPDATE:
                 if (result.isSuccessful()) {
-                    if (currentAssessment.isGoalAlertOn()) {
-                        submitNotificationRequest();
-                    }
+                    if (currentAssessment.isGoalAlertOn()) submitNotificationRequest();
                     openCourseActivity(R.string.assessment_updated, Snackbar.LENGTH_LONG);
                 } else {
                     showDataChangedSnackbarMessage(R.string.unexpected_error);
@@ -197,9 +195,7 @@ public class AssessmentEditActivity extends AppCompatActivity implements OnDataT
                 break;
             case INSERT:
                 if (result.isSuccessful()) {
-                    if (currentAssessment.isGoalAlertOn()) {
-                        submitNotificationRequest();
-                    }
+                    if (currentAssessment.isGoalAlertOn()) submitNotificationRequest();
                     openCourseActivity(R.string.assessment_added, Snackbar.LENGTH_LONG);
                 } else {
                     int messageResourceId;
@@ -285,7 +281,7 @@ public class AssessmentEditActivity extends AppCompatActivity implements OnDataT
                 PendingIntent.FLAG_UPDATE_CURRENT);
 
         Date reminderDate = DateUtils.createReminderDate(currentAssessment.getGoalDate(),
-                DateUtils.DEFAULT_REMINDER_DAYS);
+                AlertNotification.REMINDER_DEFAULT_DAYS_BEFORE, AlertNotification.REMINDER_USE_CURRENT_TIME_OF_DAY);
         long delay = reminderDate.getTime() - new Date().getTime();
         String goalDateString = DateUtils.getFormattedDate(currentAssessment.getGoalDate());
 
