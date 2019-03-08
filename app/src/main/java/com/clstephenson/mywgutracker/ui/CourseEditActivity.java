@@ -1,6 +1,8 @@
 package com.clstephenson.mywgutracker.ui;
 
 import android.app.Dialog;
+import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -20,6 +22,7 @@ import com.clstephenson.mywgutracker.data.models.Mentor;
 import com.clstephenson.mywgutracker.data.models.Term;
 import com.clstephenson.mywgutracker.repositories.DataTaskResult;
 import com.clstephenson.mywgutracker.repositories.OnDataTaskResultListener;
+import com.clstephenson.mywgutracker.ui.notifications.AlertNotification;
 import com.clstephenson.mywgutracker.ui.viewmodels.CourseEditViewModel;
 import com.clstephenson.mywgutracker.utils.DateUtils;
 import com.clstephenson.mywgutracker.utils.ValidationUtils;
@@ -30,6 +33,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import java.util.Date;
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
@@ -94,7 +98,6 @@ public class CourseEditActivity extends AppCompatActivity implements OnDataTaskR
         startDateInput.setText(DateUtils.getFormattedDate(currentCourse.getStartDate()));
         endDateInput.setText(DateUtils.getFormattedDate(currentCourse.getEndDate()));
         statusInput.setSelection(statusAdapter.getPosition(currentCourse.getStatus()));
-        //termInput.setSelection(termAdapter.getPosition(getTermById(currentCourse.getTermId())));
         enableAlertStartSwitch.setChecked(currentCourse.isStartAlertOn());
         enableAlertEndSwitch.setChecked(currentCourse.isEndAlertOn());
         setupMentorList(currentCourse.getMentor());
@@ -146,10 +149,6 @@ public class CourseEditActivity extends AppCompatActivity implements OnDataTaskR
 
                 if (entryMode == MODE.UPDATE) {
                     viewModel.updateCourse(currentCourse);
-                    Intent intent = new Intent(this, CourseActivity.class);
-                    intent.putExtra(CourseActivity.EXTRA_COURSE_ID, currentCourse.getId());
-                    setResult(RESULT_OK, intent);
-                    finish();
                 } else {
                     viewModel.insertCourse(currentCourse);
                 }
@@ -243,6 +242,10 @@ public class CourseEditActivity extends AppCompatActivity implements OnDataTaskR
                 break;
             case UPDATE:
                 if (result.isSuccessful()) {
+                    if (currentCourse.isStartAlertOn())
+                        submitNotificationRequest(NOTIFICATION_TYPE.START);
+                    if (currentCourse.isEndAlertOn())
+                        submitNotificationRequest(NOTIFICATION_TYPE.END);
                     finish();
                 } else {
                     showDataChangedSnackbarMessage(R.string.unexpected_error);
@@ -250,6 +253,10 @@ public class CourseEditActivity extends AppCompatActivity implements OnDataTaskR
                 break;
             case INSERT:
                 if (result.isSuccessful()) {
+                    if (currentCourse.isStartAlertOn())
+                        submitNotificationRequest(NOTIFICATION_TYPE.START);
+                    if (currentCourse.isEndAlertOn())
+                        submitNotificationRequest(NOTIFICATION_TYPE.END);
                     finish();
                 } else {
                     int messageResourceId;
@@ -280,23 +287,6 @@ public class CourseEditActivity extends AppCompatActivity implements OnDataTaskR
                     }
                 }
         }
-    }
-
-    private void openCourseActivity(int messageId, int snackbarLength) {
-        Intent intent = new Intent(this, CourseActivity.class);
-        intent.putExtra(MainActivity.EXTRA_MESSAGE_STRING_ID, messageId);
-        intent.putExtra(MainActivity.EXTRA_MESSAGE_LENGTH, snackbarLength);
-        startActivity(intent);
-        finish();
-    }
-
-    private void openCourseList(int messageId, int snackbarLength) {
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra(MainActivity.EXTRA_FRAGMENT_NAME, CourseListFragment.class.getSimpleName());
-        intent.putExtra(MainActivity.EXTRA_MESSAGE_STRING_ID, messageId);
-        intent.putExtra(MainActivity.EXTRA_MESSAGE_LENGTH, snackbarLength);
-        startActivity(intent);
-        finish();
     }
 
     public void handleStartDateInputClick(View view) {
@@ -379,7 +369,49 @@ public class CourseEditActivity extends AppCompatActivity implements OnDataTaskR
         return null;
     }
 
+    private void submitNotificationRequest(@NonNull NOTIFICATION_TYPE type) {
+        // notification id is composed of the course id and hashcode of the type parameter.
+        // this will allow start and end notifications to exist at the same time.
+        int notificationId = (int) currentCourse.getId() + type.hashCode();
+
+        // setup intent to launch when notification is clicked.
+        Intent intent = new Intent(this, CourseActivity.class);
+        intent.putExtra(CourseActivity.EXTRA_COURSE_ID, currentCourse.getId());
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        stackBuilder.addNextIntentWithParentStack(intent);
+        PendingIntent pendingIntent = stackBuilder.getPendingIntent(notificationId,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+
+        // setup the dates and resources based on whether it's a start or end date.
+        Date courseDate;
+        int textResource;
+        int titleResource;
+        if (type == NOTIFICATION_TYPE.START) {
+            courseDate = currentCourse.getStartDate();
+            textResource = R.string.course_start_notification_text;
+            titleResource = R.string.course_start_notification_title;
+        } else {
+            courseDate = currentCourse.getEndDate();
+            textResource = R.string.course_end_notification_text;
+            titleResource = R.string.course_end_notification_title;
+        }
+
+        Date reminderDate = DateUtils.createReminderDate(courseDate, 0,
+                AlertNotification.REMINDER_DEFAULT_HOUR_OF_DAY);
+        long delay = reminderDate.getTime() - new Date().getTime();
+        String dateString = DateUtils.getFormattedDate(courseDate);
+
+        Log.d(TAG, "submitNotificationRequest: requesting course alert for %l millis from now.");
+        AlertNotification.scheduleAlert(this, getString(titleResource),
+                getString(textResource, currentCourse.getName(), dateString),
+                delay, notificationId, pendingIntent);
+    }
+
     private enum MODE {
         CREATE, UPDATE
+    }
+
+    private enum NOTIFICATION_TYPE {
+        START, END
     }
 }

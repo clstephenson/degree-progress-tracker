@@ -19,7 +19,6 @@ import com.clstephenson.mywgutracker.utils.DateUtils;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -153,23 +152,13 @@ public class CourseActivity extends AppCompatActivity implements OnDataTaskResul
     private void openNotesList() {
         Intent intent = new Intent(this, NotesListActivity.class);
         intent.putExtra(EXTRA_COURSE_ID, currentCourse.getId());
-        startActivityForResult(intent, 1);
+        startActivity(intent);
     }
 
     private void handleEditCourse() {
         Intent intent = new Intent(this, CourseEditActivity.class);
         intent.putExtra(EXTRA_COURSE_ID, currentCourse.getId());
-        startActivityForResult(intent, 1);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1) {
-            if (resultCode == RESULT_OK) {
-                long courseId = data.getLongExtra(EXTRA_COURSE_ID, 0);
-            }
-        }
+        startActivity(intent);
     }
 
     private void handleDeleteCourse() {

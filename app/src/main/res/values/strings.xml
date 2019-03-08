@@ -92,4 +92,13 @@
         <item>Second item</item>
         <item>Third item</item>
     </string-array>
+    <string name="channel_name">Alerts</string>
+    <string name="channel_description">Alert notifications based on course and assessment dates.</string>
+    <string name="assessment_updated">The assessment was updated.</string>
+    <string name="assessment_goal_notification_text">Your goal for completing %1$s is coming up on %2$s.</string>
+    <string name="assessment_goal_notification_title">Reminder: Upcoming %1$s</string>
+    <string name="course_start_notification_title">Reminder: Course Starting</string>
+    <string name="course_end_notification_title">Reminder: Course Ending</string>
+    <string name="course_start_notification_text">%1$s is scheduled to begin on %2$s.</string>
+    <string name="course_end_notification_text">%1$s is scheduled to end on %2$s.</string>
 </resources>

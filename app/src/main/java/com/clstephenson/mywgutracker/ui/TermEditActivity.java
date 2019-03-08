@@ -97,10 +97,6 @@ public class TermEditActivity extends AppCompatActivity implements OnDataTaskRes
 
                 if (entryMode == MODE.UPDATE) {
                     viewModel.updateTerm(currentTerm);
-                    Intent intent = new Intent(this, TermActivity.class);
-                    intent.putExtra(TermActivity.EXTRA_TERM_ID, currentTerm.getId());
-                    setResult(RESULT_OK, intent);
-                    finish();
                 } else {
                     viewModel.insertTerm(currentTerm);
                 }
@@ -178,7 +174,7 @@ public class TermEditActivity extends AppCompatActivity implements OnDataTaskRes
                 break;
             case UPDATE:
                 if (result.isSuccessful()) {
-                    finish();
+                    openTermList(R.string.term_updated, Snackbar.LENGTH_LONG);
                 } else {
                     showDataChangedSnackbarMessage(R.string.unexpected_error);
                 }

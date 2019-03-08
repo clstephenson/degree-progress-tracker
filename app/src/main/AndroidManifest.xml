@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.clstephenson.mywgutracker">
 
+    <uses-permission android:name="android.permission.VIBRATE" />
+
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
@@ -12,6 +14,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <receiver
+            android:name=".ui.notifications.AlertPublisher"
+            android:enabled="true"
+            android:exported="false"></receiver>
+
         <activity
             android:name=".ui.TermEditActivity"
             android:label="@string/edit_term" />
