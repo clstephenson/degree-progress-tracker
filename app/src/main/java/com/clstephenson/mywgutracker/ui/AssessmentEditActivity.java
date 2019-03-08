@@ -104,6 +104,22 @@ public class AssessmentEditActivity extends AppCompatActivity implements OnDataT
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int itemId = item.getItemId();
+        switch (itemId) {
+            case android.R.id.home:
+                onBackPressed();
+                break;
+            case R.id.action_delete_assessment_edit:
+                handleDeleteAssessment();
+                break;
+            case R.id.action_save_assessment_edit:
+                handleSaveAssessment();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public void onBackPressed() {
         super.onBackPressed();
     }
@@ -156,22 +172,6 @@ public class AssessmentEditActivity extends AppCompatActivity implements OnDataT
         TextInputLayout layout = findViewById(layoutResourceId);
         layout.setErrorEnabled(true);
         layout.setError(getString(stringResourceId));
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int itemId = item.getItemId();
-        switch (itemId) {
-            case android.R.id.home:
-                onBackPressed();
-                break;
-            case R.id.action_delete_assessment_edit:
-                handleDeleteAssessment();
-                break;
-            case R.id.action_save_assessment_edit:
-                handleSaveAssessment();
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override

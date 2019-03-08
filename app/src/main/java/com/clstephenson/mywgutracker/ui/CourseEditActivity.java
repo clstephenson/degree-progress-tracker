@@ -125,6 +125,20 @@ public class CourseEditActivity extends AppCompatActivity implements OnDataTaskR
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int itemId = item.getItemId();
+        switch (itemId) {
+            case android.R.id.home:
+                onBackPressed();
+                break;
+            case R.id.action_save_course_edit:
+                handleSaveCourse();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public void onBackPressed() {
         super.onBackPressed();
     }
@@ -209,20 +223,6 @@ public class CourseEditActivity extends AppCompatActivity implements OnDataTaskR
         TextInputLayout layout = findViewById(layoutResourceId);
         layout.setErrorEnabled(true);
         layout.setError(getString(stringResourceId));
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int itemId = item.getItemId();
-        switch (itemId) {
-            case android.R.id.home:
-                onBackPressed();
-                break;
-            case R.id.action_save_course_edit:
-                handleSaveCourse();
-                break;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     /**
