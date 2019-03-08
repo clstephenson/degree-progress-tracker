@@ -92,8 +92,9 @@ public class AssessmentEditActivity extends AppCompatActivity implements OnDataT
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (entryMode == MODE.UPDATE) {
-            getMenuInflater().inflate(R.menu.menu_assessment_edit, menu);
+        getMenuInflater().inflate(R.menu.menu_assessment_edit, menu);
+        if (entryMode == MODE.CREATE) {
+            menu.removeItem(R.id.action_delete_assessment_edit);
         }
         return true;
     }
