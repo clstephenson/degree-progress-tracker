@@ -188,16 +188,42 @@ public class AssessmentEditActivity extends AppCompatActivity implements OnDataT
                 break;
             case UPDATE:
                 if (result.isSuccessful()) {
-                    if (currentAssessment.isGoalAlertOn()) submitNotificationRequest();
-                    openCourseActivity(R.string.assessment_updated, Snackbar.LENGTH_LONG);
+                    if (currentAssessment.isGoalAlertOn()) {
+                        submitNotificationRequest();
+                        new AlertDialog.Builder(this)
+                                .setTitle("Alert Notification Added")
+                                .setIcon(R.drawable.ic_notifications)
+                                .setMessage(getString(R.string.assessment_notification_added, AlertNotification.REMINDER_DEFAULT_DAYS_BEFORE))
+                                .setPositiveButton(getString(android.R.string.ok), (dialog, which) -> {
+                                    openCourseActivity(R.string.assessment_updated, Snackbar.LENGTH_LONG);
+                                    dialog.cancel();
+                                })
+                                .create()
+                                .show();
+                    } else {
+                        openCourseActivity(R.string.assessment_updated, Snackbar.LENGTH_LONG);
+                    }
                 } else {
                     showDataChangedSnackbarMessage(R.string.unexpected_error);
                 }
                 break;
             case INSERT:
                 if (result.isSuccessful()) {
-                    if (currentAssessment.isGoalAlertOn()) submitNotificationRequest();
-                    openCourseActivity(R.string.assessment_added, Snackbar.LENGTH_LONG);
+                    if (currentAssessment.isGoalAlertOn()) {
+                        submitNotificationRequest();
+                        new AlertDialog.Builder(this)
+                                .setTitle("Alert Notification Added")
+                                .setIcon(R.drawable.ic_notifications)
+                                .setMessage(getString(R.string.assessment_notification_added, AlertNotification.REMINDER_DEFAULT_DAYS_BEFORE))
+                                .setPositiveButton(getString(android.R.string.ok), (dialog, which) -> {
+                                    openCourseActivity(R.string.assessment_added, Snackbar.LENGTH_LONG);
+                                    dialog.cancel();
+                                })
+                                .create()
+                                .show();
+                    } else {
+                        openCourseActivity(R.string.assessment_added, Snackbar.LENGTH_LONG);
+                    }
                 } else {
                     int messageResourceId;
                     if (result.getConstraintException() != null) {
@@ -293,6 +319,7 @@ public class AssessmentEditActivity extends AppCompatActivity implements OnDataT
                 delay,
                 (int) currentAssessment.getId(),
                 pendingIntent);
+
     }
 
     private enum MODE {

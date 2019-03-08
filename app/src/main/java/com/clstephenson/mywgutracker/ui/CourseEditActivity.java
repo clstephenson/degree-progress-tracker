@@ -1,5 +1,6 @@
 package com.clstephenson.mywgutracker.ui;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
@@ -246,7 +247,20 @@ public class CourseEditActivity extends AppCompatActivity implements OnDataTaskR
                         submitNotificationRequest(NOTIFICATION_TYPE.START);
                     if (currentCourse.isEndAlertOn())
                         submitNotificationRequest(NOTIFICATION_TYPE.END);
-                    finish();
+                    if (currentCourse.isEndAlertOn() || currentCourse.isStartAlertOn()) {
+                        new AlertDialog.Builder(this)
+                                .setTitle("Alert Notification Added")
+                                .setIcon(R.drawable.ic_notifications)
+                                .setMessage(getString(R.string.course_notification_added))
+                                .setPositiveButton(getString(android.R.string.ok), (dialog, which) -> {
+                                    finish();
+                                    dialog.cancel();
+                                })
+                                .create()
+                                .show();
+                    } else {
+                        finish();
+                    }
                 } else {
                     showDataChangedSnackbarMessage(R.string.unexpected_error);
                 }
@@ -257,7 +271,20 @@ public class CourseEditActivity extends AppCompatActivity implements OnDataTaskR
                         submitNotificationRequest(NOTIFICATION_TYPE.START);
                     if (currentCourse.isEndAlertOn())
                         submitNotificationRequest(NOTIFICATION_TYPE.END);
-                    finish();
+                    if (currentCourse.isEndAlertOn() || currentCourse.isStartAlertOn()) {
+                        new AlertDialog.Builder(this)
+                                .setTitle("Alert Notification Added")
+                                .setIcon(R.drawable.ic_notifications)
+                                .setMessage(getString(R.string.course_notification_added))
+                                .setPositiveButton(getString(android.R.string.ok), (dialog, which) -> {
+                                    finish();
+                                    dialog.cancel();
+                                })
+                                .create()
+                                .show();
+                    } else {
+                        finish();
+                    }
                 } else {
                     int messageResourceId;
                     if (result.getConstraintException() != null) {
