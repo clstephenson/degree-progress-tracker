@@ -7,7 +7,7 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/terms_cardView"
-        android:layout_width="@dimen/card_view_width"
+        android:layout_width="match_parent"
         android:layout_height="@dimen/term_card_height"
         android:layout_marginStart="@dimen/activity_margin_small"
         android:layout_marginTop="@dimen/activity_margin_small"

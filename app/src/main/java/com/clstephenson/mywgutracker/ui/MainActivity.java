@@ -2,6 +2,7 @@ package com.clstephenson.mywgutracker.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
@@ -24,6 +25,7 @@ import androidx.fragment.app.FragmentTransaction;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    public static final String TAG = MainActivity.class.getSimpleName();
     public static final String TITLE_RESOURCE_ID = MainActivity.class.getSimpleName() + "TITLE_RESOURCE_ID";
     public static final String EXTRA_FRAGMENT_NAME = MainActivity.class.getSimpleName() + "REQUESTED_FRAGMENT";
     public static final String EXTRA_MESSAGE_STRING_ID = MainActivity.class.getSimpleName() + "REQUESTED_MESSAGE";
@@ -41,6 +43,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        Log.d(TAG, "onCreate() called with: savedInstanceState = [" + savedInstanceState + "]");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_with_nav);
         toolbar = findViewById(R.id.toolbar);
@@ -56,7 +59,9 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         actionBarDrawerToggle.syncState();
 
-        processIntentExtraData(getIntent());
+        if (savedInstanceState == null) {
+            processIntentExtraData(getIntent());
+        }
     }
 
     private void processIntentExtraData(Intent intent) {
@@ -121,8 +126,8 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onResume() {
+        Log.d(TAG, "onResume() called");
         super.onResume();
-
     }
 
     public void handleTermsCardClick(View view) {

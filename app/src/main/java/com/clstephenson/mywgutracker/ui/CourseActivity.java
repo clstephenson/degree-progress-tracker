@@ -45,7 +45,9 @@ public class CourseActivity extends AppCompatActivity implements OnDataTaskResul
         viewModel.setDataTaskResultListener(this);
         long courseId = getIntent().getLongExtra(EXTRA_COURSE_ID, 0);
         viewModel.getCourseById(courseId).observe(this, this::setupViews);
-        setupAssessmentListFragment(courseId);
+        if (savedInstanceState == null) {
+            setupAssessmentListFragment(courseId);
+        }
 
         FloatingActionButton fab = findViewById(R.id.fab_add_assessment);
         fab.setOnClickListener(view -> {

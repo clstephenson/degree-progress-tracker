@@ -29,37 +29,43 @@
                 android:textSize="@dimen/text_size_title"
                 tools:text="Assessment Name" />
 
-            <TextView
-                android:id="@+id/assessment_list_text_type"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/indent_size"
-                android:layout_marginTop="@dimen/text_line_spacing"
-                android:textSize="@dimen/text_size_standard"
-                tools:text="Assessment Type" />
-
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/indent_size"
-                android:layout_marginTop="@dimen/activity_margin_small"
+                android:layout_marginTop="@dimen/text_line_spacing"
+                android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <ImageView
-                    android:id="@+id/assessment_list_date_icon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginEnd="@dimen/text_line_spacing"
-                    android:src="@drawable/ic_menu_calendar" />
-
                 <TextView
-                    android:id="@+id/assessment_list_text_goal"
+                    android:id="@+id/assessment_list_text_type"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/indent_size"
                     android:textSize="@dimen/text_size_standard"
-                    tools:text="due date" />
+                    tools:text="Assessment Type" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/indent_size"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/assessment_list_date_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginEnd="@dimen/text_line_spacing"
+                        android:src="@drawable/ic_menu_calendar" />
+
+                    <TextView
+                        android:id="@+id/assessment_list_text_goal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:textSize="@dimen/text_size_standard"
+                        tools:text="due date" />
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
 
