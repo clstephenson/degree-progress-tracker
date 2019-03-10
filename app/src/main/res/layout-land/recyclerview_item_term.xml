@@ -6,9 +6,9 @@
     android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/assessments_cardView"
+        android:id="@+id/terms_cardView"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/assessment_card_height"
+        android:layout_height="@dimen/term_card_height"
         android:layout_marginStart="@dimen/activity_margin_small"
         android:layout_marginTop="@dimen/activity_margin_small"
         android:layout_marginEnd="@dimen/activity_margin_small"
@@ -23,43 +23,49 @@
             android:paddingTop="@dimen/activity_margin_small">
 
             <TextView
-                android:id="@+id/assessment_list_text_name"
+                android:id="@+id/term_list_text_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/text_size_title"
-                tools:text="Assessment Name" />
-
-            <TextView
-                android:id="@+id/assessment_list_text_type"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/indent_size"
-                android:layout_marginTop="@dimen/text_line_spacing"
-                android:textSize="@dimen/text_size_standard"
-                tools:text="Assessment Type" />
+                tools:text="Term Name" />
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/indent_size"
-                android:layout_marginTop="@dimen/activity_margin_small"
+                android:layout_marginTop="@dimen/text_line_spacing"
+                android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <ImageView
-                    android:id="@+id/assessment_list_date_icon"
+
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginEnd="@dimen/text_line_spacing"
-                    android:src="@drawable/ic_menu_calendar" />
+                    android:layout_marginStart="@dimen/indent_size"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/term_list_date_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/text_line_spacing"
+                        android:src="@drawable/ic_menu_calendar" />
+
+                    <TextView
+                        android:id="@+id/term_list_text_dates"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/text_size_standard"
+                        tools:text="start date - end date" />
+                </LinearLayout>
 
                 <TextView
-                    android:id="@+id/assessment_list_text_goal"
+                    android:id="@+id/term_list_text_status"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/indent_size"
                     android:textSize="@dimen/text_size_standard"
-                    tools:text="due date" />
+                    tools:text="Term Status" />
             </LinearLayout>
         </LinearLayout>
 

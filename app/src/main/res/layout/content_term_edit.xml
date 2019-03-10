@@ -11,11 +11,11 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/term_input_title_layout"
-        android:layout_width="395dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginStart="@dimen/activity_margin_small"
+        android:layout_marginTop="@dimen/text_line_spacing"
+        android:layout_marginEnd="@dimen/activity_margin_small"
         app:errorEnabled="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,7 +24,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/term_input_title"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:hint="@string/term_title"
             android:inputType="textCapWords" />
 
@@ -32,11 +32,11 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/term_input_start_layout"
-        android:layout_width="395dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginStart="@dimen/activity_margin_small"
+        android:layout_marginTop="@dimen/text_line_spacing"
+        android:layout_marginEnd="@dimen/activity_margin_small"
         app:errorEnabled="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -45,7 +45,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/term_input_start"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:focusable="false"
             android:hint="@string/start_date"
             android:inputType="date"
@@ -55,11 +55,11 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/term_input_end_layout"
-        android:layout_width="395dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginStart="@dimen/activity_margin_small"
+        android:layout_marginTop="@dimen/text_line_spacing"
+        android:layout_marginEnd="@dimen/activity_margin_small"
         app:errorEnabled="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -68,26 +68,13 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/term_input_end"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:focusable="false"
             android:hint="@string/end_date"
             android:inputType="date"
             android:onClick="handleEndDateInputClick" />
 
     </com.google.android.material.textfield.TextInputLayout>
-
-    <!--<Button-->
-    <!--android:id="@+id/term_button_save"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_marginStart="8dp"-->
-    <!--android:layout_marginTop="8dp"-->
-    <!--android:layout_marginEnd="8dp"-->
-    <!--android:onClick="handleSaveTerm"-->
-    <!--android:text="@string/save"-->
-    <!--app:layout_constraintEnd_toEndOf="parent"-->
-    <!--app:layout_constraintStart_toStartOf="parent"-->
-    <!--app:layout_constraintTop_toBottomOf="@+id/term_input_end_layout" />-->
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

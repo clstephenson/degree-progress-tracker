@@ -11,11 +11,10 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/assessment_input_title_layout"
-        android:layout_width="395dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginStart="@dimen/activity_margin_small"
+        android:layout_marginEnd="@dimen/activity_margin_small"
         app:errorEnabled="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -35,7 +34,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/activity_margin_small"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="@dimen/text_line_spacing"
         android:layout_marginEnd="@dimen/activity_margin_large"
         android:text="@string/assessment_type"
         android:textSize="@dimen/text_size_editor"
@@ -46,59 +45,48 @@
         android:id="@+id/assessment_input_type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/activity_margin_large"
+        android:layout_marginStart="@dimen/activity_margin_small"
         android:entries="@array/sample_list_items"
         app:layout_constraintBottom_toBottomOf="@id/assessment_status_label"
         app:layout_constraintStart_toEndOf="@id/assessment_status_label"
         app:layout_constraintTop_toTopOf="@id/assessment_status_label" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/assessment_input_goal_layout"
-        android:layout_width="395dp"
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/activity_margin_small"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        app:errorEnabled="false"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="@dimen/activity_margin_small"
+        android:layout_marginTop="@dimen/text_line_spacing"
+        android:layout_marginEnd="@dimen/activity_margin_small"
+        android:orientation="horizontal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/assessment_status_label">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/assessment_input_goal"
-            android:layout_width="match_parent"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/assessment_input_goal_layout"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:focusable="false"
-            android:hint="@string/goal_date"
-            android:inputType="date"
-            android:onClick="handleGoalDateInputClick" />
+            app:errorEnabled="false">
 
-    </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/assessment_input_goal"
+                android:layout_width="@dimen/date_input_width"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:hint="@string/goal_date"
+                android:inputType="date"
+                android:onClick="handleGoalDateInputClick" />
 
-    <Switch
-        android:id="@+id/assessment_switch_alert_goal"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/activity_margin_small"
-        android:layout_marginTop="@dimen/activity_margin_small"
-        android:switchPadding="@dimen/activity_margin_small"
-        android:text="@string/enable_start_alert"
-        android:textSize="@dimen/text_size_editor"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/assessment_input_goal_layout" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-    <!--<Button-->
-    <!--android:id="@+id/assessment_button_save"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_marginStart="8dp"-->
-    <!--android:layout_marginTop="8dp"-->
-    <!--android:layout_marginEnd="8dp"-->
-    <!--android:onClick="handleSaveAssessment"-->
-    <!--android:text="@string/save"-->
-    <!--app:layout_constraintEnd_toEndOf="parent"-->
-    <!--app:layout_constraintStart_toStartOf="parent"-->
-    <!--app:layout_constraintTop_toBottomOf="@+id/assessment_switch_alert_goal" />-->
-
+        <Switch
+            android:id="@+id/assessment_switch_alert_goal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/activity_margin_small"
+            android:switchPadding="@dimen/activity_margin_small"
+            android:text="@string/enable_goal_alert"
+            android:textSize="@dimen/text_size_editor" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

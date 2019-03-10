@@ -19,6 +19,7 @@
     <dimen name="assessment_card_height">110dp</dimen>
     <dimen name="text_size_editor">18sp</dimen>
     <dimen name="activity_margin_large">16dp</dimen>
-    <dimen name="note_card_height">120dp</dimen>
+    <dimen name="note_card_height">170dp</dimen>
     <dimen name="mentor_icon_size">30dp</dimen>
+    <dimen name="date_input_width">150dp</dimen>
 </resources>

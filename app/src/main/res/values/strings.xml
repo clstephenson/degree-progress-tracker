@@ -64,7 +64,7 @@
     <string name="term">Term</string>
     <string name="assessment_title">Assessment Name</string>
     <string name="assessment_type">Assessment Type</string>
-    <string name="goal_date">Completion Goal Date</string>
+    <string name="goal_date">Goal Date</string>
     <string name="new_assessment">Create New Assessment</string>
     <string name="edit_assessment">Edit Assessment</string>
     <string name="assessment_added">The assessment was added successfully.</string>
@@ -103,4 +103,5 @@
     <string name="course_end_notification_text">%1$s is scheduled to end on %2$s.</string>
     <string name="assessment_notification_added">An alert has been scheduled to remind you %1$d days before your goal date at 8:00 AM.</string>
     <string name="course_notification_added">Course alerts for scheduled start or end dates will notify you at 8:00 AM on the scheduled date.</string>
+    <string name="enable_goal_alert">Enable Goal Alert</string>
 </resources>
