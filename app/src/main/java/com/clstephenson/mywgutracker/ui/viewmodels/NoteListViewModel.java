@@ -16,6 +16,7 @@ public class NoteListViewModel extends AndroidViewModel {
 
     private NoteRepository repository;
     private LiveData<List<Note>> notes;
+    private Note currentNote;
 
     public NoteListViewModel(@NonNull Application application) {
         super(application);
@@ -28,11 +29,17 @@ public class NoteListViewModel extends AndroidViewModel {
     }
 
     public Note getNewNote(long courseId) {
-        return new Note("", courseId);
+        currentNote = new Note("", courseId);
+        return currentNote;
     }
 
     public Note getNote(int position) {
-        return notes.getValue().get(position);
+        currentNote = notes.getValue().get(position);
+        return currentNote;
+    }
+
+    public Note getNote() {
+        return currentNote;
     }
 
     public void insert(Note note) {

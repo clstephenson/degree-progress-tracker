@@ -41,6 +41,8 @@ public class NoteDialog extends DialogFragment {
 
     @Override
     public void onStart() {
+        viewModel = ((NotesListActivity) getActivity()).getViewModel();
+        note = viewModel.getNote();
         super.onStart();
         TextView cancelButton = getDialog().findViewById(R.id.note_cancel);
         if (cancelButton != null) {
