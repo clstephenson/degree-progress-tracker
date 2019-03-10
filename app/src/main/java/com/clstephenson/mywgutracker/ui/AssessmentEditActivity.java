@@ -61,18 +61,20 @@ public class AssessmentEditActivity extends AppCompatActivity implements OnDataT
         viewModel.setDataTaskResultListener(this);
         long assessmentId = getIntent().getLongExtra(CourseActivity.EXTRA_ASSESSMENT_ID, 0);
         courseId = getIntent().getLongExtra(EXTRA_COURSE_ID, 0);
+
+        boolean isConfigurationChange = savedInstanceState != null;
         if (assessmentId == 0) {
             entryMode = MODE.CREATE;
             this.setTitle(R.string.new_assessment);
-            setupAssessmentViews(null);
+            setupAssessmentViews(null, isConfigurationChange);
         } else {
             entryMode = MODE.UPDATE;
             this.setTitle(R.string.edit_assessment);
-            viewModel.getAssessmentById(assessmentId).observe(this, this::setupAssessmentViews);
+            viewModel.getAssessmentById(assessmentId).observe(this, assessment -> setupAssessmentViews(assessment, isConfigurationChange));
         }
     }
 
-    private void setupAssessmentViews(@Nullable Assessment assessment) {
+    private void setupAssessmentViews(@Nullable Assessment assessment, boolean isConfigurationChange) {
         titleInput = findViewById(R.id.assessment_input_title);
         typeInput = findViewById(R.id.assessment_input_type);
         goalDateInput = findViewById(R.id.assessment_input_goal);
@@ -84,10 +86,12 @@ public class AssessmentEditActivity extends AppCompatActivity implements OnDataT
 
         if (entryMode == MODE.UPDATE && assessment != null) {
             currentAssessment = assessment;
-            titleInput.setText(currentAssessment.getName());
-            goalDateInput.setText(DateUtils.getFormattedDate(currentAssessment.getGoalDate()));
-            typeInput.setSelection(adapter.getPosition(currentAssessment.getType()));
-            alertInput.setChecked(currentAssessment.isGoalAlertOn());
+            if (!isConfigurationChange) {
+                titleInput.setText(currentAssessment.getName());
+                goalDateInput.setText(DateUtils.getFormattedDate(currentAssessment.getGoalDate()));
+                typeInput.setSelection(adapter.getPosition(currentAssessment.getType()));
+                alertInput.setChecked(currentAssessment.isGoalAlertOn());
+            }
         } else {
             currentAssessment = viewModel.getNewAssessment(courseId);
         }
