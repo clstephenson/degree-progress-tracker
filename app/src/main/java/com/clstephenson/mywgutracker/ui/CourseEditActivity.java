@@ -398,6 +398,7 @@ public class CourseEditActivity extends AppCompatActivity implements OnDataTaskR
                             break;
                     }
                 }
+                break;
         }
     }
 

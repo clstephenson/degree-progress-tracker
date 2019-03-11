@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import com.clstephenson.mywgutracker.R;
 import com.clstephenson.mywgutracker.data.models.Course;
 import com.clstephenson.mywgutracker.data.models.Mentor;
+import com.clstephenson.mywgutracker.data.models.Term;
 import com.clstephenson.mywgutracker.repositories.DataTaskResult;
 import com.clstephenson.mywgutracker.repositories.OnDataTaskResultListener;
 import com.clstephenson.mywgutracker.ui.viewmodels.CourseViewModel;
@@ -19,6 +21,9 @@ import com.clstephenson.mywgutracker.utils.DateUtils;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.List;
+
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -34,6 +39,8 @@ public class CourseActivity extends AppCompatActivity implements OnDataTaskResul
     public static final String EXTRA_MESSAGE_LENGTH = MainActivity.class.getSimpleName() + "REQUESTED_SNACKBAR_LENGTH";
     private CourseViewModel viewModel;
     private Course currentCourse;
+    TextView termView;
+    private List<Term> allTerms;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,8 +106,9 @@ public class CourseActivity extends AppCompatActivity implements OnDataTaskResul
         endView.setText(
                 String.format("%s: %s", getString(R.string.end), DateUtils.getFormattedDate(course.getEndDate())));
 
-        TextView termView = findViewById(R.id.course_term);
-        termView.setText(String.format("%s: %s", getString(R.string.term), viewModel.getTerm(course)));
+        termView = findViewById(R.id.course_term);
+
+        viewModel.getAllTermsAsList();
     }
 
     private void setupMentorViews(Mentor mentor) {
@@ -177,6 +185,21 @@ public class CourseActivity extends AppCompatActivity implements OnDataTaskResul
                 .show();
     }
 
+    private void setTerms(List<Term> terms) {
+        Log.d(TAG, "setTerms() called with: terms = [" + terms + "]");
+        this.allTerms = terms;
+    }
+
+    @Nullable
+    private Term getTermById(long id) {
+        for (Term term : allTerms) {
+            if (term.getId() == id) {
+                return term;
+            }
+        }
+        return null;
+    }
+
     @Override
     public void onNotifyDataChanged(DataTaskResult result) {
         switch (result.getAction()) {
@@ -195,6 +218,14 @@ public class CourseActivity extends AppCompatActivity implements OnDataTaskResul
                             findViewById(R.id.course_coordinator_layout), messageResourceId, Snackbar.LENGTH_INDEFINITE);
                     snackbar.setAction(getString(R.string.dismiss), v -> snackbar.dismiss());
                     snackbar.show();
+                }
+                break;
+            case GET:
+                // this will be the term list data
+                if (result.isSuccessful()) {
+                    setTerms((List<Term>) result.getData());
+                    termView.setText(String.format("%s: %s", getString(R.string.term),
+                            getTermById(currentCourse.getTermId()).getName()));
                 }
                 break;
         }
