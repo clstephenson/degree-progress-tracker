@@ -25,6 +25,10 @@ public class NotesListActivity extends AppCompatActivity implements OnDataTaskRe
     private long courseId;
     public static final long NEW_NOTE_DEFAULT_ID = 0;
 
+    public NoteListViewModel getViewModel() {
+        return viewModel;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,8 +60,6 @@ public class NotesListActivity extends AppCompatActivity implements OnDataTaskRe
     private void showNoteDialog(String title, Note note) {
         FragmentManager manager = getSupportFragmentManager();
         NoteDialog dialog = NoteDialog.newInstance(title);
-        dialog.setNote(note);
-        dialog.setViewModel(viewModel);
         dialog.showNow(getSupportFragmentManager(), this.getClass().getSimpleName());
     }
 

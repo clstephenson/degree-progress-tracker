@@ -20,7 +20,6 @@ import android.widget.Switch;
 import com.clstephenson.mywgutracker.R;
 import com.clstephenson.mywgutracker.data.CourseStatus;
 import com.clstephenson.mywgutracker.data.models.Course;
-import com.clstephenson.mywgutracker.data.models.Mentor;
 import com.clstephenson.mywgutracker.data.models.Term;
 import com.clstephenson.mywgutracker.repositories.DataTaskResult;
 import com.clstephenson.mywgutracker.repositories.OnDataTaskResultListener;
@@ -69,19 +68,21 @@ public class CourseEditActivity extends AppCompatActivity implements OnDataTaskR
         viewModel = ViewModelProviders.of(this).get(CourseEditViewModel.class);
         viewModel.setDataTaskResultListener(this);
         long courseId = getIntent().getLongExtra(CourseActivity.EXTRA_COURSE_ID, 0);
+
+        boolean isConfigurationChange = savedInstanceState != null;
         if (courseId == 0) {
             entryMode = MODE.CREATE;
             this.setTitle(R.string.new_course);
             long termId = getIntent().getLongExtra(TermActivity.EXTRA_TERM_ID, 0);
-            setupCourseViews(viewModel.getNewCourse(termId));
+            setupCourseViews(viewModel.getNewCourse(termId), isConfigurationChange);
         } else {
             entryMode = MODE.UPDATE;
             this.setTitle(R.string.edit_course);
-            viewModel.getCourseById(courseId).observe(this, this::setupCourseViews);
+            viewModel.getCourseById(courseId).observe(this, course -> setupCourseViews(course, isConfigurationChange));
         }
     }
 
-    private void setupCourseViews(Course course) {
+    private void setupCourseViews(Course course, boolean isConfigurationChange) {
         currentCourse = course;
         titleInput = findViewById(R.id.course_input_title);
         endDateInput = findViewById(R.id.course_input_end);
@@ -90,32 +91,30 @@ public class CourseEditActivity extends AppCompatActivity implements OnDataTaskR
         termInput = findViewById(R.id.course_input_term);
         enableAlertStartSwitch = findViewById(R.id.course_switch_alert_start);
         enableAlertEndSwitch = findViewById(R.id.course_switch_alert_end);
+        mentorFirstNameInput = findViewById(R.id.mentor_input_first_name);
+        mentorLastNameInput = findViewById(R.id.mentor_input_last_name);
+        mentorPhoneInput = findViewById(R.id.mentor_input_phone);
+        mentorEmailInput = findViewById(R.id.mentor_input_email);
 
         viewModel.getAllTermsAsList();
 
         ArrayAdapter<CourseStatus> statusAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_dropdown_item_1line, CourseStatus.values());
         statusInput.setAdapter(statusAdapter);
-        titleInput.setText(currentCourse.getName());
-        startDateInput.setText(DateUtils.getFormattedDate(currentCourse.getStartDate()));
-        endDateInput.setText(DateUtils.getFormattedDate(currentCourse.getEndDate()));
-        statusInput.setSelection(statusAdapter.getPosition(currentCourse.getStatus()));
-        enableAlertStartSwitch.setChecked(currentCourse.isStartAlertOn());
-        enableAlertEndSwitch.setChecked(currentCourse.isEndAlertOn());
-        setupMentorList(currentCourse.getMentor());
+
+        if (!isConfigurationChange) {
+            titleInput.setText(currentCourse.getName());
+            startDateInput.setText(DateUtils.getFormattedDate(currentCourse.getStartDate()));
+            endDateInput.setText(DateUtils.getFormattedDate(currentCourse.getEndDate()));
+            statusInput.setSelection(statusAdapter.getPosition(currentCourse.getStatus()));
+            enableAlertStartSwitch.setChecked(currentCourse.isStartAlertOn());
+            enableAlertEndSwitch.setChecked(currentCourse.isEndAlertOn());
+            mentorFirstNameInput.setText(currentCourse.getMentor().getFirstName());
+            mentorLastNameInput.setText(currentCourse.getMentor().getLastName());
+            mentorEmailInput.setText(currentCourse.getMentor().getEmail());
+            mentorPhoneInput.setText(currentCourse.getMentor().getPhone());
+        }
         dirtyCourse = new Course(currentCourse);
-    }
-
-    private void setupMentorList(Mentor mentor) {
-        mentorFirstNameInput = findViewById(R.id.mentor_input_first_name);
-        mentorLastNameInput = findViewById(R.id.mentor_input_last_name);
-        mentorPhoneInput = findViewById(R.id.mentor_input_phone);
-        mentorEmailInput = findViewById(R.id.mentor_input_email);
-
-        mentorFirstNameInput.setText(mentor.getFirstName());
-        mentorLastNameInput.setText(mentor.getLastName());
-        mentorEmailInput.setText(mentor.getEmail());
-        mentorPhoneInput.setText(mentor.getPhone());
     }
 
     @Override

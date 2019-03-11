@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,6 +29,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 public class TermEditActivity extends AppCompatActivity implements OnDataTaskResultListener {
 
+    public final String TAG = this.getClass().getSimpleName();
     private MODE entryMode;
     private Term currentTerm;
     private Term dirtyTerm;
@@ -39,35 +41,39 @@ public class TermEditActivity extends AppCompatActivity implements OnDataTaskRes
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG, "onCreate() called with: savedInstanceState = [" + savedInstanceState + "]");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_term_edit);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        viewModel = ViewModelProviders.of(this).get(TermEditViewModel.class);
-        viewModel.setBackgroundTaskResultListener(this);
-        long termId = getIntent().getLongExtra(TermActivity.EXTRA_TERM_ID, 0);
-        if (termId == 0) {
-            entryMode = MODE.CREATE;
-            this.setTitle(R.string.new_term);
-            setupTermViews(null);
-        } else {
-            entryMode = MODE.UPDATE;
-            this.setTitle(R.string.edit_term);
-            viewModel.getTermById(termId).observe(this, this::setupTermViews);
-        }
-
-    }
-
-    private void setupTermViews(@Nullable Term term) {
         titleInput = findViewById(R.id.term_input_title);
         endDateInput = findViewById(R.id.term_input_end);
         startDateInput = findViewById(R.id.term_input_start);
 
+        viewModel = ViewModelProviders.of(this).get(TermEditViewModel.class);
+        viewModel.setBackgroundTaskResultListener(this);
+        long termId = getIntent().getLongExtra(TermActivity.EXTRA_TERM_ID, 0);
+
+        boolean isConfigurationChange = savedInstanceState != null;
+        if (termId == 0) {
+            entryMode = MODE.CREATE;
+            this.setTitle(R.string.new_term);
+            setupTermViews(null, isConfigurationChange);
+        } else {
+            entryMode = MODE.UPDATE;
+            this.setTitle(R.string.edit_term);
+            viewModel.getTermById(termId).observe(this, term -> setupTermViews(term, isConfigurationChange));
+        }
+    }
+
+    private void setupTermViews(@Nullable Term term, boolean isConfigurationChange) {
         if (entryMode == MODE.UPDATE) {
             currentTerm = term;
-            titleInput.setText(currentTerm.getName());
-            startDateInput.setText(DateUtils.getFormattedDate(currentTerm.getStartDate()));
-            endDateInput.setText(DateUtils.getFormattedDate(currentTerm.getEndDate()));
+            if (!isConfigurationChange) {
+                titleInput.setText(currentTerm.getName());
+                startDateInput.setText(DateUtils.getFormattedDate(currentTerm.getStartDate()));
+                endDateInput.setText(DateUtils.getFormattedDate(currentTerm.getEndDate()));
+            }
         } else {
             currentTerm = viewModel.getNewTerm();
         }

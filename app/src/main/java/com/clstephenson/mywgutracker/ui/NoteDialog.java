@@ -20,6 +20,7 @@ public class NoteDialog extends DialogFragment {
 
     private NoteListViewModel viewModel;
     private Note note;
+    private boolean isConfigurationChange = false;
 
     public static NoteDialog newInstance(String title) {
         NoteDialog dialog = new NoteDialog();
@@ -32,6 +33,7 @@ public class NoteDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        isConfigurationChange = savedInstanceState != null;
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(getArguments().getString("title"))
                 .setView(R.layout.dialog_note)
@@ -42,6 +44,8 @@ public class NoteDialog extends DialogFragment {
     @Override
     public void onStart() {
         super.onStart();
+        viewModel = ((NotesListActivity) getActivity()).getViewModel();
+        note = viewModel.getNote();
         TextView cancelButton = getDialog().findViewById(R.id.note_cancel);
         if (cancelButton != null) {
             cancelButton.setOnClickListener(v -> getDialog().cancel());
@@ -62,8 +66,10 @@ public class NoteDialog extends DialogFragment {
             shareButton.setOnClickListener(v -> shareNote());
         }
 
-        EditText noteText = getDialog().findViewById(R.id.note_edit_text);
-        noteText.setText(note.getNote());
+        if (!isConfigurationChange) {
+            EditText noteText = getDialog().findViewById(R.id.note_edit_text);
+            noteText.setText(note.getNote());
+        }
     }
 
     private void saveNote() {
@@ -112,9 +118,4 @@ public class NoteDialog extends DialogFragment {
     public void setNote(Note note) {
         this.note = note;
     }
-
-    public void setViewModel(NoteListViewModel viewModel) {
-        this.viewModel = viewModel;
-    }
-
 }

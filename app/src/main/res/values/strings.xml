@@ -2,7 +2,7 @@
     <string name="app_name">My WGU Tracker</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_title">My WGU Tracker</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
@@ -104,4 +104,7 @@
     <string name="assessment_notification_added">An alert has been scheduled to remind you %1$d days before your goal date at 8:00 AM.</string>
     <string name="course_notification_added">Course alerts for scheduled start or end dates will notify you at 8:00 AM on the scheduled date.</string>
     <string name="enable_goal_alert">Enable Goal Alert</string>
+    <string name="home">Home</string>
+    <string name="termProgressMessage">Completed Terms:  %1$d out of %2$d</string>
+    <string name="courseProgressMessage">Completed Courses:  %1$d out of %2$d</string>
 </resources>
