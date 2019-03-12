@@ -108,7 +108,6 @@ public class TermActivity extends AppCompatActivity implements OnDataTaskResultL
     }
 
     private void setupTermViews(Term term) {
-        //todo: this is getting called when deleting a term, but not sure why. Checking for null is a work-around.  Need to fix.
         if (term != null) {
             currentTerm = term;
             TextView nameView = findViewById(R.id.term_text_name);

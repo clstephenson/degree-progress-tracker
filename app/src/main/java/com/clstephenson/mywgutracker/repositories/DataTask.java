@@ -45,10 +45,6 @@ public class DataTask<T extends BaseModel> extends AsyncTask<T, Void, DataTaskRe
                 case UPDATE:
                     asyncTaskDao.update(object);
                     break;
-                case GET:
-                    //todo: implement this
-                    throw new UnsupportedOperationException();
-                    //break;
             }
             dataTaskResult.setResult(DataTaskResult.Result.SUCCESS);
             return dataTaskResult;
