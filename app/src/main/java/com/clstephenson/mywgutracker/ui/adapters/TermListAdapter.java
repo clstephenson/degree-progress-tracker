@@ -21,7 +21,7 @@ public class TermListAdapter extends RecyclerView.Adapter<TermListAdapter.TermVi
     private final LayoutInflater inflater;
     private List<Term> terms;
     private OnItemInteractionListener listener;
-    Context context;
+    private final Context context;
 
     public TermListAdapter(Context context) {
         this.context = context;
@@ -52,10 +52,12 @@ public class TermListAdapter extends RecyclerView.Adapter<TermListAdapter.TermVi
 
     public void setTerms(List<Term> terms) {
         this.terms = terms;
+        TextView message = ((AppCompatActivity) context).findViewById(R.id.no_main_message);
         if (terms.size() == 0) {
-            TextView message = ((AppCompatActivity) context).findViewById(R.id.no_main_message);
             message.setText(R.string.no_terms_message);
             message.setVisibility(View.VISIBLE);
+        } else {
+            message.setVisibility(View.INVISIBLE);
         }
         notifyDataSetChanged();
     }

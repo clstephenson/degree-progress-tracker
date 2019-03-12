@@ -44,10 +44,12 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.NoteVi
 
     public void setNotes(List<Note> notes) {
         this.notes = notes;
+        TextView message = ((AppCompatActivity) context).findViewById(R.id.no_notes_message);
         if (notes.size() == 0) {
-            TextView message = ((AppCompatActivity) context).findViewById(R.id.no_notes_message);
             message.setText(R.string.no_notes_message);
             message.setVisibility(View.VISIBLE);
+        } else {
+            message.setVisibility(View.INVISIBLE);
         }
         notifyDataSetChanged();
     }

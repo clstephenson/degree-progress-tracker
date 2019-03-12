@@ -21,7 +21,7 @@ public class AssessmentListAdapter extends RecyclerView.Adapter<AssessmentListAd
     private final LayoutInflater inflater;
     private List<Assessment> assessments;
     private OnItemInteractionListener listener;
-    private Context context;
+    private final Context context;
 
     public AssessmentListAdapter(Context context) {
         this.context = context;
@@ -50,9 +50,11 @@ public class AssessmentListAdapter extends RecyclerView.Adapter<AssessmentListAd
 
     public void setAssessments(List<Assessment> assessments) {
         this.assessments = assessments;
+        TextView message = ((AppCompatActivity) context).findViewById(R.id.no_assessments_message);
         if (assessments.size() == 0) {
-            TextView message = ((AppCompatActivity) context).findViewById(R.id.no_assessments_message);
             message.setVisibility(View.VISIBLE);
+        } else {
+            message.setVisibility(View.INVISIBLE);
         }
         notifyDataSetChanged();
     }

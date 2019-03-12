@@ -21,7 +21,7 @@ public class CourseListAdapter extends RecyclerView.Adapter<CourseListAdapter.Co
     private final LayoutInflater inflater;
     private List<Course> courses;
     private OnItemInteractionListener listener;
-    Context context;
+    private final Context context;
 
     public CourseListAdapter(Context context) {
         this.context = context;
@@ -52,10 +52,12 @@ public class CourseListAdapter extends RecyclerView.Adapter<CourseListAdapter.Co
 
     public void setCourses(List<Course> courses) {
         this.courses = courses;
+        TextView message = ((AppCompatActivity) context).findViewById(R.id.no_main_message);
         if (courses.size() == 0) {
-            TextView message = ((AppCompatActivity) context).findViewById(R.id.no_main_message);
             message.setText(R.string.no_courses_message);
             message.setVisibility(View.VISIBLE);
+        } else {
+            message.setVisibility(View.INVISIBLE);
         }
         notifyDataSetChanged();
     }
