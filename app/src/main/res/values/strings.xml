@@ -107,4 +107,8 @@
     <string name="home">Home</string>
     <string name="termProgressMessage">Completed Terms:  %1$d out of %2$d</string>
     <string name="courseProgressMessage">Completed Courses:  %1$d out of %2$d</string>
+    <string name="no_assessments_message">There are no assessments to display.  \nAdd some by tapping the plus button below.</string>
+    <string name="no_terms_message">There are no terms to display.  \nAdd some by tapping the plus button below.</string>
+    <string name="no_courses_message">There are no courses to display.  \nAdd some by tapping the plus button below.</string>
+    <string name="no_notes_message">There are no notes to display.  \nAdd some by tapping the plus button below.</string>
 </resources>

@@ -13,6 +13,7 @@ import com.clstephenson.mywgutracker.utils.DateUtils;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class AssessmentListAdapter extends RecyclerView.Adapter<AssessmentListAdapter.AssessmentViewHolder> {
@@ -20,8 +21,10 @@ public class AssessmentListAdapter extends RecyclerView.Adapter<AssessmentListAd
     private final LayoutInflater inflater;
     private List<Assessment> assessments;
     private OnItemInteractionListener listener;
+    private Context context;
 
     public AssessmentListAdapter(Context context) {
+        this.context = context;
         inflater = LayoutInflater.from(context);
     }
 
@@ -35,7 +38,6 @@ public class AssessmentListAdapter extends RecyclerView.Adapter<AssessmentListAd
     @Override
     public void onBindViewHolder(@NonNull AssessmentViewHolder holder, int position) {
         if (assessments != null) {
-            Context context = holder.assessmentGoalView.getContext();
             Assessment current = assessments.get(position);
             holder.assessmentNameView.setText(current.getName());
             holder.assessmentTypeView.setText(current.getType().getFriendlyName());
@@ -43,13 +45,15 @@ public class AssessmentListAdapter extends RecyclerView.Adapter<AssessmentListAd
                     String.format("%s: %s",
                             context.getString(R.string.due),
                             DateUtils.getFormattedDate(current.getGoalDate())));
-        } else {
-            //todo add message stating that there are no assessments to display
         }
     }
 
     public void setAssessments(List<Assessment> assessments) {
         this.assessments = assessments;
+        if (assessments.size() == 0) {
+            TextView message = ((AppCompatActivity) context).findViewById(R.id.no_assessments_message);
+            message.setVisibility(View.VISIBLE);
+        }
         notifyDataSetChanged();
     }
 

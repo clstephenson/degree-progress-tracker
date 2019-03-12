@@ -30,7 +30,18 @@
             android:id="@+id/main_content_fragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingTop="?attr/actionBarSize" />
+            android:paddingTop="?attr/actionBarSize">
+
+            <TextView
+                android:id="@+id/no_main_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:padding="@dimen/activity_margin_large"
+                android:text=""
+                android:textAlignment="center"
+                android:visibility="gone" />
+        </FrameLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_add_main"

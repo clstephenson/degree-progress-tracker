@@ -13,6 +13,7 @@ import com.clstephenson.mywgutracker.utils.DateUtils;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class TermListAdapter extends RecyclerView.Adapter<TermListAdapter.TermViewHolder> {
@@ -20,8 +21,10 @@ public class TermListAdapter extends RecyclerView.Adapter<TermListAdapter.TermVi
     private final LayoutInflater inflater;
     private List<Term> terms;
     private OnItemInteractionListener listener;
+    Context context;
 
     public TermListAdapter(Context context) {
+        this.context = context;
         inflater = LayoutInflater.from(context);
     }
 
@@ -35,7 +38,6 @@ public class TermListAdapter extends RecyclerView.Adapter<TermListAdapter.TermVi
     @Override
     public void onBindViewHolder(@NonNull TermViewHolder holder, int position) {
         if (terms != null) {
-            Context context = holder.termDatesView.getContext();
             Term current = terms.get(position);
             holder.termNameView.setText(current.getName());
             String statusText = String.format(
@@ -45,13 +47,16 @@ public class TermListAdapter extends RecyclerView.Adapter<TermListAdapter.TermVi
             holder.termStatusView.setText(statusText);
             holder.termDatesView.setText(
                     DateUtils.getFormattedDateRange(current.getStartDate(), current.getEndDate()));
-        } else {
-            //todo add message stating that there are no terms to display
         }
     }
 
     public void setTerms(List<Term> terms) {
         this.terms = terms;
+        if (terms.size() == 0) {
+            TextView message = ((AppCompatActivity) context).findViewById(R.id.no_main_message);
+            message.setText(R.string.no_terms_message);
+            message.setVisibility(View.VISIBLE);
+        }
         notifyDataSetChanged();
     }
 
