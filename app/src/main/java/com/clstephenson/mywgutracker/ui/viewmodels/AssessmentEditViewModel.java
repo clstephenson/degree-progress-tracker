@@ -23,7 +23,7 @@ public class AssessmentEditViewModel extends AndroidViewModel {
     }
 
     public Assessment getNewAssessment(long courseId) {
-        return new Assessment("", "", new Date(), false, courseId,
+        return new Assessment("", new Date(), false, courseId,
                 AssessmentType.OBJECTIVE);
     }
 

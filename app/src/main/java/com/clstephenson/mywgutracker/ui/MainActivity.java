@@ -31,7 +31,6 @@ public class MainActivity extends AppCompatActivity
     public static final String EXTRA_MESSAGE_STRING_ID = MainActivity.class.getSimpleName() + "REQUESTED_MESSAGE";
     public static final String EXTRA_MESSAGE_LENGTH = MainActivity.class.getSimpleName() + "REQUESTED_SNACKBAR_LENGTH";
 
-    final String HOME_FRAGMENT = HomeFragment.class.getSimpleName();
     final String TERM_LIST_FRAGMENT = TermListFragment.class.getSimpleName();
     final String COURSE_LIST_FRAGMENT = CourseListFragment.class.getSimpleName();
 
@@ -115,7 +114,7 @@ public class MainActivity extends AppCompatActivity
             openHomeFragment();
             Toast.makeText(this, "Database cleared.", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_seed_db) {
-            AppDatabase.seedDatabase();
+            AppDatabase.clearAndSeedDatabase();
             openHomeFragment();
             Toast.makeText(this, "Added some data to the database.", Toast.LENGTH_SHORT).show();
         }

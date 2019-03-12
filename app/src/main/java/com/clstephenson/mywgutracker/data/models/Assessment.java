@@ -23,10 +23,6 @@ import androidx.room.Index;
 public class Assessment extends BaseModel {
 
     @NonNull
-    @ColumnInfo(name = "code")
-    private String code;
-
-    @NonNull
     @ColumnInfo(name = "name")
     private String name;
 
@@ -43,10 +39,9 @@ public class Assessment extends BaseModel {
     @ColumnInfo(name = "type")
     private AssessmentType type;
 
-    public Assessment(long id, String code, @NonNull String name, Date goalDate, boolean isGoalAlertOn,
+    public Assessment(long id, @NonNull String name, Date goalDate, boolean isGoalAlertOn,
                       long courseId, AssessmentType type) {
         this.id = id;
-        this.code = code;
         this.name = name;
         this.goalDate = goalDate;
         this.isGoalAlertOn = isGoalAlertOn;
@@ -55,9 +50,8 @@ public class Assessment extends BaseModel {
     }
 
     @Ignore
-    public Assessment(String code, @NonNull String name, Date goalDate, boolean isGoalAlertOn,
+    public Assessment(@NonNull String name, Date goalDate, boolean isGoalAlertOn,
                       long courseId, AssessmentType type) {
-        this.code = code;
         this.name = name;
         this.goalDate = goalDate;
         this.isGoalAlertOn = isGoalAlertOn;
@@ -67,7 +61,7 @@ public class Assessment extends BaseModel {
 
     @Ignore
     public Assessment(Assessment assessment) {
-        this(assessment.getId(), assessment.getName(), assessment.getCode(), assessment.getGoalDate(),
+        this(assessment.getId(), assessment.getName(), assessment.getGoalDate(),
                 assessment.isGoalAlertOn(), assessment.getCourseId(), assessment.getType());
     }
 
@@ -76,17 +70,8 @@ public class Assessment extends BaseModel {
         return name;
     }
 
-    @NonNull
-    public String getCode() {
-        return code;
-    }
-
     public boolean isGoalAlertOn() {
         return isGoalAlertOn;
-    }
-
-    public void setCode(@NonNull String code) {
-        this.code = code;
     }
 
     public AssessmentType getType() {
@@ -129,7 +114,6 @@ public class Assessment extends BaseModel {
         return id == that.id &&
                 isGoalAlertOn == that.isGoalAlertOn &&
                 courseId == that.courseId &&
-                Objects.equals(code, that.code) &&
                 Objects.equals(name, that.name) &&
                 Objects.equals(goalDate, that.goalDate) &&
                 type == that.type;
@@ -137,7 +121,7 @@ public class Assessment extends BaseModel {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, code, name, goalDate, isGoalAlertOn, courseId, type);
+        return Objects.hash(id, name, goalDate, isGoalAlertOn, courseId, type);
     }
 
     @Override

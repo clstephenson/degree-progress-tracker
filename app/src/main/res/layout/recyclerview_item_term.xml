@@ -8,7 +8,7 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/terms_cardView"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/term_card_height"
+        android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/activity_margin_small"
         android:layout_marginTop="@dimen/activity_margin_small"
         android:layout_marginEnd="@dimen/activity_margin_small"
@@ -19,6 +19,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
             android:paddingTop="@dimen/activity_margin_small"
+            android:paddingBottom="@dimen/activity_margin_small"
             android:orientation="vertical"
             android:paddingStart="@dimen/activity_horizontal_margin">
 
