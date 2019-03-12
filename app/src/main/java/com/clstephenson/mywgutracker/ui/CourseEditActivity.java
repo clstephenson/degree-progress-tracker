@@ -384,18 +384,31 @@ public class CourseEditActivity extends AppCompatActivity implements OnDataTaskR
                 // this will be the term list data
                 if (result.isSuccessful()) {
                     setTerms((List<Term>) result.getData());
-                    ArrayAdapter<Term> termAdapter = new ArrayAdapter<>(this,
-                            android.R.layout.simple_dropdown_item_1line, allTerms);
-                    termInput.setAdapter(termAdapter);
-                    switch (entryMode) {
-                        case UPDATE:
-                            termInput.setSelection(termAdapter.getPosition(getTermById(currentCourse.getTermId())));
-                            break;
-                        case CREATE:
-                            if (currentCourse.getTermId() > 0) {
+                    if (allTerms == null || allTerms.size() == 0) {
+                        new AlertDialog.Builder(this)
+                                .setTitle("No Terms Present")
+                                .setIcon(R.drawable.ic_notifications)
+                                .setMessage(getString(R.string.please_add_term))
+                                .setPositiveButton(getString(android.R.string.ok), (dialog, which) -> {
+                                    finish();
+                                    dialog.cancel();
+                                })
+                                .create()
+                                .show();
+                    } else {
+                        ArrayAdapter<Term> termAdapter = new ArrayAdapter<>(this,
+                                android.R.layout.simple_dropdown_item_1line, allTerms);
+                        termInput.setAdapter(termAdapter);
+                        switch (entryMode) {
+                            case UPDATE:
                                 termInput.setSelection(termAdapter.getPosition(getTermById(currentCourse.getTermId())));
-                            }
-                            break;
+                                break;
+                            case CREATE:
+                                if (currentCourse.getTermId() > 0) {
+                                    termInput.setSelection(termAdapter.getPosition(getTermById(currentCourse.getTermId())));
+                                }
+                                break;
+                        }
                     }
                 }
                 break;

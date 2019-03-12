@@ -111,4 +111,5 @@
     <string name="no_terms_message">There are no terms to display.  \nAdd some by tapping the plus button below.</string>
     <string name="no_courses_message">There are no courses to display.  \nAdd some by tapping the plus button below.</string>
     <string name="no_notes_message">There are no notes to display.  \nAdd some by tapping the plus button below.</string>
+    <string name="please_add_term">There are not terms yet.  Please add a term before creating courses.</string>
 </resources>
