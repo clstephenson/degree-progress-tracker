@@ -347,19 +347,6 @@ public class CourseEditActivity extends AppCompatActivity implements OnDataTaskR
     public void onNotifyDataChanged(DataTaskResult result) {
         Log.d(TAG, "onNotifyDataChanged() called with: result = [" + result + "]");
         switch (result.getAction()) {
-            case DELETE:
-                if (result.isSuccessful()) {
-                    finish();
-                } else {
-                    int messageResourceId;
-                    if (result.getConstraintException() != null) {
-                        messageResourceId = R.string.course_delete_failed;
-                    } else {
-                        messageResourceId = R.string.unexpected_error;
-                    }
-                    showDataChangedSnackbarMessage(messageResourceId);
-                }
-                break;
             case UPDATE:
                 if (result.isSuccessful()) {
                     handleAlertsIfSelectedAndFinish();

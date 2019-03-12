@@ -1,7 +1,6 @@
 package com.clstephenson.mywgutracker.ui;
 
 import android.app.Dialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -164,29 +163,16 @@ public class TermEditActivity extends AppCompatActivity implements OnDataTaskRes
     @Override
     public void onNotifyDataChanged(DataTaskResult result) {
         switch (result.getAction()) {
-            case DELETE:
-                if (result.isSuccessful()) {
-                    openTermList(R.string.term_deleted, Snackbar.LENGTH_LONG);
-                } else {
-                    int messageResourceId;
-                    if (result.getConstraintException() != null) {
-                        messageResourceId = R.string.term_delete_failed;
-                    } else {
-                        messageResourceId = R.string.unexpected_error;
-                    }
-                    showDataChangedSnackbarMessage(messageResourceId);
-                }
-                break;
             case UPDATE:
                 if (result.isSuccessful()) {
-                    openTermList(R.string.term_updated, Snackbar.LENGTH_LONG);
+                    finish();
                 } else {
                     showDataChangedSnackbarMessage(R.string.unexpected_error);
                 }
                 break;
             case INSERT:
                 if (result.isSuccessful()) {
-                    openTermList(R.string.term_added, Snackbar.LENGTH_LONG);
+                    finish();
                 } else {
                     int messageResourceId;
                     if (result.getConstraintException() != null) {
@@ -202,15 +188,6 @@ public class TermEditActivity extends AppCompatActivity implements OnDataTaskRes
 
     private enum MODE {
         CREATE, UPDATE
-    }
-
-    private void openTermList(int messageId, int snackbarLength) {
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra(MainActivity.EXTRA_FRAGMENT_NAME, TermListFragment.class.getSimpleName());
-        intent.putExtra(MainActivity.EXTRA_MESSAGE_STRING_ID, messageId);
-        intent.putExtra(MainActivity.EXTRA_MESSAGE_LENGTH, snackbarLength);
-        startActivity(intent);
-        finish();
     }
 
     public void handleStartDateInputClick(View view) {

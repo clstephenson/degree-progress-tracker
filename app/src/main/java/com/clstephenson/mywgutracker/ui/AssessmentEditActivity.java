@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.CalendarView;
 import android.widget.Spinner;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import com.clstephenson.mywgutracker.R;
 import com.clstephenson.mywgutracker.data.AssessmentType;
@@ -143,6 +144,8 @@ public class AssessmentEditActivity extends AppCompatActivity implements OnDataT
                 } else {
                     viewModel.insertAssessment(currentAssessment);
                 }
+            } else {
+                finish();
             }
         }
     }
@@ -184,7 +187,8 @@ public class AssessmentEditActivity extends AppCompatActivity implements OnDataT
             case DELETE:
                 if (result.isSuccessful()) {
                     submitAssessmentNotificationRequest(true);
-                    openCourseActivity(R.string.assessment_deleted, Snackbar.LENGTH_LONG);
+                    Toast.makeText(this, getString(R.string.assessment_deleted), Toast.LENGTH_SHORT).show();
+                    finish();
                 } else {
                     int messageResourceId;
                     if (result.getConstraintException() != null) {
@@ -232,15 +236,6 @@ public class AssessmentEditActivity extends AppCompatActivity implements OnDataT
                 .show();
     }
 
-    private void openCourseActivity(int messageId, int snackbarLength) {
-        Intent intent = new Intent(this, CourseActivity.class);
-        intent.putExtra(CourseActivity.EXTRA_COURSE_ID, currentAssessment.getCourseId());
-        intent.putExtra(MainActivity.EXTRA_MESSAGE_STRING_ID, messageId);
-        intent.putExtra(MainActivity.EXTRA_MESSAGE_LENGTH, snackbarLength);
-        startActivity(intent);
-        finish();
-    }
-
     public void handleGoalDateInputClick(View view) {
         Dialog calendarDialog = getCalendarDialog(view);
         CalendarView calendarView = calendarDialog.findViewById(R.id.calendar_date_picker);
@@ -284,7 +279,7 @@ public class AssessmentEditActivity extends AppCompatActivity implements OnDataT
                     .setIcon(R.drawable.ic_notifications)
                     .setMessage(getString(R.string.assessment_notification_added, AlertNotification.REMINDER_DEFAULT_DAYS_BEFORE))
                     .setPositiveButton(getString(android.R.string.ok), (dialog, which) -> {
-                        openCourseActivity(R.string.assessment_updated, Snackbar.LENGTH_LONG);
+                        finish();
                         dialog.cancel();
                     })
                     .create()

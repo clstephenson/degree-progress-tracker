@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.clstephenson.mywgutracker.R;
 import com.clstephenson.mywgutracker.data.models.Course;
@@ -206,7 +207,8 @@ public class CourseActivity extends AppCompatActivity implements OnDataTaskResul
             case DELETE:
                 if (result.isSuccessful()) {
                     cancelCourseNotifications(currentCourse);
-                    openCourseList(R.string.course_deleted, Snackbar.LENGTH_LONG);
+                    Toast.makeText(this, getString(R.string.course_deleted), Toast.LENGTH_SHORT).show();
+                    finish();
                 } else {
                     int messageResourceId;
                     if (result.getConstraintException() != null) {
@@ -236,15 +238,6 @@ public class CourseActivity extends AppCompatActivity implements OnDataTaskResul
                 CourseEditActivity.NOTIFICATION_TYPE.START, true);
         CourseEditActivity.submitCourseNotificationRequest(this, course,
                 CourseEditActivity.NOTIFICATION_TYPE.END, true);
-    }
-
-    private void openCourseList(int messageId, int snackbarLength) {
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra(MainActivity.EXTRA_FRAGMENT_NAME, CourseListFragment.class.getSimpleName());
-        intent.putExtra(MainActivity.EXTRA_MESSAGE_STRING_ID, messageId);
-        intent.putExtra(MainActivity.EXTRA_MESSAGE_LENGTH, snackbarLength);
-        startActivity(intent);
-        finish();
     }
 
     public void handleMentorPhoneClick(View view) {
