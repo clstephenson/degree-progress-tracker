@@ -33,7 +33,7 @@
                 android:id="@+id/home_textView_Terms"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Terms"
+                android:text="@string/terms"
                 android:textSize="70sp" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
@@ -63,7 +63,7 @@
                 android:id="@+id/home_textView_Courses"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Courses"
+                android:text="@string/courses"
                 android:textSize="70sp" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>

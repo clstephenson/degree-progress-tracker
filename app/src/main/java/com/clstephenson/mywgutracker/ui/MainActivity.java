@@ -22,36 +22,34 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+@SuppressWarnings("WeakerAccess")
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    public static final String TAG = MainActivity.class.getSimpleName();
+    private static final String TAG = MainActivity.class.getSimpleName();
     public static final String TITLE_RESOURCE_ID = MainActivity.class.getSimpleName() + "TITLE_RESOURCE_ID";
     public static final String EXTRA_FRAGMENT_NAME = MainActivity.class.getSimpleName() + "REQUESTED_FRAGMENT";
     public static final String EXTRA_MESSAGE_STRING_ID = MainActivity.class.getSimpleName() + "REQUESTED_MESSAGE";
     public static final String EXTRA_MESSAGE_LENGTH = MainActivity.class.getSimpleName() + "REQUESTED_SNACKBAR_LENGTH";
+    public final String TERM_LIST_FRAGMENT = TermListFragment.class.getSimpleName();
+    public final String COURSE_LIST_FRAGMENT = CourseListFragment.class.getSimpleName();
 
-    final String TERM_LIST_FRAGMENT = TermListFragment.class.getSimpleName();
-    final String COURSE_LIST_FRAGMENT = CourseListFragment.class.getSimpleName();
-
-    DrawerLayout drawerLayout;
-    NavigationView navigationView;
-    ActionBarDrawerToggle actionBarDrawerToggle;
-    Toolbar toolbar;
-    FragmentManager fragmentManager;
+    private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
+    private FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         Log.d(TAG, "onCreate() called with: savedInstanceState = [" + savedInstanceState + "]");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_with_nav);
-        toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         fragmentManager = getSupportFragmentManager();
 
         // configure navigation drawer
         drawerLayout = findViewById(R.id.drawer_layout);
-        actionBarDrawerToggle = new ActionBarDrawerToggle(
+        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(
                 this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         navigationView = findViewById(R.id.nav_view);

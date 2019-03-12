@@ -16,8 +16,8 @@ import androidx.lifecycle.LiveData;
 
 public class TermRepository implements Repository<Term> {
 
-    private TermDao termDao;
-    private LiveData<List<Term>> allTerms;
+    private final TermDao termDao;
+    private final LiveData<List<Term>> allTerms;
     private OnDataTaskResultListener onDataTaskResultListener;
 
     public TermRepository(@NonNull Application application) {
@@ -64,23 +64,20 @@ public class TermRepository implements Repository<Term> {
         this.onDataTaskResultListener = listener;
     }
 
-    public class GetAllTask extends AsyncTask<Void, Void, DataTaskResult> {
+    static class GetAllTask extends AsyncTask<Void, Void, DataTaskResult> {
 
         private final String TAG = this.getClass().getSimpleName();
-        private OnDataTaskResultListener listener;
-        private TermDao asyncTaskDao;
-        private com.clstephenson.mywgutracker.repositories.DataTask.Action action;
+        private final OnDataTaskResultListener listener;
+        private final TermDao asyncTaskDao;
+        private final com.clstephenson.mywgutracker.repositories.DataTask.Action action;
 
-        /**
-         * @param daoClass The class describing the dao object in the second parameter.
-         * @param dao      The dao object containing the update method.  The dao object must extend BaseDao.
-         */
-        public GetAllTask(TermDao dao, OnDataTaskResultListener listener) {
+        GetAllTask(TermDao dao, OnDataTaskResultListener listener) {
             this.action = com.clstephenson.mywgutracker.repositories.DataTask.Action.GET;
             asyncTaskDao = dao;
             this.listener = listener;
         }
 
+        @SuppressWarnings({"finally", "ReturnInsideFinallyBlock"})
         @Override
         protected DataTaskResult doInBackground(final Void... params) {
             DataTaskResult dataTaskResult = new DataTaskResult(action, DataTaskResult.Result.FAIL);

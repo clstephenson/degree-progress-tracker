@@ -14,13 +14,11 @@ import androidx.lifecycle.LiveData;
 
 public class TermListViewModel extends AndroidViewModel {
 
-    private final String TAG = this.getClass().getSimpleName();
-    private Repository<Term> repository;
-    private LiveData<List<Term>> allTerms;
+    private final LiveData<List<Term>> allTerms;
 
     public TermListViewModel(@NonNull Application application) {
         super(application);
-        repository = new TermRepository(application);
+        Repository<Term> repository = new TermRepository(application);
         allTerms = repository.getAll();
     }
 
@@ -30,9 +28,5 @@ public class TermListViewModel extends AndroidViewModel {
 
     public Term getTerm(int position) {
         return allTerms.getValue().get(position);
-    }
-
-    public void insert(Term term) {
-        repository.insert(term);
     }
 }

@@ -13,8 +13,8 @@ import androidx.lifecycle.LiveData;
 
 public class CourseRepository implements Repository<Course> {
 
-    private CourseDao courseDao;
-    private LiveData<List<Course>> allCourses;
+    private final CourseDao courseDao;
+    private final LiveData<List<Course>> allCourses;
     private OnDataTaskResultListener onDataTaskResultListener;
 
     public CourseRepository(@NonNull Application application) {

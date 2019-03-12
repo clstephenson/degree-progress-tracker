@@ -6,7 +6,7 @@ public enum AssessmentType {
 
     private final String friendlyName;
 
-    private AssessmentType(String friendlyName) {
+    AssessmentType(String friendlyName) {
         this.friendlyName = friendlyName;
     }
 

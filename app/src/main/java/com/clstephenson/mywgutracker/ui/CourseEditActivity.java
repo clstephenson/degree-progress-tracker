@@ -42,7 +42,7 @@ import androidx.lifecycle.ViewModelProviders;
 public class CourseEditActivity extends AppCompatActivity implements OnDataTaskResultListener {
 
     private static final String TAG = CourseEditActivity.class.getSimpleName();
-    CourseEditViewModel viewModel;
+    private CourseEditViewModel viewModel;
     private MODE entryMode;
     private Course currentCourse;
     private Course dirtyCourse;
@@ -137,38 +137,52 @@ public class CourseEditActivity extends AppCompatActivity implements OnDataTaskR
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-    }
+    /**
+     * Method used to submit a request to create or cancel a course notification.  Made it a static
+     * method so it can be called from CourseActivity when a course is deleted.
+     *
+     * @param context
+     * @param course
+     * @param type
+     * @param cancelRequest
+     */
+    @SuppressWarnings("JavaDoc")
+    public static void submitCourseNotificationRequest(Context context, Course course,
+                                                       NOTIFICATION_TYPE type, boolean cancelRequest) {
+        // notification id is composed of the course id and hashcode of the type parameter.
+        // this will allow start and end notifications to exist at the same time.
+        int notificationId = (int) course.getId() + type.hashCode();
 
-    public void handleSaveCourse() {
-        if (isFormValid()) {
-            updateDirtyCourse();
+        Intent intent = new Intent(context, CourseActivity.class);
+        intent.putExtra(CourseActivity.EXTRA_COURSE_ID, course.getId());
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+        stackBuilder.addNextIntentWithParentStack(intent);
+        PendingIntent notificationPendingIntent = stackBuilder.getPendingIntent(notificationId,
+                PendingIntent.FLAG_UPDATE_CURRENT);
 
-            if (!dirtyCourse.equals(currentCourse)) {
-                currentCourse.setName(titleInput.getText().toString());
-                currentCourse.setStartDate(dirtyCourse.getStartDate());
-                currentCourse.setEndDate(dirtyCourse.getEndDate());
-                currentCourse.setStatus((CourseStatus) statusInput.getSelectedItem());
-                currentCourse.setTermId(((Term) termInput.getSelectedItem()).getId());
-                currentCourse.setStartAlertOn(enableAlertStartSwitch.isChecked());
-                currentCourse.setEndAlertOn(enableAlertEndSwitch.isChecked());
-
-                if (!dirtyCourse.getMentor().equals(currentCourse.getMentor())) {
-                    currentCourse.getMentor().setFirstName(dirtyCourse.getMentor().getFirstName());
-                    currentCourse.getMentor().setLastName(dirtyCourse.getMentor().getLastName());
-                    currentCourse.getMentor().setPhone(dirtyCourse.getMentor().getPhone());
-                    currentCourse.getMentor().setEmail(dirtyCourse.getMentor().getEmail());
-                }
-
-                if (entryMode == MODE.UPDATE) {
-                    viewModel.updateCourse(currentCourse);
-                } else {
-                    viewModel.insertCourse(currentCourse);
-                }
-            }
+        // setup the dates and resources based on whether it's a start or end date.
+        Date courseDate;
+        int textResource;
+        int titleResource;
+        if (type == NOTIFICATION_TYPE.START) {
+            courseDate = course.getStartDate();
+            textResource = R.string.course_start_notification_text;
+            titleResource = R.string.course_start_notification_title;
+        } else {
+            courseDate = course.getEndDate();
+            textResource = R.string.course_end_notification_text;
+            titleResource = R.string.course_end_notification_title;
         }
+
+        Date reminderDate = DateUtils.createReminderDate(courseDate, 0,
+                AlertNotification.REMINDER_DEFAULT_HOUR_OF_DAY);
+        long delay = reminderDate.getTime() - new Date().getTime();
+        String dateString = DateUtils.getFormattedDate(courseDate);
+        Log.d(TAG, String.format(Locale.getDefault(),
+                "submitCourseNotificationRequest: requesting course alert for %d millis from now.", delay));
+        AlertNotification.scheduleAlert(context, context.getString(titleResource),
+                context.getString(textResource, course.getName(), dateString),
+                delay, notificationId, notificationPendingIntent, cancelRequest);
     }
 
     private boolean isFormValid() {
@@ -224,55 +238,37 @@ public class CourseEditActivity extends AppCompatActivity implements OnDataTaskR
         layout.setError(getString(stringResourceId));
     }
 
-    /**
-     * Method used to submit a request to create or cancel a course notification.  Made it a static
-     * method so it can be called from CourseActivity when a course is deleted.
-     *
-     * @param context
-     * @param course
-     * @param type
-     * @param cancelRequest
-     */
-    public static void submitCourseNotificationRequest(Context context, Course course,
-                                                       NOTIFICATION_TYPE type, boolean cancelRequest) {
-        // notification id is composed of the course id and hashcode of the type parameter.
-        // this will allow start and end notifications to exist at the same time.
-        int notificationId = (int) course.getId() + type.hashCode();
+    private void handleSaveCourse() {
+        if (isFormValid()) {
+            updateDirtyCourse();
 
-        Intent intent = new Intent(context, CourseActivity.class);
-        intent.putExtra(CourseActivity.EXTRA_COURSE_ID, course.getId());
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
-        stackBuilder.addNextIntentWithParentStack(intent);
-        PendingIntent notificationPendingIntent = stackBuilder.getPendingIntent(notificationId,
-                PendingIntent.FLAG_UPDATE_CURRENT);
+            if (!dirtyCourse.equals(currentCourse)) {
+                currentCourse.setName(titleInput.getText().toString());
+                currentCourse.setStartDate(dirtyCourse.getStartDate());
+                currentCourse.setEndDate(dirtyCourse.getEndDate());
+                currentCourse.setStatus((CourseStatus) statusInput.getSelectedItem());
+                currentCourse.setTermId(((Term) termInput.getSelectedItem()).getId());
+                currentCourse.setStartAlertOn(enableAlertStartSwitch.isChecked());
+                currentCourse.setEndAlertOn(enableAlertEndSwitch.isChecked());
 
-        // setup the dates and resources based on whether it's a start or end date.
-        Date courseDate;
-        int textResource;
-        int titleResource;
-        if (type == NOTIFICATION_TYPE.START) {
-            courseDate = course.getStartDate();
-            textResource = R.string.course_start_notification_text;
-            titleResource = R.string.course_start_notification_title;
-        } else {
-            courseDate = course.getEndDate();
-            textResource = R.string.course_end_notification_text;
-            titleResource = R.string.course_end_notification_title;
+                if (!dirtyCourse.getMentor().equals(currentCourse.getMentor())) {
+                    currentCourse.getMentor().setFirstName(dirtyCourse.getMentor().getFirstName());
+                    currentCourse.getMentor().setLastName(dirtyCourse.getMentor().getLastName());
+                    currentCourse.getMentor().setPhone(dirtyCourse.getMentor().getPhone());
+                    currentCourse.getMentor().setEmail(dirtyCourse.getMentor().getEmail());
+                }
+
+                if (entryMode == MODE.UPDATE) {
+                    viewModel.updateCourse(currentCourse);
+                } else {
+                    viewModel.insertCourse(currentCourse);
+                }
+            }
         }
-
-        Date reminderDate = DateUtils.createReminderDate(courseDate, 0,
-                AlertNotification.REMINDER_DEFAULT_HOUR_OF_DAY);
-        long delay = reminderDate.getTime() - new Date().getTime();
-        String dateString = DateUtils.getFormattedDate(courseDate);
-        Log.d(TAG, String.format(Locale.getDefault(),
-                "submitCourseNotificationRequest: requesting course alert for %d millis from now.", delay));
-        AlertNotification.scheduleAlert(context, context.getString(titleResource),
-                context.getString(textResource, course.getName(), dateString),
-                delay, notificationId, notificationPendingIntent, cancelRequest);
     }
 
     public void handleStartDateInputClick(View view) {
-        Dialog calendarDialog = getCalendarDialog(view);
+        Dialog calendarDialog = getCalendarDialog();
         CalendarView calendarView = calendarDialog.findViewById(R.id.calendar_date_picker);
         calendarView.setDate(DateUtils.getMillisFromDate(dirtyCourse.getStartDate()));
         calendarView.setOnDateChangeListener((view1, year, month, dayOfMonth) -> {
@@ -285,7 +281,7 @@ public class CourseEditActivity extends AppCompatActivity implements OnDataTaskR
     }
 
     public void handleEndDateInputClick(View view) {
-        Dialog calendarDialog = getCalendarDialog(view);
+        Dialog calendarDialog = getCalendarDialog();
         CalendarView calendarView = calendarDialog.findViewById(R.id.calendar_date_picker);
         calendarView.setDate(DateUtils.getMillisFromDate(dirtyCourse.getEndDate()));
         calendarView.setOnDateChangeListener((view1, year, month, dayOfMonth) -> {
@@ -297,7 +293,7 @@ public class CourseEditActivity extends AppCompatActivity implements OnDataTaskR
         calendarDialog.show();
     }
 
-    private Dialog getCalendarDialog(View view) {
+    private Dialog getCalendarDialog() {
         Dialog calendarDialog = new Dialog(this);
         calendarDialog.setContentView(R.layout.calendar_dialog_content);
         return calendarDialog;

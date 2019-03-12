@@ -24,6 +24,7 @@ public class CourseListFragment extends Fragment {
 
     private CourseListViewModel viewModel;
     private String title;
+    private CourseListAdapter adapter;
 
     public CourseListFragment() {
         // Required empty public constructor
@@ -41,7 +42,7 @@ public class CourseListFragment extends Fragment {
 
         RecyclerView recyclerView = getView().findViewById(R.id.course_recyclerview);
 
-        final CourseListAdapter adapter = new CourseListAdapter(getActivity());
+        adapter = new CourseListAdapter(getActivity());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
@@ -66,7 +67,7 @@ public class CourseListFragment extends Fragment {
         }
 
         //configure floating action button
-        fab.setOnClickListener(this::openCourseEditActivityForNewCourse);
+        fab.setOnClickListener(view -> openCourseEditActivityForNewCourse());
         fab.show();
 
         Bundle bundle = getArguments();
@@ -77,7 +78,7 @@ public class CourseListFragment extends Fragment {
         }
     }
 
-    private void openCourseEditActivityForNewCourse(View view) {
+    private void openCourseEditActivityForNewCourse() {
         Intent intent = new Intent(getActivity(), CourseEditActivity.class);
         startActivity(intent);
     }

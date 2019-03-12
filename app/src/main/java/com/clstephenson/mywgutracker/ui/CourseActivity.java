@@ -31,6 +31,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 
+@SuppressWarnings("WeakerAccess")
 public class CourseActivity extends AppCompatActivity implements OnDataTaskResultListener {
 
     private final String TAG = this.getClass().getSimpleName();
@@ -40,7 +41,7 @@ public class CourseActivity extends AppCompatActivity implements OnDataTaskResul
     public static final String EXTRA_MESSAGE_LENGTH = MainActivity.class.getSimpleName() + "REQUESTED_SNACKBAR_LENGTH";
     private CourseViewModel viewModel;
     private Course currentCourse;
-    TextView termView;
+    private TextView termView;
     private List<Term> allTerms;
 
     @Override

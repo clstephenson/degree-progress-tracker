@@ -14,9 +14,9 @@ public class TestDataGenerator {
 
     public static final int MAX_TEST_TERMS = 3;
     public static final int MAX_TEST_COURSES = 3;
-    private static Mentor[] mentorTestData;
-    private static Term[] termTestData;
-    private static Course[] courseTestData;
+    private static final Mentor[] mentorTestData;
+    private static final Term[] termTestData;
+    private static final Course[] courseTestData;
     private static int numMentors;
 
     static {
@@ -43,7 +43,7 @@ public class TestDataGenerator {
         };
     }
 
-    public static Mentor createMentor() {
+    private static Mentor createMentor() {
         numMentors++;
         int index;
         if (numMentors % 3 == 0) {

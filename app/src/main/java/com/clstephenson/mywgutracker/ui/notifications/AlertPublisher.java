@@ -12,7 +12,7 @@ public class AlertPublisher extends BroadcastReceiver {
 
     public static final String NOTIFICATION_ID = "notification_id";
     public static final String NOTIFICATION = "notification";
-    public final String TAG = this.getClass().getSimpleName();
+    private final String TAG = this.getClass().getSimpleName();
 
     @Override
     public void onReceive(Context context, Intent intent) {

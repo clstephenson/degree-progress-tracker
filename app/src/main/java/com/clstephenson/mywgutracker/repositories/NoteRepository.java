@@ -13,8 +13,8 @@ import androidx.lifecycle.LiveData;
 
 public class NoteRepository implements Repository<Note> {
 
-    private NoteDao noteDao;
-    private LiveData<List<Note>> allNotes;
+    private final NoteDao noteDao;
+    private final LiveData<List<Note>> allNotes;
     private OnDataTaskResultListener onDataTaskResultListener;
 
     public NoteRepository(@NonNull Application application) {

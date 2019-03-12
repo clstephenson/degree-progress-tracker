@@ -42,6 +42,7 @@ public class AlertNotification {
      * @param notificationId identifies the notification in case of updates
      * @param clickIntent    Intent to use when the notification is clicked by the user
      */
+    @SuppressWarnings("JavaDoc")
     public static void scheduleAlert(final Context context, final String title, final String text,
                                      long delay, final int notificationId, PendingIntent clickIntent,
                                      boolean cancelRequest) {

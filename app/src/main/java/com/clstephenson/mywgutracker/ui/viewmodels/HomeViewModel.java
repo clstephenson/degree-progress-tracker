@@ -16,16 +16,13 @@ import androidx.lifecycle.LiveData;
 
 public class HomeViewModel extends AndroidViewModel {
 
-    private final String TAG = this.getClass().getSimpleName();
-    private Repository<Term> termRepository;
-    private Repository<Course> courseRepository;
-    private LiveData<List<Term>> allTerms;
-    private LiveData<List<Course>> allCourses;
+    private final LiveData<List<Term>> allTerms;
+    private final LiveData<List<Course>> allCourses;
 
     public HomeViewModel(@NonNull Application application) {
         super(application);
-        termRepository = new TermRepository(application);
-        courseRepository = new CourseRepository(application);
+        Repository<Term> termRepository = new TermRepository(application);
+        Repository<Course> courseRepository = new CourseRepository(application);
         allTerms = termRepository.getAll();
         allCourses = courseRepository.getAll();
     }

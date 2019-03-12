@@ -13,8 +13,9 @@ import androidx.lifecycle.LiveData;
 
 public class AssessmentRepository implements Repository<Assessment> {
 
-    private AssessmentDao assessmentDao;
-    private LiveData<List<Assessment>> allAssessments;
+    private final AssessmentDao assessmentDao;
+    @SuppressWarnings("FieldCanBeLocal")
+    private final LiveData<List<Assessment>> allAssessments;
     private OnDataTaskResultListener onDataTaskResultListener;
 
     public AssessmentRepository(@NonNull Application application) {

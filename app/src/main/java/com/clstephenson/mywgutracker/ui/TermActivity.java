@@ -25,7 +25,6 @@ import androidx.lifecycle.ViewModelProviders;
 
 public class TermActivity extends AppCompatActivity implements OnDataTaskResultListener {
 
-    private final String TAG = this.getClass().getSimpleName();
     private TermViewModel termViewModel;
     private Term currentTerm;
 

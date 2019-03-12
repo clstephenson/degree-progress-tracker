@@ -5,6 +5,7 @@ import androidx.room.PrimaryKey;
 
 public class BaseModel {
 
+    @SuppressWarnings("WeakerAccess")
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     protected long id;

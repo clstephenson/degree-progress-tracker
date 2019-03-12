@@ -124,12 +124,7 @@ public class AssessmentEditActivity extends AppCompatActivity implements OnDataT
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-    }
-
-    public void handleSaveAssessment() {
+    private void handleSaveAssessment() {
         if (isFormValid()) {
             updateDirtyAssessment();
 
@@ -175,6 +170,7 @@ public class AssessmentEditActivity extends AppCompatActivity implements OnDataT
         }
     }
 
+    @SuppressWarnings("SameParameterValue")
     private void showValidationError(int layoutResourceId, int stringResourceId) {
         TextInputLayout layout = findViewById(layoutResourceId);
         layout.setErrorEnabled(true);

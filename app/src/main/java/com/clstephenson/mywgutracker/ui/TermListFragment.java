@@ -40,7 +40,7 @@ public class TermListFragment extends Fragment {
 
         //configure floating action button
         FloatingActionButton fab = getActivity().findViewById(R.id.fab_add_main);
-        fab.setOnClickListener(this::openTermEditActivityForNewTerm);
+        fab.setOnClickListener(view1 -> openTermEditActivityForNewTerm());
         fab.show();
 
         RecyclerView recyclerView = getView().findViewById(R.id.term_recyclerview);
@@ -67,7 +67,7 @@ public class TermListFragment extends Fragment {
         }
     }
 
-    private void openTermEditActivityForNewTerm(View view) {
+    private void openTermEditActivityForNewTerm() {
         Intent intent = new Intent(getActivity(), TermEditActivity.class);
         startActivity(intent);
     }

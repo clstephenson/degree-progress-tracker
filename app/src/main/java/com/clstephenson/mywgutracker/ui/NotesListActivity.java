@@ -13,14 +13,12 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class NotesListActivity extends AppCompatActivity implements OnDataTaskResultListener {
 
-    public static final String EXTRA_NOTE_ID = CourseActivity.class.getSimpleName() + "extra_note_id";
     private NoteListViewModel viewModel;
     private long courseId;
     public static final long NEW_NOTE_DEFAULT_ID = 0;
@@ -43,9 +41,8 @@ public class NotesListActivity extends AppCompatActivity implements OnDataTaskRe
         NoteListAdapter adapter = new NoteListAdapter(this);
         notesListView.setAdapter(adapter);
         notesListView.setLayoutManager(new LinearLayoutManager(this));
-        adapter.setOnItemInteractionListener(((view, position) -> {
-            showNoteDialog(getString(R.string.edit_note), viewModel.getNote(position));
-        }));
+        adapter.setOnItemInteractionListener((view, position) ->
+                showNoteDialog(getString(R.string.edit_note), viewModel.getNote(position)));
 
         viewModel.getNotes(courseId).observe(this, adapter::setNotes);
 
@@ -53,12 +50,10 @@ public class NotesListActivity extends AppCompatActivity implements OnDataTaskRe
 
         FloatingActionButton fab = findViewById(R.id.fab_add_note);
         fab.setOnClickListener(view ->
-                showNoteDialog(getString(R.string.create_new_note), viewModel.getNewNote(courseId))
-        );
+                showNoteDialog(getString(R.string.create_new_note), viewModel.getNewNote(courseId)));
     }
 
     private void showNoteDialog(String title, Note note) {
-        FragmentManager manager = getSupportFragmentManager();
         NoteDialog dialog = NoteDialog.newInstance(title);
         dialog.showNow(getSupportFragmentManager(), this.getClass().getSimpleName());
     }

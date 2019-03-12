@@ -45,7 +45,7 @@ public abstract class AppDatabase extends RoomDatabase {
 
     private static class ClearDataAsync extends AsyncTask<Void, Void, Void> {
 
-        AppDatabase db;
+        final AppDatabase db;
 
         ClearDataAsync(AppDatabase db) {
             this.db = db;
@@ -61,14 +61,12 @@ public abstract class AppDatabase extends RoomDatabase {
     private static class SeedDBAsync extends AsyncTask<Void, Void, Void> {
         private final TermDao termDao;
         private final CourseDao courseDao;
-        private final AssessmentDao assessmentDao;
         private final NoteDao noteDao;
-        AppDatabase db;
+        final AppDatabase db;
 
         SeedDBAsync(AppDatabase db) {
             termDao = db.termDao();
             courseDao = db.courseDao();
-            assessmentDao = db.assessmentDao();
             noteDao = db.noteDao();
             this.db = db;
         }
@@ -83,8 +81,6 @@ public abstract class AppDatabase extends RoomDatabase {
                     Course course = TestDataGenerator.createCourse(termNum, courseNum, termId);
                     long courseId = courseDao.insert(course);
                     for (int assessmentNum = 1; assessmentNum < 3; assessmentNum++) {
-//                        Assessment assessment = TestDataGenerator.createAssessment(assessmentNum, courseId);
-//                        assessmentDao.insert(assessment);
                         Note note = TestDataGenerator.createNote(assessmentNum, courseId);
                         noteDao.insert(note);
                     }

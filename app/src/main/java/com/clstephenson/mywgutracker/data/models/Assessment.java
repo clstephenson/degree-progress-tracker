@@ -39,7 +39,7 @@ public class Assessment extends BaseModel {
     @ColumnInfo(name = "type")
     private AssessmentType type;
 
-    public Assessment(long id, @NonNull String name, Date goalDate, boolean isGoalAlertOn,
+    public Assessment(long id, @NonNull String name, @NonNull Date goalDate, boolean isGoalAlertOn,
                       long courseId, AssessmentType type) {
         this.id = id;
         this.name = name;
@@ -50,7 +50,7 @@ public class Assessment extends BaseModel {
     }
 
     @Ignore
-    public Assessment(@NonNull String name, Date goalDate, boolean isGoalAlertOn,
+    public Assessment(@NonNull String name, @NonNull Date goalDate, boolean isGoalAlertOn,
                       long courseId, AssessmentType type) {
         this.name = name;
         this.goalDate = goalDate;

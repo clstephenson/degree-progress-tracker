@@ -28,7 +28,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 public class TermEditActivity extends AppCompatActivity implements OnDataTaskResultListener {
 
-    public final String TAG = this.getClass().getSimpleName();
+    private final String TAG = this.getClass().getSimpleName();
     private MODE entryMode;
     private Term currentTerm;
     private Term dirtyTerm;
@@ -36,7 +36,7 @@ public class TermEditActivity extends AppCompatActivity implements OnDataTaskRes
     private TextInputEditText endDateInput;
     private TextInputEditText startDateInput;
 
-    TermEditViewModel viewModel;
+    private TermEditViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,12 +99,7 @@ public class TermEditActivity extends AppCompatActivity implements OnDataTaskRes
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-    }
-
-    public void handleSaveTerm() {
+    private void handleSaveTerm() {
         if (isFormValid()) {
             updateDirtyTerm();
 
@@ -191,7 +186,7 @@ public class TermEditActivity extends AppCompatActivity implements OnDataTaskRes
     }
 
     public void handleStartDateInputClick(View view) {
-        Dialog calendarDialog = getCalendarDialog(view);
+        Dialog calendarDialog = getCalendarDialog();
         CalendarView calendarView = calendarDialog.findViewById(R.id.calendar_date_picker);
         calendarView.setDate(DateUtils.getMillisFromDate(dirtyTerm.getStartDate()));
         calendarView.setOnDateChangeListener((view1, year, month, dayOfMonth) -> {
@@ -204,7 +199,7 @@ public class TermEditActivity extends AppCompatActivity implements OnDataTaskRes
     }
 
     public void handleEndDateInputClick(View view) {
-        Dialog calendarDialog = getCalendarDialog(view);
+        Dialog calendarDialog = getCalendarDialog();
         CalendarView calendarView = calendarDialog.findViewById(R.id.calendar_date_picker);
         calendarView.setDate(DateUtils.getMillisFromDate(dirtyTerm.getEndDate()));
         calendarView.setOnDateChangeListener((view1, year, month, dayOfMonth) -> {
@@ -216,7 +211,7 @@ public class TermEditActivity extends AppCompatActivity implements OnDataTaskRes
         calendarDialog.show();
     }
 
-    private Dialog getCalendarDialog(View view) {
+    private Dialog getCalendarDialog() {
         Dialog calendarDialog = new Dialog(this);
         calendarDialog.setContentView(R.layout.calendar_dialog_content);
         return calendarDialog;

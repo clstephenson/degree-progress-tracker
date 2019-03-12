@@ -7,7 +7,7 @@
         android:orderInCategory="100"
         android:icon="@drawable/ic_edit"
         android:title="@string/edit"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_delete_term"
         android:orderInCategory="101"

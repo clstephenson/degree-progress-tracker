@@ -17,9 +17,8 @@ import androidx.lifecycle.LiveData;
 
 public class CourseEditViewModel extends AndroidViewModel {
 
-    private final String TAG = this.getClass().getSimpleName();
-    private CourseRepository courseRepository;
-    private TermRepository termRepository;
+    private final CourseRepository courseRepository;
+    private final TermRepository termRepository;
 
     public CourseEditViewModel(@NonNull Application application) {
         super(application);

@@ -18,16 +18,16 @@
             android:title="@string/title_activity_course_list" />
     </group>
 
-    <item android:title="Test Data Management">
+    <item android:title="@string/test_data_management">
         <menu>
             <item
                 android:id="@+id/nav_clear_db"
                 android:icon="@drawable/ic_warning"
-                android:title="Clear DB Data" />
+                android:title="@string/clear_db_data" />
             <item
                 android:id="@+id/nav_seed_db"
                 android:icon="@drawable/ic_warning"
-                android:title="Clear and Seed DB" />
+                android:title="@string/clear_and_seed_db" />
         </menu>
     </item>
 

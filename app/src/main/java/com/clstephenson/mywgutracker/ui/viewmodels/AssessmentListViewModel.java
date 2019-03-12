@@ -13,7 +13,7 @@ import androidx.lifecycle.LiveData;
 
 public class AssessmentListViewModel extends AndroidViewModel {
 
-    private AssessmentRepository repository;
+    private final AssessmentRepository repository;
     private LiveData<List<Assessment>> assessments;
 
     public AssessmentListViewModel(@NonNull Application application) {

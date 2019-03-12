@@ -13,9 +13,9 @@ import com.clstephenson.mywgutracker.data.models.BaseModel;
  */
 public class DataTask<T extends BaseModel> extends AsyncTask<T, Void, DataTaskResult> {
 
-    private OnDataTaskResultListener listener;
-    private BaseDao asyncTaskDao;
-    private Action action;
+    private final OnDataTaskResultListener listener;
+    private final BaseDao asyncTaskDao;
+    private final Action action;
     private final String TAG = this.getClass().getSimpleName();
 
     /**
@@ -28,6 +28,7 @@ public class DataTask<T extends BaseModel> extends AsyncTask<T, Void, DataTaskRe
         this.listener = listener;
     }
 
+    @SuppressWarnings({"finally", "ReturnInsideFinallyBlock", "unchecked"})
     @Override
     protected DataTaskResult doInBackground(final T... params) {
         DataTaskResult dataTaskResult = new DataTaskResult(action, DataTaskResult.Result.FAIL);
