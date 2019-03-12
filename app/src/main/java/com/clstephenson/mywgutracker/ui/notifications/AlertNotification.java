@@ -46,7 +46,6 @@ public class AlertNotification {
     public static void scheduleAlert(final Context context, final String title, final String text,
                                      long delay, final int notificationId, PendingIntent clickIntent,
                                      boolean cancelRequest) {
-        Log.d(TAG, "scheduleAlert() called with: title = [" + title + "], text = [" + text + "], delay = [" + delay + "], notificationId = [" + notificationId + "], cancelRequest = [" + cancelRequest + "]");
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(context, MyApplication.CHANNEL_ID)
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setSmallIcon(R.drawable.ic_wgu)
@@ -70,9 +69,9 @@ public class AlertNotification {
 
         long futureInMillis = System.currentTimeMillis() + delay;
         if (cancelRequest) {
-            Log.d(TAG, "scheduleAlert: cancelling alert");
+            Log.i(TAG, "scheduleAlert: cancelling alert");
         } else {
-            Log.d(TAG, "scheduleAlert: scheduling alert for " + formatDateTime(context,
+            Log.i(TAG, "scheduleAlert: scheduling alert for " + formatDateTime(context,
                     futureInMillis, FORMAT_ABBREV_ALL));
         }
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);

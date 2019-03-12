@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,7 +32,6 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -178,8 +176,6 @@ public class CourseEditActivity extends AppCompatActivity implements OnDataTaskR
                 AlertNotification.REMINDER_DEFAULT_HOUR_OF_DAY);
         long delay = reminderDate.getTime() - new Date().getTime();
         String dateString = DateUtils.getFormattedDate(courseDate);
-        Log.d(TAG, String.format(Locale.getDefault(),
-                "submitCourseNotificationRequest: requesting course alert for %d millis from now.", delay));
         AlertNotification.scheduleAlert(context, context.getString(titleResource),
                 context.getString(textResource, course.getName(), dateString),
                 delay, notificationId, notificationPendingIntent, cancelRequest);
@@ -325,7 +321,6 @@ public class CourseEditActivity extends AppCompatActivity implements OnDataTaskR
     }
 
     private void setTerms(List<Term> terms) {
-        Log.d(TAG, "setTerms() called with: terms = [" + terms + "]");
         this.allTerms = terms;
     }
 
@@ -341,7 +336,6 @@ public class CourseEditActivity extends AppCompatActivity implements OnDataTaskR
 
     @Override
     public void onNotifyDataChanged(DataTaskResult result) {
-        Log.d(TAG, "onNotifyDataChanged() called with: result = [" + result + "]");
         switch (result.getAction()) {
             case UPDATE:
                 if (result.isSuccessful()) {

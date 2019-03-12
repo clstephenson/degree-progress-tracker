@@ -49,10 +49,10 @@ public class DataTask<T extends BaseModel> extends AsyncTask<T, Void, DataTaskRe
             dataTaskResult.setResult(DataTaskResult.Result.SUCCESS);
             return dataTaskResult;
         } catch (SQLiteConstraintException e) {
-            Log.d(TAG, "doInBackground: " + e.getLocalizedMessage());
+            Log.w(TAG, "doInBackground: " + e.getLocalizedMessage(), e);
             dataTaskResult.setConstraintException(new EntityConstraintException(e));
         } catch (Exception e) {
-            Log.d(TAG, "doInBackground: " + e.getLocalizedMessage());
+            Log.w(TAG, "doInBackground: " + e.getLocalizedMessage(), e);
             dataTaskResult.setOtherException(e);
         } finally {
             return dataTaskResult;

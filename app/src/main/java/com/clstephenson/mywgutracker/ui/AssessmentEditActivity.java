@@ -7,7 +7,6 @@ import android.app.TaskStackBuilder;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,7 +30,6 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.Date;
-import java.util.Locale;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -293,8 +291,6 @@ public class AssessmentEditActivity extends AppCompatActivity implements OnDataT
         long delay = reminderDate.getTime() - new Date().getTime();
         String goalDateString = DateUtils.getFormattedDate(currentAssessment.getGoalDate());
 
-        Log.d(TAG, String.format(Locale.getDefault(),
-                "submitAssessmentNotificationRequest: requesting assessment alert for %d millis from now.", delay));
         AlertNotification.scheduleAlert(this,
                 getString(R.string.assessment_goal_notification_title, currentAssessment.getType().getFriendlyName()),
                 getString(R.string.assessment_goal_notification_text,

@@ -2,7 +2,6 @@ package com.clstephenson.mywgutracker.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
@@ -40,7 +39,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        Log.d(TAG, "onCreate() called with: savedInstanceState = [" + savedInstanceState + "]");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_with_nav);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -123,7 +121,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onResume() {
-        Log.d(TAG, "onResume() called");
         super.onResume();
     }
 

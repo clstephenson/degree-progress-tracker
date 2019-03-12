@@ -3,7 +3,6 @@ package com.clstephenson.mywgutracker.ui;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -40,7 +39,6 @@ public class TermEditActivity extends AppCompatActivity implements OnDataTaskRes
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d(TAG, "onCreate() called with: savedInstanceState = [" + savedInstanceState + "]");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_term_edit);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
