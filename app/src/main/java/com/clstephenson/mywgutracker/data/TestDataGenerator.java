@@ -12,26 +12,65 @@ import java.util.Locale;
 
 public class TestDataGenerator {
 
-    public static Mentor createMentor() {
-        return new Mentor("John", "Smith", "555-555-5555",
-                "john.smith@example.com");
+    public static final int MAX_TEST_TERMS = 3;
+    public static final int MAX_TEST_COURSES = 3;
+    private static final Mentor[] mentorTestData;
+    private static final Term[] termTestData;
+    private static final Course[] courseTestData;
+    private static int numMentors;
+
+    static {
+        mentorTestData = new Mentor[]{
+                new Mentor("John", "Smith", "555-555-5555", "john.smith@example.com"),
+                new Mentor("Mike", "Jones", "444-444-4444", "mike.jones@example.com"),
+                new Mentor("Chris", "Johnson", "333-333-3333", "chris.johnson@example.com")
+        };
+        termTestData = new Term[]{
+                new Term(String.format(Locale.getDefault(), "Term %d", 1), DateUtils.getDate(2018, 5, 1), DateUtils.getDate(2018, 10, 30)),
+                new Term(String.format(Locale.getDefault(), "Term %d", 2), DateUtils.getDate(2018, 11, 1), DateUtils.getDate(2019, 4, 31)),
+                new Term(String.format(Locale.getDefault(), "Term %d", 3), DateUtils.getDate(2019, 5, 1), DateUtils.getDate(2019, 10, 30))
+        };
+        courseTestData = new Course[]{
+                new Course("C179 Business of IT - Applications", DateUtils.getDate(2018, 5, 1), DateUtils.getDate(2018, 5, 30), false, false, CourseStatus.COMPLETED, createMentor(), 0),
+                new Course("C483 Principles of Management", DateUtils.getDate(2018, 6, 1), DateUtils.getDate(2018, 6, 31), false, false, CourseStatus.COMPLETED, createMentor(), 0),
+                new Course("C189 Data Structures", DateUtils.getDate(2018, 7, 1), DateUtils.getDate(2018, 7, 31), false, false, CourseStatus.COMPLETED, createMentor(), 0),
+                new Course("C188 Software Engineering", DateUtils.getDate(2018, 11, 1), DateUtils.getDate(2019, 1, 28), false, false, CourseStatus.COMPLETED, createMentor(), 0),
+                new Course("C196 Mobile Application Development", DateUtils.getDate(2019, 2, 1), DateUtils.getDate(2019, 2, 31), false, false, CourseStatus.STARTED, createMentor(), 0),
+                new Course("C193 Client-Server Application Development", DateUtils.getDate(2019, 3, 1), DateUtils.getDate(2019, 4, 31), false, false, CourseStatus.NOT_STARTED, createMentor(), 0),
+                new Course("C482 Software 1", DateUtils.getDate(2019, 5, 1), DateUtils.getDate(2019, 5, 30), false, false, CourseStatus.NOT_STARTED, createMentor(), 0),
+                new Course("C195 Software 2", DateUtils.getDate(2019, 6, 1), DateUtils.getDate(2019, 6, 31), false, false, CourseStatus.NOT_STARTED, createMentor(), 0),
+                new Course("C769 IT Capstone Written Project", DateUtils.getDate(2019, 1, 1), DateUtils.getDate(2019, 10, 30), false, false, CourseStatus.NOT_STARTED, createMentor(), 0),
+        };
     }
 
-    public static Term createTerm(int numToAppend) {
-        long todayPlus180Days = new Date().getTime() + DateUtils.MILLISECONDS_IN_DAY * 180;
-        return new Term(String.format(Locale.getDefault(), "Test Term %d", numToAppend), new Date(), new Date(todayPlus180Days));
+    private static Mentor createMentor() {
+        numMentors++;
+        int index;
+        if (numMentors % 3 == 0) {
+            index = 2;
+        } else if (numMentors % 2 == 0) {
+            index = 1;
+        } else {
+            index = 0;
+        }
+        if (numMentors == 3) numMentors = 0;
+        return mentorTestData[index];
     }
 
-    public static Course createCourse(int numToAppend, long termId) {
-        long todayPlus30Days = new Date().getTime() + DateUtils.MILLISECONDS_IN_DAY * 30;
-        Mentor mentor = createMentor();
-        return new Course(String.format(Locale.getDefault(), "Test Course %d", numToAppend), new Date(), new Date(todayPlus30Days), false, false,
-                CourseStatus.STARTED, mentor, termId);
+    public static Term createTerm(int termIndex) {
+        return termTestData[termIndex];
+    }
+
+    public static Course createCourse(int termIndex, int courseIndex, long termId) {
+        int startingCourseIndex = termIndex * 3;
+        Course course = courseTestData[startingCourseIndex + courseIndex];
+        course.setTermId(termId);
+        return course;
     }
 
     public static Assessment createAssessment(int numToAppend, long courseId) {
         long todayPlus30Days = new Date().getTime() + DateUtils.MILLISECONDS_IN_DAY * 30;
-        return new Assessment(String.format(Locale.getDefault(), "Test Code %d", numToAppend), String.format(Locale.getDefault(), "Test Assessment %d", numToAppend),
+        return new Assessment(String.format(Locale.getDefault(), "Test Assessment %d", numToAppend),
                 new Date(todayPlus30Days), false, courseId, AssessmentType.PERFORMANCE);
     }
 

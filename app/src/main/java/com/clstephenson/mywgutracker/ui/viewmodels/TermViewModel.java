@@ -12,7 +12,7 @@ import androidx.lifecycle.LiveData;
 
 public class TermViewModel extends AndroidViewModel {
 
-    TermRepository termRepository;
+    private final TermRepository termRepository;
 
     public TermViewModel(@NonNull Application application) {
         super(application);

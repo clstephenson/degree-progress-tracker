@@ -48,7 +48,7 @@ public class Term extends BaseModel {
     /**
      * Copy constructor
      *
-     * @param term
+     * @param term term to copy
      */
     @Ignore
     public Term(Term term) {

@@ -90,6 +90,7 @@ public class Course extends BaseModel {
      *
      * @param course
      */
+    @SuppressWarnings("JavaDoc")
     @Ignore
     public Course(Course course) {
         this(course.getId(), course.getName(), course.getStartDate(), course.getEndDate(),

@@ -14,7 +14,7 @@ import androidx.lifecycle.LiveData;
 
 public class TermEditViewModel extends AndroidViewModel {
 
-    TermRepository termRepository;
+    private final TermRepository termRepository;
 
     public TermEditViewModel(@NonNull Application application) {
         super(application);

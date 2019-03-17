@@ -12,7 +12,17 @@
         android:id="@+id/term_content_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/term_details_section_height" />
+        android:layout_marginTop="@dimen/term_details_section_height">
+
+        <TextView
+            android:id="@+id/no_main_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:text="@string/no_courses_message"
+            android:textAlignment="center"
+            android:visibility="gone" />
+    </FrameLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_add_course"

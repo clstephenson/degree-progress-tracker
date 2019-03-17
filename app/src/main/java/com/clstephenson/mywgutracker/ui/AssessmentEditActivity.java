@@ -7,7 +7,6 @@ import android.app.TaskStackBuilder;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.CalendarView;
 import android.widget.Spinner;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import com.clstephenson.mywgutracker.R;
 import com.clstephenson.mywgutracker.data.AssessmentType;
@@ -30,7 +30,6 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.Date;
-import java.util.Locale;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -123,12 +122,7 @@ public class AssessmentEditActivity extends AppCompatActivity implements OnDataT
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-    }
-
-    public void handleSaveAssessment() {
+    private void handleSaveAssessment() {
         if (isFormValid()) {
             updateDirtyAssessment();
 
@@ -143,6 +137,8 @@ public class AssessmentEditActivity extends AppCompatActivity implements OnDataT
                 } else {
                     viewModel.insertAssessment(currentAssessment);
                 }
+            } else {
+                finish();
             }
         }
     }
@@ -172,6 +168,7 @@ public class AssessmentEditActivity extends AppCompatActivity implements OnDataT
         }
     }
 
+    @SuppressWarnings("SameParameterValue")
     private void showValidationError(int layoutResourceId, int stringResourceId) {
         TextInputLayout layout = findViewById(layoutResourceId);
         layout.setErrorEnabled(true);
@@ -184,7 +181,8 @@ public class AssessmentEditActivity extends AppCompatActivity implements OnDataT
             case DELETE:
                 if (result.isSuccessful()) {
                     submitAssessmentNotificationRequest(true);
-                    openCourseActivity(R.string.assessment_deleted, Snackbar.LENGTH_LONG);
+                    Toast.makeText(this, getString(R.string.assessment_deleted), Toast.LENGTH_SHORT).show();
+                    finish();
                 } else {
                     int messageResourceId;
                     if (result.getConstraintException() != null) {
@@ -232,15 +230,6 @@ public class AssessmentEditActivity extends AppCompatActivity implements OnDataT
                 .show();
     }
 
-    private void openCourseActivity(int messageId, int snackbarLength) {
-        Intent intent = new Intent(this, CourseActivity.class);
-        intent.putExtra(CourseActivity.EXTRA_COURSE_ID, currentAssessment.getCourseId());
-        intent.putExtra(MainActivity.EXTRA_MESSAGE_STRING_ID, messageId);
-        intent.putExtra(MainActivity.EXTRA_MESSAGE_LENGTH, snackbarLength);
-        startActivity(intent);
-        finish();
-    }
-
     public void handleGoalDateInputClick(View view) {
         Dialog calendarDialog = getCalendarDialog(view);
         CalendarView calendarView = calendarDialog.findViewById(R.id.calendar_date_picker);
@@ -284,7 +273,7 @@ public class AssessmentEditActivity extends AppCompatActivity implements OnDataT
                     .setIcon(R.drawable.ic_notifications)
                     .setMessage(getString(R.string.assessment_notification_added, AlertNotification.REMINDER_DEFAULT_DAYS_BEFORE))
                     .setPositiveButton(getString(android.R.string.ok), (dialog, which) -> {
-                        openCourseActivity(R.string.assessment_updated, Snackbar.LENGTH_LONG);
+                        finish();
                         dialog.cancel();
                     })
                     .create()
@@ -302,8 +291,6 @@ public class AssessmentEditActivity extends AppCompatActivity implements OnDataT
         long delay = reminderDate.getTime() - new Date().getTime();
         String goalDateString = DateUtils.getFormattedDate(currentAssessment.getGoalDate());
 
-        Log.d(TAG, String.format(Locale.getDefault(),
-                "submitAssessmentNotificationRequest: requesting assessment alert for %d millis from now.", delay));
         AlertNotification.scheduleAlert(this,
                 getString(R.string.assessment_goal_notification_title, currentAssessment.getType().getFriendlyName()),
                 getString(R.string.assessment_goal_notification_text,

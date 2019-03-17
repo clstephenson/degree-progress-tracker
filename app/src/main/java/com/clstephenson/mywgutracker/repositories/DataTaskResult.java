@@ -74,10 +74,7 @@ public class DataTaskResult {
     }
 
     public boolean isSuccessful() {
-        if (result == Result.SUCCESS) {
-            return true;
-        }
-        return false;
+        return result == Result.SUCCESS;
     }
 
     public enum Result {

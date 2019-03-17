@@ -7,15 +7,16 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import androidx.annotation.Nullable;
 
 public class DateUtils {
 
     public static final long MILLISECONDS_IN_DAY = 86_400_000;
-    public static final String DATE_FORMAT = "MMM d, yyyy";
+    private static final String DATE_FORMAT = "MMM d, yyyy";
 
-    public static DateFormat getDateFormatter() {
+    private static DateFormat getDateFormatter() {
         return new SimpleDateFormat(DATE_FORMAT);
     }
 
@@ -34,13 +35,11 @@ public class DateUtils {
     }
 
     public static String getFormattedDateRange(Date startDate, Date endDate) {
-        return new StringBuilder()
-                .append(getFormattedDate(startDate))
-                .append(" - ")
-                .append(getFormattedDate(endDate))
-                .toString();
+        return String.format(Locale.getDefault(), "%s - %s", getFormattedDate(startDate),
+                getFormattedDate(endDate));
     }
 
+    @SuppressWarnings("WeakerAccess")
     public static Date getToday() {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, 0);
@@ -74,7 +73,7 @@ public class DateUtils {
         return first.before(second);
     }
 
-    public static Date getDatefromMillis(Long value) {
+    public static Date getDateFromMillis(Long value) {
         if (value != null) {
             Calendar calendar = Calendar.getInstance();
             calendar.setTimeInMillis(value);
@@ -110,6 +109,7 @@ public class DateUtils {
      * @param hourOfDay    hour during the day for the reminder (24 hr clock and -1 means use current time)
      * @return
      */
+    @SuppressWarnings("JavaDoc")
     @Nullable
     public static Date createReminderDate(Date date, int reminderDays, int hourOfDay) {
         if (date != null) {

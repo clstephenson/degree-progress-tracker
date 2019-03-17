@@ -38,12 +38,6 @@ public class AssessmentListFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        //configure floating action button
-        //todo uncomment once edit assessment edit form is implemented
-//        FloatingActionButton fab = getActivity().findViewById(R.id.fab_add_assessment);
-//        fab.setOnClickListener(this::openAssessmentEditActivityForNewAssessment);
-//        fab.show();
-
         RecyclerView recyclerView = getView().findViewById(R.id.assessment_recyclerview);
 
         final AssessmentListAdapter adapter = new AssessmentListAdapter(getActivity());

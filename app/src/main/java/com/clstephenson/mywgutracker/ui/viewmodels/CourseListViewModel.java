@@ -13,7 +13,7 @@ import androidx.lifecycle.LiveData;
 
 public class CourseListViewModel extends AndroidViewModel {
 
-    private CourseRepository repository;
+    private final CourseRepository repository;
     private LiveData<List<Course>> courses;
 
     public CourseListViewModel(@NonNull Application application) {
@@ -33,9 +33,5 @@ public class CourseListViewModel extends AndroidViewModel {
 
     public Course getCourse(int position) {
         return courses.getValue().get(position);
-    }
-
-    public void insert(Course course) {
-        repository.insert(course);
     }
 }

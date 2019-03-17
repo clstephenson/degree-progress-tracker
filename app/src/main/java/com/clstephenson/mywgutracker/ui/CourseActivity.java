@@ -4,11 +4,11 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.clstephenson.mywgutracker.R;
 import com.clstephenson.mywgutracker.data.models.Course;
@@ -30,6 +30,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 
+@SuppressWarnings("WeakerAccess")
 public class CourseActivity extends AppCompatActivity implements OnDataTaskResultListener {
 
     private final String TAG = this.getClass().getSimpleName();
@@ -39,7 +40,7 @@ public class CourseActivity extends AppCompatActivity implements OnDataTaskResul
     public static final String EXTRA_MESSAGE_LENGTH = MainActivity.class.getSimpleName() + "REQUESTED_SNACKBAR_LENGTH";
     private CourseViewModel viewModel;
     private Course currentCourse;
-    TextView termView;
+    private TextView termView;
     private List<Term> allTerms;
 
     @Override
@@ -186,7 +187,6 @@ public class CourseActivity extends AppCompatActivity implements OnDataTaskResul
     }
 
     private void setTerms(List<Term> terms) {
-        Log.d(TAG, "setTerms() called with: terms = [" + terms + "]");
         this.allTerms = terms;
     }
 
@@ -206,7 +206,8 @@ public class CourseActivity extends AppCompatActivity implements OnDataTaskResul
             case DELETE:
                 if (result.isSuccessful()) {
                     cancelCourseNotifications(currentCourse);
-                    openCourseList(R.string.course_deleted, Snackbar.LENGTH_LONG);
+                    Toast.makeText(this, getString(R.string.course_deleted), Toast.LENGTH_SHORT).show();
+                    finish();
                 } else {
                     int messageResourceId;
                     if (result.getConstraintException() != null) {
@@ -236,15 +237,6 @@ public class CourseActivity extends AppCompatActivity implements OnDataTaskResul
                 CourseEditActivity.NOTIFICATION_TYPE.START, true);
         CourseEditActivity.submitCourseNotificationRequest(this, course,
                 CourseEditActivity.NOTIFICATION_TYPE.END, true);
-    }
-
-    private void openCourseList(int messageId, int snackbarLength) {
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra(MainActivity.EXTRA_FRAGMENT_NAME, CourseListFragment.class.getSimpleName());
-        intent.putExtra(MainActivity.EXTRA_MESSAGE_STRING_ID, messageId);
-        intent.putExtra(MainActivity.EXTRA_MESSAGE_LENGTH, snackbarLength);
-        startActivity(intent);
-        finish();
     }
 
     public void handleMentorPhoneClick(View view) {

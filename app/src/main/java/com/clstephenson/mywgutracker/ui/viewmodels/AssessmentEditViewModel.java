@@ -15,7 +15,7 @@ import androidx.lifecycle.LiveData;
 
 public class AssessmentEditViewModel extends AndroidViewModel {
 
-    AssessmentRepository assessmentRepository;
+    private final AssessmentRepository assessmentRepository;
 
     public AssessmentEditViewModel(@NonNull Application application) {
         super(application);
@@ -23,7 +23,7 @@ public class AssessmentEditViewModel extends AndroidViewModel {
     }
 
     public Assessment getNewAssessment(long courseId) {
-        return new Assessment("", "", new Date(), false, courseId,
+        return new Assessment("", new Date(), false, courseId,
                 AssessmentType.OBJECTIVE);
     }
 

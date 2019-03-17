@@ -12,6 +12,7 @@ import com.clstephenson.mywgutracker.data.models.Note;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.NoteViewHolder> {
@@ -19,8 +20,10 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.NoteVi
     private final LayoutInflater inflater;
     private List<Note> notes;
     private OnItemInteractionListener listener;
+    Context context;
 
     public NoteListAdapter(Context context) {
+        this.context = context;
         inflater = LayoutInflater.from(context);
     }
 
@@ -34,16 +37,20 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.NoteVi
     @Override
     public void onBindViewHolder(@NonNull NoteViewHolder holder, int position) {
         if (notes != null) {
-            Context context = holder.noteView.getContext();
             Note current = notes.get(position);
             holder.noteView.setText(current.getNote());
-        } else {
-            //todo add message stating that there are no notes to display
         }
     }
 
     public void setNotes(List<Note> notes) {
         this.notes = notes;
+        TextView message = ((AppCompatActivity) context).findViewById(R.id.no_notes_message);
+        if (notes.size() == 0) {
+            message.setText(R.string.no_notes_message);
+            message.setVisibility(View.VISIBLE);
+        } else {
+            message.setVisibility(View.INVISIBLE);
+        }
         notifyDataSetChanged();
     }
 

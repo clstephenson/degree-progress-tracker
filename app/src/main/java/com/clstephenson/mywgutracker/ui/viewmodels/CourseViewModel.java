@@ -13,8 +13,8 @@ import androidx.lifecycle.LiveData;
 
 public class CourseViewModel extends AndroidViewModel {
 
-    CourseRepository courseRepository;
-    TermRepository termRepository;
+    private final CourseRepository courseRepository;
+    private final TermRepository termRepository;
 
     public CourseViewModel(@NonNull Application application) {
         super(application);

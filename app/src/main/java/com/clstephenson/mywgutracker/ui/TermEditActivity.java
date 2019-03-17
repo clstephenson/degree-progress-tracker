@@ -1,10 +1,8 @@
 package com.clstephenson.mywgutracker.ui;
 
 import android.app.Dialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,7 +27,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 public class TermEditActivity extends AppCompatActivity implements OnDataTaskResultListener {
 
-    public final String TAG = this.getClass().getSimpleName();
+    private final String TAG = this.getClass().getSimpleName();
     private MODE entryMode;
     private Term currentTerm;
     private Term dirtyTerm;
@@ -37,11 +35,10 @@ public class TermEditActivity extends AppCompatActivity implements OnDataTaskRes
     private TextInputEditText endDateInput;
     private TextInputEditText startDateInput;
 
-    TermEditViewModel viewModel;
+    private TermEditViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d(TAG, "onCreate() called with: savedInstanceState = [" + savedInstanceState + "]");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_term_edit);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -100,12 +97,7 @@ public class TermEditActivity extends AppCompatActivity implements OnDataTaskRes
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-    }
-
-    public void handleSaveTerm() {
+    private void handleSaveTerm() {
         if (isFormValid()) {
             updateDirtyTerm();
 
@@ -164,29 +156,16 @@ public class TermEditActivity extends AppCompatActivity implements OnDataTaskRes
     @Override
     public void onNotifyDataChanged(DataTaskResult result) {
         switch (result.getAction()) {
-            case DELETE:
-                if (result.isSuccessful()) {
-                    openTermList(R.string.term_deleted, Snackbar.LENGTH_LONG);
-                } else {
-                    int messageResourceId;
-                    if (result.getConstraintException() != null) {
-                        messageResourceId = R.string.term_delete_failed;
-                    } else {
-                        messageResourceId = R.string.unexpected_error;
-                    }
-                    showDataChangedSnackbarMessage(messageResourceId);
-                }
-                break;
             case UPDATE:
                 if (result.isSuccessful()) {
-                    openTermList(R.string.term_updated, Snackbar.LENGTH_LONG);
+                    finish();
                 } else {
                     showDataChangedSnackbarMessage(R.string.unexpected_error);
                 }
                 break;
             case INSERT:
                 if (result.isSuccessful()) {
-                    openTermList(R.string.term_added, Snackbar.LENGTH_LONG);
+                    finish();
                 } else {
                     int messageResourceId;
                     if (result.getConstraintException() != null) {
@@ -204,17 +183,8 @@ public class TermEditActivity extends AppCompatActivity implements OnDataTaskRes
         CREATE, UPDATE
     }
 
-    private void openTermList(int messageId, int snackbarLength) {
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra(MainActivity.EXTRA_FRAGMENT_NAME, TermListFragment.class.getSimpleName());
-        intent.putExtra(MainActivity.EXTRA_MESSAGE_STRING_ID, messageId);
-        intent.putExtra(MainActivity.EXTRA_MESSAGE_LENGTH, snackbarLength);
-        startActivity(intent);
-        finish();
-    }
-
     public void handleStartDateInputClick(View view) {
-        Dialog calendarDialog = getCalendarDialog(view);
+        Dialog calendarDialog = getCalendarDialog();
         CalendarView calendarView = calendarDialog.findViewById(R.id.calendar_date_picker);
         calendarView.setDate(DateUtils.getMillisFromDate(dirtyTerm.getStartDate()));
         calendarView.setOnDateChangeListener((view1, year, month, dayOfMonth) -> {
@@ -227,7 +197,7 @@ public class TermEditActivity extends AppCompatActivity implements OnDataTaskRes
     }
 
     public void handleEndDateInputClick(View view) {
-        Dialog calendarDialog = getCalendarDialog(view);
+        Dialog calendarDialog = getCalendarDialog();
         CalendarView calendarView = calendarDialog.findViewById(R.id.calendar_date_picker);
         calendarView.setDate(DateUtils.getMillisFromDate(dirtyTerm.getEndDate()));
         calendarView.setOnDateChangeListener((view1, year, month, dayOfMonth) -> {
@@ -239,7 +209,7 @@ public class TermEditActivity extends AppCompatActivity implements OnDataTaskRes
         calendarDialog.show();
     }
 
-    private Dialog getCalendarDialog(View view) {
+    private Dialog getCalendarDialog() {
         Dialog calendarDialog = new Dialog(this);
         calendarDialog.setContentView(R.layout.calendar_dialog_content);
         return calendarDialog;

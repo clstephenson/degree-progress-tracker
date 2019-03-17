@@ -32,13 +32,10 @@ import androidx.lifecycle.ViewModelProviders;
 public class HomeFragment extends Fragment {
 
     private String title;
-    private HomeViewModel viewModel;
-    //private ProgressBar termsProgressBar;
 
     public HomeFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -50,7 +47,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        viewModel = ViewModelProviders.of(getActivity()).get(HomeViewModel.class);
+        HomeViewModel viewModel = ViewModelProviders.of(getActivity()).get(HomeViewModel.class);
 
         LinearLayout termsLayout = getActivity().findViewById(R.id.home_card_terms_layout);
         ProgressBar termsProgressBar = buildProgressBar();

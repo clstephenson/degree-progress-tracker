@@ -12,11 +12,11 @@ public class AlertPublisher extends BroadcastReceiver {
 
     public static final String NOTIFICATION_ID = "notification_id";
     public static final String NOTIFICATION = "notification";
-    public final String TAG = this.getClass().getSimpleName();
+    private final String TAG = this.getClass().getSimpleName();
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.d(TAG, "onReceive() called");
+        Log.i(TAG, "onReceive() called");
         Notification notification = intent.getParcelableExtra(NOTIFICATION);
         int notificationId = intent.getIntExtra(NOTIFICATION_ID, 0);
 

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.clstephenson.mywgutracker.R;
 import com.clstephenson.mywgutracker.data.models.Term;
@@ -24,7 +25,6 @@ import androidx.lifecycle.ViewModelProviders;
 
 public class TermActivity extends AppCompatActivity implements OnDataTaskResultListener {
 
-    private final String TAG = this.getClass().getSimpleName();
     private TermViewModel termViewModel;
     private Term currentTerm;
 
@@ -108,7 +108,6 @@ public class TermActivity extends AppCompatActivity implements OnDataTaskResultL
     }
 
     private void setupTermViews(Term term) {
-        //todo: this is getting called when deleting a term, but not sure why. Checking for null is a work-around.  Need to fix.
         if (term != null) {
             currentTerm = term;
             TextView nameView = findViewById(R.id.term_text_name);
@@ -131,13 +130,13 @@ public class TermActivity extends AppCompatActivity implements OnDataTaskResultL
         }
     }
 
-
     @Override
     public void onNotifyDataChanged(DataTaskResult result) {
         switch (result.getAction()) {
             case DELETE:
                 if (result.isSuccessful()) {
-                    openTermList(R.string.term_deleted, Snackbar.LENGTH_LONG);
+                    Toast.makeText(this, getString(R.string.term_deleted), Toast.LENGTH_SHORT).show();
+                    finish();
                 } else {
                     int messageResourceId;
                     if (result.getConstraintException() != null) {
@@ -152,14 +151,5 @@ public class TermActivity extends AppCompatActivity implements OnDataTaskResultL
                 }
                 break;
         }
-    }
-
-    private void openTermList(int messageId, int snackbarLength) {
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra(MainActivity.EXTRA_FRAGMENT_NAME, TermListFragment.class.getSimpleName());
-        intent.putExtra(MainActivity.EXTRA_MESSAGE_STRING_ID, messageId);
-        intent.putExtra(MainActivity.EXTRA_MESSAGE_LENGTH, snackbarLength);
-        startActivity(intent);
-        finish();
     }
 }

@@ -39,13 +39,13 @@ public abstract class AppDatabase extends RoomDatabase {
         new ClearDataAsync(INSTANCE).execute();
     }
 
-    public static void seedDatabase() {
+    public static void clearAndSeedDatabase() {
         new SeedDBAsync(INSTANCE).execute();
     }
 
     private static class ClearDataAsync extends AsyncTask<Void, Void, Void> {
 
-        AppDatabase db;
+        final AppDatabase db;
 
         ClearDataAsync(AppDatabase db) {
             this.db = db;
@@ -61,28 +61,27 @@ public abstract class AppDatabase extends RoomDatabase {
     private static class SeedDBAsync extends AsyncTask<Void, Void, Void> {
         private final TermDao termDao;
         private final CourseDao courseDao;
-        private final AssessmentDao assessmentDao;
         private final NoteDao noteDao;
+        final AppDatabase db;
 
         SeedDBAsync(AppDatabase db) {
             termDao = db.termDao();
             courseDao = db.courseDao();
-            assessmentDao = db.assessmentDao();
             noteDao = db.noteDao();
+            this.db = db;
         }
 
         @Override
         protected Void doInBackground(Void... voids) {
-            for (int i = 1; i < 3; i++) {
-                Term term = TestDataGenerator.createTerm(i);
+            db.clearAllTables();
+            for (int termNum = 0; termNum < TestDataGenerator.MAX_TEST_TERMS; termNum++) {
+                Term term = TestDataGenerator.createTerm(termNum);
                 long termId = termDao.insert(term);
-                for (int j = 1; j < 3; j++) {
-                    Course course = TestDataGenerator.createCourse(j, termId);
+                for (int courseNum = 0; courseNum < TestDataGenerator.MAX_TEST_COURSES; courseNum++) {
+                    Course course = TestDataGenerator.createCourse(termNum, courseNum, termId);
                     long courseId = courseDao.insert(course);
-                    for (int k = 1; k < 3; k++) {
-                        Assessment assessment = TestDataGenerator.createAssessment(k, courseId);
-                        assessmentDao.insert(assessment);
-                        Note note = TestDataGenerator.createNote(k, courseId);
+                    for (int assessmentNum = 1; assessmentNum < 3; assessmentNum++) {
+                        Note note = TestDataGenerator.createNote(assessmentNum, courseId);
                         noteDao.insert(note);
                     }
                 }

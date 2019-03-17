@@ -15,18 +15,14 @@ public class ValidationUtils {
 
     public static boolean isTelephone(String input) {
         if (!isEmpty(input)) {
-            if (input.matches(Patterns.PHONE.pattern())) {
-                return true;
-            }
+            return input.matches(Patterns.PHONE.pattern());
         }
         return false;
     }
 
     public static boolean isEmail(String input) {
         if (!isEmpty(input)) {
-            if (input.matches(Patterns.EMAIL_ADDRESS.pattern())) {
-                return true;
-            }
+            return input.matches(Patterns.EMAIL_ADDRESS.pattern());
         }
         return false;
     }

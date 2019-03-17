@@ -85,7 +85,7 @@
     <string name="note_update_failed">There was a problem and the note was not updated.</string>
     <string name="note_updated">The note was updated.</string>
     <string name="share">Share</string>
-    <string name="sharing_course_note">Sharing a course note...</string>
+    <string name="sharing_course_note">Sharing a course note…</string>
     <string name="share_a_note">Share a Note</string>
     <string-array name="sample_list_items">
         <item>First item</item>
@@ -107,4 +107,14 @@
     <string name="home">Home</string>
     <string name="termProgressMessage">Completed Terms:  %1$d out of %2$d</string>
     <string name="courseProgressMessage">Completed Courses:  %1$d out of %2$d</string>
+    <string name="no_assessments_message">There are no assessments to display.  \nAdd some by tapping the plus button below.</string>
+    <string name="no_terms_message">There are no terms to display.  \nAdd some by tapping the plus button below.</string>
+    <string name="no_courses_message">There are no courses to display.  \nAdd some by tapping the plus button below.</string>
+    <string name="no_notes_message">There are no notes to display.  \nAdd some by tapping the plus button below.</string>
+    <string name="please_add_term">There are not terms yet.  Please add a term before creating courses.</string>
+    <string name="test_data_management">Test Data Management</string>
+    <string name="clear_db_data">Clear DB Data</string>
+    <string name="clear_and_seed_db">Clear and Seed DB</string>
+    <string name="terms">Terms</string>
+    <string name="courses">Courses</string>
 </resources>

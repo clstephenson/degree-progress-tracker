@@ -13,6 +13,7 @@ import com.clstephenson.mywgutracker.utils.DateUtils;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class CourseListAdapter extends RecyclerView.Adapter<CourseListAdapter.CourseViewHolder> {
@@ -20,8 +21,10 @@ public class CourseListAdapter extends RecyclerView.Adapter<CourseListAdapter.Co
     private final LayoutInflater inflater;
     private List<Course> courses;
     private OnItemInteractionListener listener;
+    private final Context context;
 
     public CourseListAdapter(Context context) {
+        this.context = context;
         inflater = LayoutInflater.from(context);
     }
 
@@ -35,7 +38,6 @@ public class CourseListAdapter extends RecyclerView.Adapter<CourseListAdapter.Co
     @Override
     public void onBindViewHolder(@NonNull CourseViewHolder holder, int position) {
         if (courses != null) {
-            Context context = holder.courseDatesView.getContext();
             Course current = courses.get(position);
             holder.courseNameView.setText(current.getName());
             String statusText = String.format(
@@ -45,13 +47,18 @@ public class CourseListAdapter extends RecyclerView.Adapter<CourseListAdapter.Co
             holder.courseStatusView.setText(statusText);
             holder.courseDatesView.setText(
                     DateUtils.getFormattedDateRange(current.getStartDate(), current.getEndDate()));
-        } else {
-            //todo add message stating that there are no courses to display
         }
     }
 
     public void setCourses(List<Course> courses) {
         this.courses = courses;
+        TextView message = ((AppCompatActivity) context).findViewById(R.id.no_main_message);
+        if (courses.size() == 0) {
+            message.setText(R.string.no_courses_message);
+            message.setVisibility(View.VISIBLE);
+        } else {
+            message.setVisibility(View.INVISIBLE);
+        }
         notifyDataSetChanged();
     }
 

@@ -173,6 +173,7 @@
         android:layout_marginEnd="@dimen/activity_margin_small"
         android:orientation="horizontal"
         app:layout_constraintStart_toStartOf="parent"
+        android:baselineAligned="false"
         app:layout_constraintTop_toBottomOf="@id/mentor_text_description_1">
 
         <com.google.android.material.textfield.TextInputLayout

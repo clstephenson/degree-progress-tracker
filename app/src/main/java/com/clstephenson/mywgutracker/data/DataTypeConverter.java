@@ -45,7 +45,7 @@ public class DataTypeConverter {
     @TypeConverter
     public static Date fromTimestamp(Long value) {
         if (value != null) {
-            return DateUtils.getDatefromMillis(value);
+            return DateUtils.getDateFromMillis(value);
         } else {
             return null;
         }

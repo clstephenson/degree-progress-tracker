@@ -73,55 +73,31 @@
         android:textSize="@dimen/text_size_standard"
         tools:text="Mentor Name" />
 
-    <LinearLayout
-        android:layout_width="wrap_content"
+    <TextView
+        android:id="@+id/course_text_mentor_email"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/indent_size"
-        android:layout_marginTop="@dimen/text_line_spacing">
+        android:layout_marginTop="@dimen/text_line_spacing"
+        android:drawableStart="@drawable/ic_email"
+        android:drawablePadding="@dimen/activity_margin_small"
+        android:gravity="center_vertical"
+        android:onClick="handleMentorEmailClick"
+        android:textSize="@dimen/text_size_standard"
+        tools:text="Mentor Email" />
 
-        <ImageView
-            android:id="@+id/course_mentor_email_icon"
-            android:layout_width="@dimen/mentor_icon_size"
-            android:layout_height="@dimen/mentor_icon_size"
-            android:layout_gravity="center_vertical"
-            android:layout_marginEnd="@dimen/text_line_spacing"
-            android:onClick="handleMentorEmailClick"
-            android:src="@drawable/ic_email" />
-
-        <TextView
-            android:id="@+id/course_text_mentor_email"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:textSize="@dimen/text_size_standard"
-            android:onClick="handleMentorEmailClick"
-            tools:text="Mentor Email" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
+    <TextView
+        android:id="@+id/course_text_mentor_phone"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/indent_size"
-        android:layout_marginTop="@dimen/text_line_spacing">
-
-        <ImageView
-            android:id="@+id/course_mentor_phone_icon"
-            android:layout_width="@dimen/mentor_icon_size"
-            android:layout_height="@dimen/mentor_icon_size"
-            android:layout_gravity="center_vertical"
-            android:layout_marginEnd="@dimen/text_line_spacing"
-            android:onClick="handleMentorPhoneClick"
-            android:src="@drawable/ic_phone" />
-
-        <TextView
-            android:id="@+id/course_text_mentor_phone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:textSize="@dimen/text_size_standard"
-            android:onClick="handleMentorPhoneClick"
-            tools:text="Mentor Phone" />
-    </LinearLayout>
+        android:layout_marginTop="@dimen/text_line_spacing"
+        android:drawableStart="@drawable/ic_phone"
+        android:drawablePadding="@dimen/activity_margin_small"
+        android:gravity="center_vertical"
+        android:onClick="handleMentorPhoneClick"
+        android:textSize="@dimen/text_size_standard"
+        tools:text="Mentor Email" />
 
     <View
         android:id="@+id/divider"
