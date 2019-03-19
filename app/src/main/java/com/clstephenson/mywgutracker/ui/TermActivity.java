@@ -41,7 +41,9 @@ public class TermActivity extends AppCompatActivity implements OnDataTaskResultL
         termViewModel.setDataTaskResultListener(this);
         long termId = getIntent().getLongExtra(EXTRA_TERM_ID, 0);
         termViewModel.getTermById(termId).observe(this, this::setupTermViews);
-        setupCourseListFragment(termId);
+        if (savedInstanceState == null) {
+            setupCourseListFragment(termId);
+        }
         setTitle(R.string.title_activity_term);
 
         FloatingActionButton fab = findViewById(R.id.fab_add_course);
