@@ -8,23 +8,6 @@
 
     <include layout="@layout/content_course" />
 
-    <FrameLayout
-        android:id="@+id/course_content_fragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/course_details_section_height">
-
-        <TextView
-            android:id="@+id/no_assessments_message"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|center_horizontal"
-            android:text="@string/no_assessments_message"
-            android:textAlignment="center"
-            android:visibility="gone" />
-
-    </FrameLayout>
-
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_add_assessment"
         android:layout_width="wrap_content"
