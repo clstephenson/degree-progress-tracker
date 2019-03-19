@@ -146,6 +146,9 @@ public class CourseActivity extends AppCompatActivity implements OnDataTaskResul
         int itemId = item.getItemId();
 
         switch (itemId) {
+            case android.R.id.home:
+                finish();
+                break;
             case R.id.action_delete_course:
                 handleDeleteCourse();
                 break;
