@@ -47,7 +47,7 @@
     <string name="title_activity_course">View Course</string>
     <string name="delete_course">Delete Course?</string>
     <string name="course_assessments">Course Assessments</string>
-    <string name="course_mentor">Course Mentor</string>
+    <string name="course_mentor">Course Mentor:</string>
     <string name="due">Due</string>
     <string name="enable_start_alert">Enable Start Alert</string>
     <string name="enable_end_alert">Enable End Alert</string>
@@ -117,4 +117,6 @@
     <string name="clear_and_seed_db">Clear and Seed DB</string>
     <string name="terms">Terms</string>
     <string name="courses">Courses</string>
+    <string name="course_mentor_3">Course Mentor 3:</string>
+    <string name="course_mentor_2">Course Mentor 2:</string>
 </resources>

@@ -58,7 +58,7 @@ public class Course extends BaseModel {
     private List<Note> notes = Collections.emptyList();
 
     public Course(long id, @NonNull String name, Date startDate, Date endDate,
-                  boolean isStartAlertOn, boolean isEndAlertOn, CourseStatus status, Mentor mentor,
+                  boolean isStartAlertOn, boolean isEndAlertOn, CourseStatus status, @NonNull Mentor mentor,
                   long termId) {
         this.id = id;
         this.name = name;
@@ -73,7 +73,7 @@ public class Course extends BaseModel {
 
     @Ignore
     public Course(@NonNull String name, Date startDate, Date endDate,
-                  boolean isStartAlertOn, boolean isEndAlertOn, CourseStatus status, Mentor mentor,
+                  boolean isStartAlertOn, boolean isEndAlertOn, CourseStatus status, @NonNull Mentor mentor,
                   long termId) {
         this.name = name;
         this.startDate = startDate;
@@ -197,7 +197,8 @@ public class Course extends BaseModel {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, startDate, endDate, isStartAlertOn, isEndAlertOn, status, mentor, termId);
+        return Objects.hash(id, name, startDate, endDate, isStartAlertOn, isEndAlertOn, status,
+                mentor, termId);
     }
 
     @Override

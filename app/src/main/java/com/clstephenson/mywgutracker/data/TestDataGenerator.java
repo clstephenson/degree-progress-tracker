@@ -21,9 +21,9 @@ public class TestDataGenerator {
 
     static {
         mentorTestData = new Mentor[]{
-                new Mentor("John", "Smith", "555-555-5555", "john.smith@example.com"),
-                new Mentor("Mike", "Jones", "444-444-4444", "mike.jones@example.com"),
-                new Mentor("Chris", "Johnson", "333-333-3333", "chris.johnson@example.com")
+                new Mentor("John", "Smith", "555-555-5555", "john.smith@example.com", "", "", "", "", "", "", "", ""),
+                new Mentor("Mike", "Jones", "444-444-4444", "mike.jones@example.com", "", "", "", "", "", "", "", ""),
+                new Mentor("Chris", "Johnson", "333-333-3333", "chris.johnson@example.com", "", "", "", "", "", "", "", "")
         };
         termTestData = new Term[]{
                 new Term(String.format(Locale.getDefault(), "Term %d", 1), DateUtils.getDate(2018, 5, 1), DateUtils.getDate(2018, 10, 30)),

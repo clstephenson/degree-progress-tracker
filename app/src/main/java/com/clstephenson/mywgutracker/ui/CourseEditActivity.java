@@ -53,6 +53,14 @@ public class CourseEditActivity extends AppCompatActivity implements OnDataTaskR
     private TextInputEditText mentorLastNameInput;
     private TextInputEditText mentorPhoneInput;
     private TextInputEditText mentorEmailInput;
+    private TextInputEditText mentor2FirstNameInput;
+    private TextInputEditText mentor2LastNameInput;
+    private TextInputEditText mentor2PhoneInput;
+    private TextInputEditText mentor2EmailInput;
+    private TextInputEditText mentor3FirstNameInput;
+    private TextInputEditText mentor3LastNameInput;
+    private TextInputEditText mentor3PhoneInput;
+    private TextInputEditText mentor3EmailInput;
     private Switch enableAlertStartSwitch;
     private Switch enableAlertEndSwitch;
     private List<Term> allTerms;
@@ -93,6 +101,14 @@ public class CourseEditActivity extends AppCompatActivity implements OnDataTaskR
         mentorLastNameInput = findViewById(R.id.mentor_input_last_name);
         mentorPhoneInput = findViewById(R.id.mentor_input_phone);
         mentorEmailInput = findViewById(R.id.mentor_input_email);
+        mentor2FirstNameInput = findViewById(R.id.mentor_2_input_first_name);
+        mentor2LastNameInput = findViewById(R.id.mentor_2_input_last_name);
+        mentor2PhoneInput = findViewById(R.id.mentor_2_input_phone);
+        mentor2EmailInput = findViewById(R.id.mentor_2_input_email);
+        mentor3FirstNameInput = findViewById(R.id.mentor_3_input_first_name);
+        mentor3LastNameInput = findViewById(R.id.mentor_3_input_last_name);
+        mentor3PhoneInput = findViewById(R.id.mentor_3_input_phone);
+        mentor3EmailInput = findViewById(R.id.mentor_3_input_email);
 
         viewModel.getAllTermsAsList();
 
@@ -107,10 +123,22 @@ public class CourseEditActivity extends AppCompatActivity implements OnDataTaskR
             statusInput.setSelection(statusAdapter.getPosition(currentCourse.getStatus()));
             enableAlertStartSwitch.setChecked(currentCourse.isStartAlertOn());
             enableAlertEndSwitch.setChecked(currentCourse.isEndAlertOn());
+
             mentorFirstNameInput.setText(currentCourse.getMentor().getFirstName());
             mentorLastNameInput.setText(currentCourse.getMentor().getLastName());
             mentorEmailInput.setText(currentCourse.getMentor().getEmail());
             mentorPhoneInput.setText(currentCourse.getMentor().getPhone());
+
+            mentor2FirstNameInput.setText(currentCourse.getMentor().getFirstName2());
+            mentor2LastNameInput.setText(currentCourse.getMentor().getLastName2());
+            mentor2EmailInput.setText(currentCourse.getMentor().getEmail2());
+            mentor2PhoneInput.setText(currentCourse.getMentor().getPhone2());
+
+            mentor3FirstNameInput.setText(currentCourse.getMentor().getFirstName3());
+            mentor3LastNameInput.setText(currentCourse.getMentor().getLastName3());
+            mentor3EmailInput.setText(currentCourse.getMentor().getEmail3());
+            mentor3PhoneInput.setText(currentCourse.getMentor().getPhone3());
+
         }
         dirtyCourse = new Course(currentCourse);
     }
@@ -187,7 +215,11 @@ public class CourseEditActivity extends AppCompatActivity implements OnDataTaskR
         clearInputErrors(R.id.course_input_title_layout, R.id.course_input_start_layout,
                 R.id.course_input_end_layout, R.id.mentor_input_first_name_layout,
                 R.id.mentor_input_last_name_layout, R.id.mentor_input_email_layout,
-                R.id.mentor_input_phone_layout);
+                R.id.mentor_input_phone_layout, R.id.mentor_2_input_first_name_layout,
+                R.id.mentor_2_input_last_name_layout, R.id.mentor_2_input_email_layout,
+                R.id.mentor_2_input_phone_layout, R.id.mentor_3_input_first_name_layout,
+                R.id.mentor_3_input_last_name_layout, R.id.mentor_3_input_email_layout,
+                R.id.mentor_3_input_phone_layout);
 
         if (ValidationUtils.isEmpty(titleInput.getText().toString())) {
             showValidationError(R.id.course_input_title_layout, R.string.validation_required);
@@ -214,7 +246,24 @@ public class CourseEditActivity extends AppCompatActivity implements OnDataTaskR
         } else if (!ValidationUtils.isEmail(mentorEmailInput.getText().toString())) {
             showValidationError(R.id.mentor_input_email_layout, R.string.validation_email);
             isValid = false;
+        } else if (TextUtils.getTrimmedLength(mentor2PhoneInput.getText().toString()) > 0 &&
+                !ValidationUtils.isTelephone(mentor2PhoneInput.getText().toString())) {
+            showValidationError(R.id.mentor_2_input_phone_layout, R.string.validation_phone);
+            isValid = false;
+        } else if (TextUtils.getTrimmedLength(mentor2EmailInput.getText().toString()) > 0 &&
+                !ValidationUtils.isEmail(mentor2EmailInput.getText().toString())) {
+            showValidationError(R.id.mentor_2_input_email_layout, R.string.validation_email);
+            isValid = false;
+        } else if (TextUtils.getTrimmedLength(mentor3PhoneInput.getText().toString()) > 0 &&
+                !ValidationUtils.isTelephone(mentor3PhoneInput.getText().toString())) {
+            showValidationError(R.id.mentor_3_input_phone_layout, R.string.validation_phone);
+            isValid = false;
+        } else if (TextUtils.getTrimmedLength(mentor3EmailInput.getText().toString()) > 0 &&
+                !ValidationUtils.isEmail(mentor3EmailInput.getText().toString())) {
+            showValidationError(R.id.mentor_3_input_email_layout, R.string.validation_email);
+            isValid = false;
         }
+        //todo add validation for mentor 2 and 3 if entered
 
         return isValid;
     }
@@ -252,6 +301,14 @@ public class CourseEditActivity extends AppCompatActivity implements OnDataTaskR
                     currentCourse.getMentor().setLastName(dirtyCourse.getMentor().getLastName());
                     currentCourse.getMentor().setPhone(dirtyCourse.getMentor().getPhone());
                     currentCourse.getMentor().setEmail(dirtyCourse.getMentor().getEmail());
+                    currentCourse.getMentor().setFirstName2(dirtyCourse.getMentor().getFirstName2());
+                    currentCourse.getMentor().setLastName2(dirtyCourse.getMentor().getLastName2());
+                    currentCourse.getMentor().setPhone2(dirtyCourse.getMentor().getPhone2());
+                    currentCourse.getMentor().setEmail2(dirtyCourse.getMentor().getEmail2());
+                    currentCourse.getMentor().setFirstName3(dirtyCourse.getMentor().getFirstName3());
+                    currentCourse.getMentor().setLastName3(dirtyCourse.getMentor().getLastName3());
+                    currentCourse.getMentor().setPhone3(dirtyCourse.getMentor().getPhone3());
+                    currentCourse.getMentor().setEmail3(dirtyCourse.getMentor().getEmail3());
                 }
 
                 if (entryMode == MODE.UPDATE) {
@@ -318,6 +375,14 @@ public class CourseEditActivity extends AppCompatActivity implements OnDataTaskR
         dirtyCourse.getMentor().setLastName(mentorLastNameInput.getText().toString());
         dirtyCourse.getMentor().setPhone(mentorPhoneInput.getText().toString());
         dirtyCourse.getMentor().setEmail(mentorEmailInput.getText().toString());
+        dirtyCourse.getMentor().setFirstName2(mentor2FirstNameInput.getText().toString());
+        dirtyCourse.getMentor().setLastName2(mentor2LastNameInput.getText().toString());
+        dirtyCourse.getMentor().setPhone2(mentor2PhoneInput.getText().toString());
+        dirtyCourse.getMentor().setEmail2(mentor2EmailInput.getText().toString());
+        dirtyCourse.getMentor().setFirstName3(mentor3FirstNameInput.getText().toString());
+        dirtyCourse.getMentor().setLastName3(mentor3LastNameInput.getText().toString());
+        dirtyCourse.getMentor().setPhone3(mentor3PhoneInput.getText().toString());
+        dirtyCourse.getMentor().setEmail3(mentor3EmailInput.getText().toString());
     }
 
     private void setTerms(List<Term> terms) {
