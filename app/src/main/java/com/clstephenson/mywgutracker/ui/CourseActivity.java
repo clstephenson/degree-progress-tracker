@@ -4,9 +4,11 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -121,6 +123,58 @@ public class CourseActivity extends AppCompatActivity implements OnDataTaskResul
 
         TextView mentorPhone = findViewById(R.id.course_text_mentor_phone);
         mentorPhone.setText(mentor.getPhone());
+
+        LinearLayout mentor2Layout = findViewById(R.id.mentor_2_layout);
+        if (TextUtils.getTrimmedLength(mentor.getFirstName2()) > 0 ||
+                TextUtils.getTrimmedLength(mentor.getLastName2()) > 0) {
+            mentor2Layout.setVisibility(View.VISIBLE);
+            TextView mentor2Name = findViewById(R.id.course_text_mentor_2_name);
+            mentor2Name.setText(String.format("%s %s", mentor.getFirstName2(), mentor.getLastName2()));
+
+            TextView mentor2Email = findViewById(R.id.course_text_mentor_2_email);
+            if (TextUtils.getTrimmedLength(mentor.getEmail2()) > 0) {
+                mentor2Email.setVisibility(View.VISIBLE);
+                mentor2Email.setText(mentor.getEmail2());
+            } else {
+                mentor2Email.setVisibility(View.GONE);
+            }
+
+            TextView mentor2Phone = findViewById(R.id.course_text_mentor_2_phone);
+            if (TextUtils.getTrimmedLength(mentor.getPhone2()) > 0) {
+                mentor2Phone.setVisibility(View.VISIBLE);
+                mentor2Phone.setText(mentor.getPhone2());
+            } else {
+                mentor2Phone.setVisibility(View.GONE);
+            }
+        } else {
+            mentor2Layout.setVisibility(View.GONE);
+        }
+
+        LinearLayout mentor3Layout = findViewById(R.id.mentor_3_layout);
+        if (TextUtils.getTrimmedLength(mentor.getFirstName3()) > 0 ||
+                TextUtils.getTrimmedLength(mentor.getLastName3()) > 0) {
+            mentor3Layout.setVisibility(View.VISIBLE);
+            TextView mentor3Name = findViewById(R.id.course_text_mentor_3_name);
+            mentor3Name.setText(String.format("%s %s", mentor.getFirstName3(), mentor.getLastName3()));
+
+            TextView mentor3Email = findViewById(R.id.course_text_mentor_3_email);
+            if (TextUtils.getTrimmedLength(mentor.getEmail3()) > 0) {
+                mentor3Email.setVisibility(View.VISIBLE);
+                mentor3Email.setText(mentor.getEmail3());
+            } else {
+                mentor3Email.setVisibility(View.GONE);
+            }
+
+            TextView mentor3Phone = findViewById(R.id.course_text_mentor_3_phone);
+            if (TextUtils.getTrimmedLength(mentor.getPhone3()) > 0) {
+                mentor3Phone.setVisibility(View.VISIBLE);
+                mentor3Phone.setText(mentor.getPhone3());
+            } else {
+                mentor3Phone.setVisibility(View.GONE);
+            }
+        } else {
+            mentor3Layout.setVisibility(View.GONE);
+        }
     }
 
     private void setupAssessmentListFragment(long courseId) {
@@ -243,14 +297,38 @@ public class CourseActivity extends AppCompatActivity implements OnDataTaskResul
     }
 
     public void handleMentorPhoneClick(View view) {
+        String phone;
+        switch (view.getId()) {
+            case R.id.course_text_mentor_2_phone:
+                phone = currentCourse.getMentor().getPhone2();
+                break;
+            case R.id.course_text_mentor_3_phone:
+                phone = currentCourse.getMentor().getPhone3();
+                break;
+            default:
+                phone = currentCourse.getMentor().getPhone();
+                break;
+        }
         Intent intent = new Intent(Intent.ACTION_DIAL);
-        intent.setData(Uri.parse(String.format("tel:%s", currentCourse.getMentor().getPhone())));
+        intent.setData(Uri.parse(String.format("tel:%s", phone)));
         startActivity(intent);
     }
 
     public void handleMentorEmailClick(View view) {
+        String email;
+        switch (view.getId()) {
+            case R.id.course_text_mentor_2_email:
+                email = currentCourse.getMentor().getEmail2();
+                break;
+            case R.id.course_text_mentor_3_email:
+                email = currentCourse.getMentor().getEmail3();
+                break;
+            default:
+                email = currentCourse.getMentor().getEmail();
+                break;
+        }
         Intent intent = new Intent(Intent.ACTION_SENDTO);
-        intent.setData(Uri.parse(String.format("mailto:%s", currentCourse.getMentor().getEmail())));
+        intent.setData(Uri.parse(String.format("mailto:%s", email)));
         startActivity(intent);
     }
 }
