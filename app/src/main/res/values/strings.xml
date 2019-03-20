@@ -117,4 +117,6 @@
     <string name="clear_and_seed_db">Clear and Seed DB</string>
     <string name="terms">Terms</string>
     <string name="courses">Courses</string>
+    <string name="course_mentor_3">Course Mentor 3</string>
+    <string name="course_mentor_2">Course Mentor 2</string>
 </resources>

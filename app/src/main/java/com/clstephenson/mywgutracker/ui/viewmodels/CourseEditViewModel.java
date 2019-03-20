@@ -32,7 +32,7 @@ public class CourseEditViewModel extends AndroidViewModel {
 
     public Course getNewCourse(long termId) {
         return new Course("", new Date(), new Date(), false, false,
-                CourseStatus.NOT_STARTED, new Mentor("", "", "", ""), termId);
+                CourseStatus.NOT_STARTED, createNewMentor(), termId);
     }
 
     public LiveData<Course> getCourseById(long id) {
@@ -50,5 +50,10 @@ public class CourseEditViewModel extends AndroidViewModel {
 
     public void insertCourse(Course course) {
         courseRepository.insert(course);
+    }
+
+    public Mentor createNewMentor() {
+        return new Mentor("", "", "", "", "", "",
+                "", "", "", "", "", "");
     }
 }
