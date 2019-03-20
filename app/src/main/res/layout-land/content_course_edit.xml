@@ -182,7 +182,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/mentor_input_first_name_layout"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 app:errorEnabled="false">
@@ -197,7 +197,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/mentor_input_last_name_layout"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 app:errorEnabled="false">
@@ -222,7 +222,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/mentor_input_phone_layout"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 app:errorEnabled="false">
@@ -230,14 +230,14 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/mentor_input_phone"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:hint="@string/phone_number"
                     android:inputType="phone" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/mentor_input_email_layout"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 app:errorEnabled="false">
@@ -245,7 +245,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/mentor_input_email"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:hint="@string/email_address"
                     android:inputType="textEmailAddress" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -281,7 +281,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/mentor_2_input_first_name_layout"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 app:errorEnabled="false">
@@ -296,7 +296,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/mentor_2_input_last_name_layout"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 app:errorEnabled="false">
@@ -322,7 +322,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/mentor_2_input_phone_layout"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 app:errorEnabled="false">
@@ -330,7 +330,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/mentor_2_input_phone"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:hint="@string/phone_number"
                     android:inputType="phone" />
 
@@ -338,7 +338,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/mentor_2_input_email_layout"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 app:errorEnabled="false">
@@ -346,7 +346,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/mentor_2_input_email"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:hint="@string/email_address"
                     android:inputType="textEmailAddress" />
 
@@ -382,7 +382,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/mentor_3_input_first_name_layout"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 app:errorEnabled="false">
@@ -397,7 +397,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/mentor_3_input_last_name_layout"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 app:errorEnabled="false">
@@ -422,7 +422,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/mentor_3_input_phone_layout"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 app:errorEnabled="false">
@@ -430,14 +430,14 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/mentor_3_input_phone"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:hint="@string/phone_number"
                     android:inputType="phone" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/mentor_3_input_email_layout"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 app:errorEnabled="false">
@@ -445,7 +445,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/mentor_3_input_email"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:hint="@string/email_address"
                     android:inputType="textEmailAddress" />
             </com.google.android.material.textfield.TextInputLayout>
